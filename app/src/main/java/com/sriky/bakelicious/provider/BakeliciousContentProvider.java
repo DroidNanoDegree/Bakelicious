@@ -55,7 +55,7 @@ public final class BakeliciousContentProvider {
         @ContentUri(
                 path = PATH_RECIPES,
                 type = "vnd.android.cursor.dir/" + PATH_RECIPES,
-                defaultSort = RecipeContract.COLUMN_RECIPE_ID + " DESC")
+                defaultSort = RecipeContract._ID + " ASC")
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RECIPES).build();
     }
@@ -70,7 +70,7 @@ public final class BakeliciousContentProvider {
         @ContentUri(
                 path = PATH_INGREDIENTS,
                 type = "vnd.android.cursor.dir/" + PATH_INGREDIENTS,
-                defaultSort = IngredientContract._ID + " DESC")
+                defaultSort = IngredientContract._ID + " ASC")
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGREDIENTS).build();
     }
@@ -85,7 +85,7 @@ public final class BakeliciousContentProvider {
         @ContentUri(
                 path = PATH_INSTRUCTIONS,
                 type = "vnd.android.cursor.dir/" + PATH_INSTRUCTIONS,
-                defaultSort = InstructionContract.COLUMN_INSTRUCTION_NUMBER + " DESC")
+                defaultSort = InstructionContract.COLUMN_INSTRUCTION_NUMBER + " ASC")
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_INSTRUCTIONS).build();
     }
