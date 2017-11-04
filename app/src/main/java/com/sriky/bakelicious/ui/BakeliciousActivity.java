@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.sriky.bakelicious;
+package com.sriky.bakelicious.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
+import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.utils.LoggerUtils;
 
 public class BakeliciousActivity extends AppCompatActivity {
