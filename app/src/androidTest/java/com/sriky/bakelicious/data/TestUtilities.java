@@ -15,10 +15,13 @@
 
 package com.sriky.bakelicious.data;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
+import com.sriky.bakelicious.provider.IngredientContract;
+import com.sriky.bakelicious.provider.InstructionContract;
 import com.sriky.bakelicious.provider.RecipeContract;
 
 import java.util.Map;
@@ -42,7 +45,7 @@ public class TestUtilities {
      * @return ContentValue.
      */
     public static ContentValues createRecipeContentValues() {
-        /* generate a random movie ID */
+        /* generate a random recipe ID */
         final int min = 20;
         final int max = 80;
         final Random random = new Random();
@@ -56,15 +59,81 @@ public class TestUtilities {
     }
 
     /**
-     * Creates and returns ContentValues Array where each element represents an item in the "movies" table.
+     * Creates and returns ContentValues Array where each element represents an item in the "recipes" table.
      *
      * @return ContentValue[]
      */
-    public static ContentValues[] createMoviesContentValuesArray() {
+    public static ContentValues[] createRecipeContentValuesArray() {
         ContentValues[] cvArray = new ContentValues[3];
         cvArray[0] = createRecipeContentValues();
         cvArray[1] = createRecipeContentValues();
         cvArray[2] = createRecipeContentValues();
+        return cvArray;
+    }
+
+    /**
+     * Creates and returns ContentValues that represents an item in the "ingredient" table.
+     *
+     * @return ContentValue.
+     */
+    public static ContentValues createIngredientContentValues() {
+        /* generate a random recipe ID */
+        final int min = 20;
+        final int max = 80;
+        final Random random = new Random();
+        int recipeId = random.nextInt((max - min) + 1) + min;
+
+        ContentValues cv = new ContentValues();
+        cv.put(IngredientContract.COLUMN_RECIPE_ID, recipeId);
+        cv.put(IngredientContract.COLUMN_INGREDIENT_NAME, "Eggs");
+        cv.put(IngredientContract.COLUMN_INGREDIENT_QUANTITY, 3);
+        cv.put(IngredientContract.COLUMN_INGREDIENT_MEASURE, "UNIT");
+        return cv;
+    }
+
+    /**
+     * Creates and returns ContentValues Array where each element represents an item in the "ingredient" table.
+     *
+     * @return ContentValue[]
+     */
+    public static ContentValues[] createIngredientContentValuesArray() {
+        ContentValues[] cvArray = new ContentValues[3];
+        cvArray[0] = createIngredientContentValues();
+        cvArray[1] = createIngredientContentValues();
+        cvArray[2] = createIngredientContentValues();
+        return cvArray;
+    }
+
+    /**
+     * Creates and returns ContentValues that represents an item in the "instruction" table.
+     *
+     * @return ContentValue.
+     */
+    public static ContentValues createInstructionContentValues() {
+        /* generate a random recipe ID */
+        final int min = 20;
+        final int max = 80;
+        final Random random = new Random();
+        int recipeId = random.nextInt((max - min) + 1) + min;
+
+        ContentValues cv = new ContentValues();
+        cv.put(InstructionContract.COLUMN_RECIPE_ID, recipeId);
+        cv.put(InstructionContract.COLUMN_INSTRUCTION_SHORT, "Short Desc.");
+        cv.put(InstructionContract.COLUMN_INSTRUCTION_LONG, "Longggggggggggggggggggg...");
+        cv.put(InstructionContract.COLUMN_INSTRUCTION_NUMBER, 1);
+        return cv;
+    }
+
+    /**
+     * Creates and returns ContentValues Array where each element represents an item in the "instruction" table.
+     *
+     * @return ContentValue[]
+     */
+    public static ContentValues[] createInstructionContentValuesArray() {
+        ContentValues[] cvArray = new ContentValues[3];
+        cvArray[0] = createInstructionContentValues();
+        cvArray[1] = createInstructionContentValues();
+        cvArray[2] = createInstructionContentValues();
         return cvArray;
     }
 
@@ -86,9 +155,10 @@ public class TestUtilities {
         }
 
         Set<Map.Entry<String, Object>> valueSet = contentValues.valueSet();
-
+        int counter = 0;
         for (Map.Entry<String, Object> entry : valueSet) {
             String columnName = entry.getKey();
+            counter++;
             int index = cursor.getColumnIndex(columnName);
 
             /* Test to see if the column is contained within the cursor */
@@ -100,7 +170,7 @@ public class TestUtilities {
             String expectedValue = entry.getValue().toString();
             String actualValue = cursor.getString(index);
 
-            String valuesDontMatchError = "Actual value '" + actualValue
+            String valuesDontMatchError = "For ColumnName:" + columnName + ", actual value '" + actualValue
                     + "' did not match the expected value '" + expectedValue + "'. "
                     + error;
 
@@ -110,18 +180,72 @@ public class TestUtilities {
         }
     }
 
-    /**
-     * Helper method to delete all entries in the movies table.
-     */
-    public static void deleteAllItemsInMoviesTable(Context context) {
-        /*
+    public static void deleteAllEntries(ContentResolver contentResolver, Uri uri) {
+        contentResolver.delete(uri, null, null);
+    }
 
-        MoviesDbHelper moviesDBHelper = new MoviesDbHelper(context);
-        SQLiteDatabase db = moviesDBHelper.getWritableDatabase();
+    public static void insert(ContentResolver contentResolver, Uri uri,
+                              ContentValues contentValues) {
 
-        db.delete(MoviesEntry.TABLE_NAME,
+        /* Insert ContentValues into database and get a row ID back */
+        Uri resultUri = contentResolver.insert(uri, contentValues);
+
+        String insertFailed = "Unable to insert into the database";
+        assertTrue(insertFailed, resultUri != null);
+
+        /* Query the recipes table */
+        Cursor cursor = contentResolver.query(
+                uri,
                 null,
-                null); */
+                null,
+                null,
+                null);
 
+        /* Validate the cursor with the contentValues we used to make the entry. */
+        TestUtilities.validateCursorWithContentValues(insertFailed, cursor, contentValues);
+
+        /* close the cursor. */
+        cursor.close();
+    }
+
+    public static void bulkInsert(ContentResolver contentResolver,
+                                  Uri uri,
+                                  ContentValues[] bulkInsertTestContentValues) {
+
+        /* bulkInsert will return the number of records that were inserted. */
+        int insertCount = contentResolver.bulkInsert(uri, bulkInsertTestContentValues);
+
+        /*
+         * Verify the value returned by the ContentProvider after bulk insert with the number of
+         * item in the bulkInsertTestContentValues. They should match! */
+        String expectedAndActualInsertedRecordCountDoNotMatch =
+                "Number of expected records inserted does not match actual inserted record count";
+        assertEquals(expectedAndActualInsertedRecordCountDoNotMatch,
+                insertCount,
+                bulkInsertTestContentValues.length);
+
+        /* Query the recipe table and verify if all the entries match with
+         * bulkInsertTestContentValues array */
+        Cursor cursor = contentResolver.query(
+                uri,
+                null,
+                null,
+                null,
+                null);
+
+        /* For sanity, we can verify the items in the cursor as well. */
+        assertEquals(cursor.getCount(), bulkInsertTestContentValues.length);
+
+        /*
+         * We now loop through and validate each record in the Cursor with the expected values from
+         * bulkInsertTestContentValues.
+         */
+        for (int i = 0; i < bulkInsertTestContentValues.length; i++, cursor.moveToNext()) {
+            TestUtilities.validateCursorWithContentValues(
+                    "testBulkInsert. Error validating RecipeEntry " + i,
+                    cursor,
+                    bulkInsertTestContentValues[i]);
+        }
+        cursor.close();
     }
 }
