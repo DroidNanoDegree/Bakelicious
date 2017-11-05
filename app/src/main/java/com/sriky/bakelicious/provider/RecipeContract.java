@@ -49,4 +49,7 @@ public interface RecipeContract {
 
     @DataType(TEXT)
     String COLUMN_RECIPE_IMAGE_URL = "recipe_image";
+
+    @DataType(INTEGER)
+    String COLUMN_RECIPE_FAVORITE = "recipe_favorite";
 }
