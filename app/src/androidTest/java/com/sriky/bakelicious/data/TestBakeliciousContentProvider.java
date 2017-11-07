@@ -37,7 +37,7 @@ import static junit.framework.Assert.assertNotNull;
  * <p>
  * 1). Insertion of single entries into recipe, ingredient & instruction tables.
  * 2). Bulk insertion into recipe, ingredient & instruction tables.
- * 3).
+ * 3). Delete all records from a table (implemented only for recipe table).
  * </p>
  */
 
@@ -46,9 +46,7 @@ public class TestBakeliciousContentProvider {
 
     @Before
     public void before() {
-        clearRecipesTable();
-        clearIngredientsTable();
-        clearInstructionsTable();
+        TestUtilities.clearAllTables(mContext);
     }
 
     /**
@@ -68,7 +66,7 @@ public class TestBakeliciousContentProvider {
     @Test
     public void testBulkInsert_IntoRecipeTable() {
 
-        clearRecipesTable();
+        TestUtilities.clearRecipesTable(mContext);
 
         TestUtilities.bulkInsert(mContext.getContentResolver(),
                 RecipeEntry.CONTENT_URI,
@@ -92,7 +90,7 @@ public class TestBakeliciousContentProvider {
     @Test
     public void testBulkInsert_IntoIngredientTable() {
 
-        clearIngredientsTable();
+        TestUtilities.clearIngredientsTable(mContext);
 
         TestUtilities.bulkInsert(mContext.getContentResolver(),
                 IngredientEntry.CONTENT_URI,
@@ -116,7 +114,7 @@ public class TestBakeliciousContentProvider {
     @Test
     public void testBulkInsert_IntoInstructionTable() {
 
-        clearInstructionsTable();
+        TestUtilities.clearInstructionsTable(mContext);
 
         TestUtilities.bulkInsert(mContext.getContentResolver(),
                 InstructionEntry.CONTENT_URI,
@@ -128,7 +126,7 @@ public class TestBakeliciousContentProvider {
      */
     @Test
     public void testDeleteAllRecordsFromProvider() {
-        clearRecipesTable();
+        TestUtilities.clearRecipesTable(mContext);
 
         /* Bulk insert into recipes table. */
         testBulkInsert_IntoRecipeTable();
@@ -163,29 +161,5 @@ public class TestBakeliciousContentProvider {
 
         /* Always close your cursor */
         shouldBeEmptyCursor.close();
-    }
-
-    /**
-     * delete all items from the recipes table
-     */
-    private void clearRecipesTable() {
-        TestUtilities.deleteAllEntries(mContext.getContentResolver(),
-                BakeliciousContentProvider.RecipeEntry.CONTENT_URI);
-    }
-
-    /**
-     * delete all items from the ingredients table
-     */
-    private void clearIngredientsTable() {
-        TestUtilities.deleteAllEntries(mContext.getContentResolver(),
-                BakeliciousContentProvider.IngredientEntry.CONTENT_URI);
-    }
-
-    /**
-     * delete all items from the instruction table
-     */
-    private void clearInstructionsTable() {
-        TestUtilities.deleteAllEntries(mContext.getContentResolver(),
-                BakeliciousContentProvider.InstructionEntry.CONTENT_URI);
     }
 }

@@ -17,9 +17,11 @@ package com.sriky.bakelicious.data;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.IngredientContract;
 import com.sriky.bakelicious.provider.InstructionContract;
 import com.sriky.bakelicious.provider.RecipeContract;
@@ -247,5 +249,41 @@ public class TestUtilities {
                     bulkInsertTestContentValues[i]);
         }
         cursor.close();
+    }
+
+
+    /**
+     * Clears all the tables used in Bakelicious
+     *
+     * @param context The context.
+     */
+    public static void clearAllTables(Context context) {
+        clearRecipesTable(context);
+        clearIngredientsTable(context);
+        clearInstructionsTable(context);
+    }
+
+    /**
+     * delete all items from the recipes table
+     */
+    public static void clearRecipesTable(Context context) {
+        TestUtilities.deleteAllEntries(context.getContentResolver(),
+                BakeliciousContentProvider.RecipeEntry.CONTENT_URI);
+    }
+
+    /**
+     * delete all items from the ingredients table
+     */
+    public static void clearIngredientsTable(Context context) {
+        TestUtilities.deleteAllEntries(context.getContentResolver(),
+                BakeliciousContentProvider.IngredientEntry.CONTENT_URI);
+    }
+
+    /**
+     * delete all items from the instruction table
+     */
+    public static void clearInstructionsTable(Context context) {
+        TestUtilities.deleteAllEntries(context.getContentResolver(),
+                BakeliciousContentProvider.InstructionEntry.CONTENT_URI);
     }
 }
