@@ -20,10 +20,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 
-import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.IngredientEntry;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.InstructionEntry;
+import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 
 import org.junit.Before;
 import org.junit.Test;

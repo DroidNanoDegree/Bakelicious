@@ -15,7 +15,6 @@
 
 package com.sriky.bakelicious.sync;
 
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -27,7 +26,7 @@ import com.facebook.stetho.Stetho;
 import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.data.TestUtilities;
 import com.sriky.bakelicious.model.Recipe;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider;
+import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.LoggerUtils;
 
@@ -37,8 +36,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
-
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 
 /**
  * Class to handle testing of data sync operations.
@@ -78,7 +75,7 @@ public final class TestBakeliciousSyncOperations {
         Uri uri = contentResolver.insert(RecipeEntry.CONTENT_URI, contentValues);
         Logger.d("uri:" + uri);
 
-        int recipeId = (int)contentValues.get(RecipeContract.COLUMN_RECIPE_ID);
+        int recipeId = (int) contentValues.get(RecipeContract.COLUMN_RECIPE_ID);
         Logger.d("recipeId:" + recipeId);
 
         /* get data from network and retain the favorited recipes */
@@ -88,9 +85,9 @@ public final class TestBakeliciousSyncOperations {
         Cursor cursor = contentResolver.query(RecipeEntry.CONTENT_URI,
                 null,
                 RecipeContract.COLUMN_RECIPE_ID + " =? ",
-                new String[]{ Integer.toString(recipeId) }, null);
+                new String[]{Integer.toString(recipeId)}, null);
 
-        Logger.d("cursor.size():"+cursor.getCount());
+        Logger.d("cursor.size():" + cursor.getCount());
         assertTrue("Unable to retrieve record for recipeId: " + recipeId,
                 cursor != null && cursor.getCount() > 0);
 
@@ -150,7 +147,7 @@ public final class TestBakeliciousSyncOperations {
 
         int favorite = cursor.getInt(0);
 
-        assertTrue("Favorite flag state not retained after data fetch for recipe id :"+ recipeId,
+        assertTrue("Favorite flag state not retained after data fetch for recipe id :" + recipeId,
                 favorite == 1);
 
         cursor.close();
