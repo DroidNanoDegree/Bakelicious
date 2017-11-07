@@ -64,10 +64,11 @@ public final class TestBakeliciousSyncOperations {
 
     /**
      * Test the {@link BakeliciousSyncTask#fetchRecipes(Context)} to ensure favorited recipes
-     * state is restored after a sync operation.
+     * state is restored after a sync operation for records that are not part of the first page
+     * from the API.
      */
     @Test
-    public void testFetchTask() {
+    public void testFetchTask_caseRecordsNotPartOfFirstPage() {
         /* make an entry into the db after setting the favorite flag to 1. */
         ContentValues contentValues = TestUtilities.createRecipeContentValues();
         contentValues.put(RecipeContract.COLUMN_RECIPE_FAVORITE, 1);
@@ -96,6 +97,61 @@ public final class TestBakeliciousSyncOperations {
         cursor.moveToNext();
         assertTrue("Boolean state not retained after a sync!",
                 cursor.getInt(cursor.getColumnIndex(RecipeContract.COLUMN_RECIPE_FAVORITE)) == 1);
+
+        cursor.close();
+    }
+
+    @Test
+    public void testFetchTask_caseRecordsPartOfFirstPage() {
+        /* clear recipes table */
+        TestUtilities.clearRecipesTable(mContext);
+
+        /* get data from network and update the favorite flag for a recipe. */
+        BakeliciousSyncTask.fetchRecipes(mContext);
+
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        Cursor cursor = contentResolver.query(RecipeEntry.CONTENT_URI,
+                new String[]{RecipeContract.COLUMN_RECIPE_ID},
+                null,
+                null,
+                null);
+
+        assertTrue("Unable to retrieve data!",
+                cursor != null && cursor.getCount() > 0);
+
+        cursor.moveToNext();
+        String recipeId = cursor.getString(0);
+        Logger.d("Favorited recipe Id: " + recipeId);
+        cursor.close();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RecipeContract.COLUMN_RECIPE_FAVORITE, 1);
+        int updateCount = contentResolver.update(RecipeEntry.CONTENT_URI,
+                contentValues,
+                RecipeContract.COLUMN_RECIPE_ID + " =? ",
+                new String[]{recipeId});
+
+        assertTrue("Unable to update data for recipe id : " + recipeId, updateCount > 0);
+
+        /* do another fetch from cloud */
+        BakeliciousSyncTask.fetchRecipes(mContext);
+
+        cursor = contentResolver.query(RecipeEntry.CONTENT_URI,
+                new String[]{RecipeContract.COLUMN_RECIPE_FAVORITE},
+                RecipeContract.COLUMN_RECIPE_ID + " =? ",
+                new String[]{recipeId},
+                null);
+
+        assertTrue("Unable to retrieve data second time around for recipe id : " + recipeId,
+                cursor != null && cursor.getCount() > 0);
+
+        cursor.moveToNext();
+
+        int favorite = cursor.getInt(0);
+
+        assertTrue("Favorite flag state not retained after data fetch for recipe id :"+ recipeId,
+                favorite == 1);
 
         cursor.close();
     }
