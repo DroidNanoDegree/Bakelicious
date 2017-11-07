@@ -11,18 +11,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Main/Launcher activity -->
         <activity android:name=".ui.BakeliciousActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- The ContentProvider -->
         <provider
             android:authorities="com.sriky.bakelicious"
             android:name=".provider.generated.BakeliciousContentProvider"
             android:exported="false"/>
+
+        <!-- Firebase JobService responsible for periodically syncing data in the background -->
+        <service
+            android:name=".sync.BakeliciousFirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <!-- IntentService responsible for fetching recipe data -->
+        <service
+            android:name=".service.BakeliciousIntentService"
+            android:exported="false" />
+
     </application>
 
 </manifest>
