@@ -1,4 +1,3 @@
-
 package com.sriky.bakelicious.model;
 
 import com.google.gson.annotations.Expose;

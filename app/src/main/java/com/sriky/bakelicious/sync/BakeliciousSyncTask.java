@@ -22,17 +22,15 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.orhanobut.logger.Logger;
-import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Ingredient;
+import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.IngredientEntry;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.InstructionEntry;
+import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +62,7 @@ public final class BakeliciousSyncTask {
             updatedFavoriteRecipesFlag(contentResolver);
 
             /* add the ingredients and steps */
-            for(Recipe recipe : recipes) {
+            for (Recipe recipe : recipes) {
                 /* add ingredients to ingredient table */
                 addEntries(contentResolver,
                         IngredientEntry.CONTENT_URI, recipe.getId(), recipe.getIngredients());
@@ -107,7 +105,7 @@ public final class BakeliciousSyncTask {
      * @param contentResolver The {@link BakeliciousContentProvider}
      */
     private static void updatedFavoriteRecipesFlag(ContentResolver contentResolver) {
-        for(int recipeId : sFavoriteRecipeIds) {
+        for (int recipeId : sFavoriteRecipeIds) {
             ContentValues cv = new ContentValues();
             cv.put(RecipeContract.COLUMN_RECIPE_FAVORITE, 1);
             int updateCount = contentResolver.update(RecipeEntry.CONTENT_URI,
@@ -115,7 +113,7 @@ public final class BakeliciousSyncTask {
                     RecipeContract.COLUMN_RECIPE_ID + " =? ",
                     new String[]{Integer.toString(recipeId)});
 
-            if(updateCount == -1) {
+            if (updateCount == -1) {
                 Logger.e("Error while update favorite flag for recipeId:" + recipeId);
             }
         }
@@ -136,7 +134,7 @@ public final class BakeliciousSyncTask {
         int insertedCount = contentResolver.bulkInsert(uri, contentValuesArry);
 
         /* sanity check if recipe entries were inserted correctly */
-        if(insertedCount != contentValuesArry.length) {
+        if (insertedCount != contentValuesArry.length) {
             Logger.e("Error inserting entries! RecipeId : " + recipeId);
         }
     }

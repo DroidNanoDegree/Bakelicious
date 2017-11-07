@@ -16,7 +16,6 @@
 package com.sriky.bakelicious.sync;
 
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 
 import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.model.Recipe;
@@ -51,7 +50,7 @@ public final class BakeliciousRetrofitClient {
     public static List<Recipe> getRecipes() {
         try {
             Response<List<Recipe>> response = getApiService().getJson().execute();
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 return response.body();
             } else {
                 Logger.e(response.errorBody().string());
@@ -66,8 +65,8 @@ public final class BakeliciousRetrofitClient {
      * Get Retrofit Instance
      */
     private static Retrofit getRetrofitInstance() {
-        if(sRetrofitInstance == null) {
-            sRetrofitInstance =  new Retrofit.Builder()
+        if (sRetrofitInstance == null) {
+            sRetrofitInstance = new Retrofit.Builder()
                     .baseUrl(URL_ROOT)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

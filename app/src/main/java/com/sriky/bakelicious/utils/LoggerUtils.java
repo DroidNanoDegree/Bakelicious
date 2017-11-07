@@ -19,8 +19,8 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-
 import com.sriky.bakelicious.BuildConfig;
+
 /**
  * Utility class to help initialization of Logger.
  */
@@ -29,6 +29,7 @@ public class LoggerUtils {
 
     /**
      * Initializes the Logger
+     *
      * @param tag The tag to be displayed in the log, i.e. could be used to filter logs.
      */
     public static void initLogger(String tag) {
@@ -41,7 +42,8 @@ public class LoggerUtils {
 
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             /* Overriding isLoggable to log only for debug builds */
-            @Override public boolean isLoggable(int priority, String tag) {
+            @Override
+            public boolean isLoggable(int priority, String tag) {
                 return BuildConfig.DEBUG;
             }
         });

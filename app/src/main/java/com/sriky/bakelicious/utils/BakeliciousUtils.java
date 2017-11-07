@@ -38,7 +38,7 @@ public final class BakeliciousUtils {
      *
      * @param c        Collection of either {@link Recipe}, {@link Ingredient} or {@link Step}
      * @param recipeId The recipeID.
-     * @return         {@link ContentValues} for either {@link Recipe}, {@link Ingredient} or {@link Step}
+     * @return {@link ContentValues} for either {@link Recipe}, {@link Ingredient} or {@link Step}
      */
     public static ContentValues[] getContentValues(Collection<?> c, int recipeId) {
         ContentValues[] retContentValuesArray = new ContentValues[c.size()];
