@@ -16,13 +16,11 @@
 package com.sriky.bakelicious.utils;
 
 import android.content.ContentValues;
+import android.support.annotation.Nullable;
 
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
-import com.sriky.bakelicious.provider.IngredientContract;
-import com.sriky.bakelicious.provider.InstructionContract;
-import com.sriky.bakelicious.provider.RecipeContract;
 
 import java.util.Collection;
 
@@ -40,34 +38,33 @@ public final class BakeliciousUtils {
      * @param recipeId The recipeID.
      * @return {@link ContentValues} for either {@link Recipe}, {@link Ingredient} or {@link Step}
      */
+    @Nullable
     public static ContentValues[] getContentValues(Collection<?> c, int recipeId) {
+        /* bail out early if the collection is null or empty */
+        if (c == null || c.size() == 0) return null;
+
         ContentValues[] retContentValuesArray = new ContentValues[c.size()];
         int idx = 0;
+
         for (Object o : c) {
-            ContentValues cv = new ContentValues();
             if (o instanceof Recipe) {
                 Recipe recipe = (Recipe) o;
-                cv.put(RecipeContract.COLUMN_RECIPE_ID, recipe.getId());
-                cv.put(RecipeContract.COLUMN_RECIPE_NAME, recipe.getName());
-                cv.put(RecipeContract.COLUMN_RECIPE_SERVES, recipe.getServings());
-                cv.put(RecipeContract.COLUMN_RECIPE_IMAGE_URL, recipe.getImage());
-                retContentValuesArray[idx++] = cv;
+                ContentValues cv = (recipe != null) ? recipe.getContentValues() : null;
+                if (cv != null) {
+                    retContentValuesArray[idx++] = cv;
+                }
             } else if (o instanceof Ingredient) {
                 Ingredient ingredient = (Ingredient) o;
-                cv.put(IngredientContract.COLUMN_RECIPE_ID, recipeId);
-                cv.put(IngredientContract.COLUMN_INGREDIENT_MEASURE, ingredient.getMeasure());
-                cv.put(IngredientContract.COLUMN_INGREDIENT_QUANTITY, ingredient.getQuantity());
-                cv.put(IngredientContract.COLUMN_INGREDIENT_NAME, ingredient.getIngredient());
-                retContentValuesArray[idx++] = cv;
+                ContentValues cv = (ingredient != null) ? ingredient.getContentValues(recipeId) : null;
+                if (cv != null) {
+                    retContentValuesArray[idx++] = cv;
+                }
             } else if (o instanceof Step) {
                 Step step = (Step) o;
-                cv.put(InstructionContract.COLUMN_RECIPE_ID, recipeId);
-                cv.put(InstructionContract.COLUMN_INSTRUCTION_NUMBER, step.getId());
-                cv.put(InstructionContract.COLUMN_INSTRUCTION_SHORT, step.getShortDescription());
-                cv.put(InstructionContract.COLUMN_INSTRUCTION_LONG, step.getDescription());
-                cv.put(InstructionContract.COLUMN_INSTRUCTION_IMAGE_URL, step.getThumbnailURL());
-                cv.put(InstructionContract.COLUMN_INSTRUCTION_VIDEO_URL, step.getVideoURL());
-                retContentValuesArray[idx++] = cv;
+                ContentValues cv = (step != null) ? step.getContentValues(recipeId) : null;
+                if (cv != null) {
+                    retContentValuesArray[idx++] = cv;
+                }
             } else {
                 throw new RuntimeException("UnSupported type:" + o.getClass());
             }
