@@ -38,7 +38,9 @@ import java.util.List;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Class to handle testing of data sync operations.
+ * Class to handle testing of data sync operations. Following are test covered:
+ * 1). Retrofit API client.
+ * 2). Updating local DB without altering the favorite recipe flag.
  */
 
 public final class TestBakeliciousSyncOperations {
@@ -51,6 +53,9 @@ public final class TestBakeliciousSyncOperations {
         Stetho.initializeWithDefaults(mContext);
     }
 
+    /**
+     * Test the {@link retrofit2.Retrofit} & {@link BakeliciousRetrofitClient} fetching data.
+     */
     @Test
     public void getRecipesJson() {
         List<Recipe> recipes = BakeliciousRetrofitClient.getRecipes();
@@ -62,7 +67,7 @@ public final class TestBakeliciousSyncOperations {
     /**
      * Test the {@link BakeliciousSyncTask#fetchRecipes(Context)} to ensure favorited recipes
      * state is restored after a sync operation for records that are not part of the first page
-     * from the API.
+     * from the API, i.e. records part page 2 etc.
      */
     @Test
     public void testFetchTask_caseRecordsNotPartOfFirstPage() {
@@ -98,6 +103,11 @@ public final class TestBakeliciousSyncOperations {
         cursor.close();
     }
 
+    /**
+     * Test the {@link BakeliciousSyncTask#fetchRecipes(Context)} to ensure favorited recipes
+     * state is restored after a sync operation for records that are part of the first page
+     * from the API.
+     */
     @Test
     public void testFetchTask_caseRecordsPartOfFirstPage() {
         /* clear recipes table */
