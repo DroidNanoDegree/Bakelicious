@@ -128,14 +128,15 @@ public final class BakeliciousSyncTask {
      * @param c               The List of {@link Recipe}, {@link Ingredient} or {@link Step}
      */
     private static void addEntries(ContentResolver contentResolver, Uri uri, int recipeId, Collection<?> c) {
-
         ContentValues[] contentValuesArry = BakeliciousUtils.getContentValues(c, recipeId);
 
-        int insertedCount = contentResolver.bulkInsert(uri, contentValuesArry);
+        if (contentValuesArry != null && contentValuesArry.length > 0) {
+            int insertedCount = contentResolver.bulkInsert(uri, contentValuesArry);
 
         /* sanity check if recipe entries were inserted correctly */
-        if (insertedCount != contentValuesArry.length) {
-            Logger.e("Error inserting entries! RecipeId : " + recipeId);
+            if (insertedCount != contentValuesArry.length) {
+                Logger.e("Error inserting entries! RecipeId : " + recipeId);
+            }
         }
     }
 }
