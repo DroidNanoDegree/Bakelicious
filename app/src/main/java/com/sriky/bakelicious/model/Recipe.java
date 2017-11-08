@@ -1,7 +1,12 @@
 package com.sriky.bakelicious.model;
 
+import android.content.ContentValues;
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.orhanobut.logger.Logger;
+import com.sriky.bakelicious.provider.RecipeContract;
 
 import java.util.List;
 
@@ -9,7 +14,7 @@ public class Recipe {
 
     @SerializedName("id")
     @Expose
-    private int id;
+    private int id = -1;
     @SerializedName("name")
     @Expose
     private String name;
@@ -74,4 +79,29 @@ public class Recipe {
         this.image = image;
     }
 
+    /**
+     * Validates fields and generates {@link ContentValues} for Recipe table.
+     *
+     * @return {@link ContentValues} for Recipe table.
+     */
+    public ContentValues getContentValues() {
+        if (id < 0 || id >= Integer.MAX_VALUE) {
+            Logger.e("Invalid RecipeId detected! "
+                    + Log.getStackTraceString(new Exception()));
+            return null;
+        }
+
+        if (name == null || name.isEmpty()) {
+            Logger.e("Invalid recipe name for RecipeId: " + id + " "
+                    + Log.getStackTraceString(new Exception()));
+            return null;
+        }
+
+        ContentValues cv = new ContentValues();
+        cv.put(RecipeContract.COLUMN_RECIPE_ID, id);
+        cv.put(RecipeContract.COLUMN_RECIPE_NAME, name);
+        cv.put(RecipeContract.COLUMN_RECIPE_SERVES, servings);
+        cv.put(RecipeContract.COLUMN_RECIPE_IMAGE_URL, image);
+        return cv;
+    }
 }
