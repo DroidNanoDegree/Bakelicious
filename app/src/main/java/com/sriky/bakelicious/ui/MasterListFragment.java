@@ -15,7 +15,6 @@
 
 package com.sriky.bakelicious.ui;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -30,12 +29,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.adaptor.RecipesAdaptor;
 import com.sriky.bakelicious.databinding.FragmentMasterListBinding;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-import com.sriky.bakelicious.utils.LoggerUtils;
+
+import timber.log.Timber;
 
 /**
  * Fragment class responsible for displaying the recipes.
@@ -51,7 +50,6 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private RecipesAdaptor mRecipesAdaptor;
     private FragmentMasterListBinding mMasterListBinding;
-    private RecipesAdaptor.OnRecipeItemClickedListener mOnRecipeItemClickedListener;
     /* RecyclerView position */
     private int mPosition = RecyclerView.NO_POSITION;
     /* CountDownTimer used to issue a timeout when data doesn't load within the specified time. */
@@ -59,7 +57,6 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
     /* mandatory empty constructor */
     public MasterListFragment() {
-        LoggerUtils.initLogger(MasterListFragment.class.getSimpleName());
     }
 
     @Nullable
@@ -72,7 +69,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
         showProgressBarAndHideErrorMessage();
 
         /* setup the recipes RecyclerView */
-        mRecipesAdaptor = new RecipesAdaptor(null, mOnRecipeItemClickedListener);
+        mRecipesAdaptor = new RecipesAdaptor(null);
         mMasterListBinding.rvRecipes.setAdapter(mRecipesAdaptor);
 
         mMasterListBinding.rvRecipes.setHasFixedSize(true);
@@ -87,21 +84,6 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
         return mMasterListBinding.getRoot();
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the host activity has implemented the mOnRecipeItemClickedListener
-        // If not, it throws an exception
-        try {
-            mOnRecipeItemClickedListener = (RecipesAdaptor.OnRecipeItemClickedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement mOnRecipeItemClickedListener!");
-        }
-    }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -132,7 +114,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Logger.d("onLoadFinished: data.length() = " + data.getCount());
+        Timber.d("onLoadFinished: data.length() = " + data.getCount());
 
         mRecipesAdaptor.swapCursor(data);
 
@@ -152,9 +134,8 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
             mDataFetchTimer = new CountDownTimer(DATA_LOAD_TIMEOUT_LIMIT, COUNT_DOWN_INTERVAL) {
 
                 public void onTick(long millisUntilFinished) {
-                    Logger.i("waiting on data "
-                            + millisUntilFinished / COUNT_DOWN_INTERVAL
-                            + "secs remaining for timeout:!");
+                    Timber.i("waiting on data %d secs remaining for timeout!",
+                            millisUntilFinished / COUNT_DOWN_INTERVAL);
                 }
 
                 public void onFinish() {
@@ -175,7 +156,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
      * display an error message to the user.
      */
     private void onDataLoadFailed() {
-        Logger.d("onDataLoadFailed()");
+        Timber.d("onDataLoadFailed()");
         hideProgressBarAndShowErrorMessage();
     }
 
@@ -199,7 +180,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
      * On successfully downloading data from the API
      */
     private void onDataLoadComplete() {
-        Logger.d("onDataLoadComplete()");
+        Timber.d("onDataLoadComplete()");
         /* hide the progress bar & the error msg view. */
         //mPopularMoviesBinding.pbPopularMovies.setVisibility(View.INVISIBLE);
         //mPopularMoviesBinding.tvErrorMsg.setVisibility(View.INVISIBLE);
@@ -212,7 +193,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
      */
     private void cancelDataFetchTimer() {
         if (mDataFetchTimer != null) {
-            Logger.d("cancelDataFetchTimer()");
+            Timber.d("cancelDataFetchTimer()");
             mDataFetchTimer.cancel();
             mDataFetchTimer = null;
         }

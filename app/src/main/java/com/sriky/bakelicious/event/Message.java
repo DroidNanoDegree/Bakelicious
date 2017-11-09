@@ -19,23 +19,34 @@ package com.sriky.bakelicious.event;
  * Events used by Bakelicious.
  */
 
-public final class MessageEvent {
-    public static class RecipeItemClicked {
+public final class Message {
+    /**
+     * Event Class for sending and receiving events when
+     * {@link com.sriky.bakelicious.adaptor.RecipesAdaptor.RecipesViewHolder} are clicked, which is
+     * used in the {@link com.sriky.bakelicious.ui.MasterListFragment} to display the list of Recipes.
+     */
+    public static class EventRecipeItemClicked {
         private int mRecipeId;
 
-        public RecipeItemClicked(int recipeId) {
+        public EventRecipeItemClicked(int recipeId) {
             mRecipeId = recipeId;
         }
 
-        public int getmRecipeId() {
+        public int getRecipeId() {
             return mRecipeId;
         }
     }
 
-    public static class RecipeDataLoaded {
+    /**
+     * Event Class for sending and receiving updates when recipes data is loaded successfully into
+     * the {@link com.sriky.bakelicious.ui.MasterListFragment}. This event is used required by
+     * {@link com.sriky.bakelicious.ui.BakeliciousActivity} to setup
+     * {@link com.sriky.bakelicious.ui.RecipeDetailFragment} during TwoPane mode(on tables).
+     */
+    public static class EventRecipeDataLoaded {
         private int mRecipeId;
 
-        public RecipeDataLoaded(int recipeId) {
+        public EventRecipeDataLoaded(int recipeId) {
             mRecipeId = recipeId;
         }
 

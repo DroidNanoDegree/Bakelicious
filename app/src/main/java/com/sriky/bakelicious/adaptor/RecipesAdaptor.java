@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sriky.bakelicious.R;
-import com.sriky.bakelicious.event.MessageEvent;
+import com.sriky.bakelicious.event.Message;
 import com.sriky.bakelicious.provider.RecipeContract;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,11 +36,9 @@ import org.greenrobot.eventbus.EventBus;
 public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesViewHolder> {
 
     private Cursor mRecipesCursor;
-    private OnRecipeItemClickedListener mRecipeItemClickedListener;
 
-    public RecipesAdaptor(Cursor cursor, OnRecipeItemClickedListener listener) {
+    public RecipesAdaptor(Cursor cursor) {
         mRecipesCursor = cursor;
-        mRecipeItemClickedListener = listener;
     }
 
     /**
@@ -73,7 +71,7 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
             int recipeId = mRecipesCursor.getInt(
                     mRecipesCursor.getColumnIndex(RecipeContract.COLUMN_RECIPE_ID));
             if (position == 0) {
-                EventBus.getDefault().post(new MessageEvent.RecipeDataLoaded(recipeId));
+                EventBus.getDefault().post(new Message.EventRecipeDataLoaded(recipeId));
             }
             holder.itemView.setTag(recipeId);
         }
@@ -83,11 +81,6 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
     public int getItemCount() {
         if (mRecipesCursor == null) return 0;
         return mRecipesCursor.getCount();
-    }
-
-    /* interface to handle the click events on the RecyclerView items */
-    public interface OnRecipeItemClickedListener {
-        void onRecipeItemClicked(int recipeId);
     }
 
     /**
@@ -107,7 +100,7 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
 
         @Override
         public void onClick(View view) {
-            mRecipeItemClickedListener.onRecipeItemClicked((int) view.getTag());
+            EventBus.getDefault().post(new Message.EventRecipeItemClicked((int) view.getTag()));
         }
     }
 }
