@@ -1,11 +1,30 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
+    </style>
+
+
+    <style name="Display1.Base.Style" parent="@style/TextAppearance.AppCompat.Display1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/display1_font_size_large</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Bakelicious.ProgressBar" parent="@style/Base.Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+    </style>
+
+    <style name="Bakelicious.ErrorTextView" parent="Display1.Base.Style">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@color/primary_light</item>
+        <item name="android:textSize">@dimen/display1_font_size_medium</item>
+        <item name="android:padding">@dimen/error_textview_padding</item>
+        <item name="android:layout_margin">@dimen/error_textview_layout_margin</item>
     </style>
 
 </resources>

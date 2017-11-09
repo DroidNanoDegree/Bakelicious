@@ -9,4 +9,7 @@
 
     <!-- Recipes recyclerview list item-->
     <string name="recipe_servers_label">serves</string>
+    <string name="data_download_error">Failed to get data! Please check the internet connection and try again.</string>
+
+    <string name="add_recipes_to_favorite">No recipes added to favorites yet!</string>
 </resources>

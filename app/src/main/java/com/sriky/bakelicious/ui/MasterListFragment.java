@@ -31,8 +31,12 @@ import android.view.ViewGroup;
 
 import com.sriky.bakelicious.adaptor.RecipesAdaptor;
 import com.sriky.bakelicious.databinding.FragmentMasterListBinding;
+import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
+import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
+
+import com.sriky.bakelicious.R;
 
 import timber.log.Timber;
 
@@ -54,6 +58,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
     private int mPosition = RecyclerView.NO_POSITION;
     /* CountDownTimer used to issue a timeout when data doesn't load within the specified time. */
     private CountDownTimer mDataFetchTimer;
+    private boolean mIsFavoritesFragment;
 
     /* mandatory empty constructor */
     public MasterListFragment() {
@@ -93,9 +98,10 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
                 String selection = null;
                 String[] selectionArgs = null;
                 if (args != null) {
-                    //TODO check for favorite and set the favorite fragment flag.
                     selection = args.getString(SELECTION_BUNDLE_KEY);
                     selectionArgs = args.getStringArray(SELECTION_ARGS_BUNDLE_KEY);
+                    mIsFavoritesFragment = (selection != null) &&
+                            selection.contains(RecipeContract.COLUMN_RECIPE_FAVORITE);
                 }
 
                 return new CursorLoader(getContext(),
@@ -124,7 +130,9 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
         if (data.getCount() > 0) {
             onDataLoadComplete();
-            //TODO else check if it is favorites and display no favorites yet msg!
+        } else if (mIsFavoritesFragment) {
+            mMasterListBinding.tvErrorMsg.setText(getString(R.string.add_recipes_to_favorite));
+            hideProgressBarAndShowErrorMessage();
         } else {
             /* if the timer was running then cancel it. */
             cancelDataFetchTimer();
@@ -164,16 +172,16 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
      * Displays the progress bar and hides the error message views.
      */
     private void showProgressBarAndHideErrorMessage() {
-        //mPopularMoviesBinding.pbPopularMovies.setVisibility(View.VISIBLE);
-        //mPopularMoviesBinding.tvErrorMsg.setVisibility(View.INVISIBLE);
+        mMasterListBinding.pbBakelicious.setVisibility(View.VISIBLE);
+        mMasterListBinding.tvErrorMsg.setVisibility(View.INVISIBLE);
     }
 
     /**
      * Hides the progress bar view and makes the the error message view VISIBLE.
      */
     private void hideProgressBarAndShowErrorMessage() {
-        //mPopularMoviesBinding.pbPopularMovies.setVisibility(View.INVISIBLE);
-        //mPopularMoviesBinding.tvErrorMsg.setVisibility(View.VISIBLE);
+        mMasterListBinding.pbBakelicious.setVisibility(View.INVISIBLE);
+        mMasterListBinding.tvErrorMsg.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -182,8 +190,8 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
     private void onDataLoadComplete() {
         Timber.d("onDataLoadComplete()");
         /* hide the progress bar & the error msg view. */
-        //mPopularMoviesBinding.pbPopularMovies.setVisibility(View.INVISIBLE);
-        //mPopularMoviesBinding.tvErrorMsg.setVisibility(View.INVISIBLE);
+        mMasterListBinding.pbBakelicious.setVisibility(View.INVISIBLE);
+        mMasterListBinding.tvErrorMsg.setVisibility(View.INVISIBLE);
         /* if the timer was running then cancel it. */
         cancelDataFetchTimer();
     }
