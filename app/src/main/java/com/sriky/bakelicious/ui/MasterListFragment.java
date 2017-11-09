@@ -29,14 +29,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.adaptor.RecipesAdaptor;
 import com.sriky.bakelicious.databinding.FragmentMasterListBinding;
-import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-
-import com.sriky.bakelicious.R;
 
 import timber.log.Timber;
 
