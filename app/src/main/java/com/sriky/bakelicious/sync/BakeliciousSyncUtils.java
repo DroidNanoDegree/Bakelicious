@@ -51,10 +51,11 @@ public final class BakeliciousSyncUtils {
     /**
      * Initialize the data sync operations, which schedules a {@link Job} and starts an
      * {@link android.app.IntentService} to perform data fetch if the local db is empty.
+     *
      * @param context
      */
     synchronized public static void initDataSync(final Context context) {
-        if(sInitialized) return;
+        if (sInitialized) return;
 
         sInitialized = true;
 
@@ -71,7 +72,7 @@ public final class BakeliciousSyncUtils {
                         null);
 
                 /* if there is no data in the local db then triggered a data fetch */
-                if(cursor == null || cursor.getCount() == 0) {
+                if (cursor == null || cursor.getCount() == 0) {
                     fetchRecipeDataImmediately(context);
                 }
                 cursor.close();
@@ -94,8 +95,8 @@ public final class BakeliciousSyncUtils {
     /**
      * Schedules a {@link Job} to query movies data.
      *
-     * @param context   Context that will be passed to other methods and used to access the
-     *                  ContentResolver.
+     * @param context Context that will be passed to other methods and used to access the
+     *                ContentResolver.
      */
     private static void scheduleFirebaseFetchJob(Context context) {
         Driver driver = new GooglePlayDriver(context);

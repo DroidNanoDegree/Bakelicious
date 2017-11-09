@@ -72,7 +72,7 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
             /* set the RecipeID as a tag so it can be passed to the onRecipeItemClicked Listener */
             int recipeId = mRecipesCursor.getInt(
                     mRecipesCursor.getColumnIndex(RecipeContract.COLUMN_RECIPE_ID));
-            if(position == 0){
+            if (position == 0) {
                 EventBus.getDefault().post(new MessageEvent.RecipeDataLoaded(recipeId));
             }
             holder.itemView.setTag(recipeId);

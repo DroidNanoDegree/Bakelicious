@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class to test {@link BakeliciousUtils} methods.
@@ -16,7 +16,8 @@ import static org.junit.Assert.*;
 public class BakeliciousUtilsTest {
 
     /* empty constructor required */
-    public BakeliciousUtilsTest() {}
+    public BakeliciousUtilsTest() {
+    }
 
     /**
      * Test {@link BakeliciousUtils#getContentValues(Collection, int)} when collection is empty.

@@ -34,9 +34,9 @@
 
         <!-- The ContentProvider -->
         <provider
-            android:authorities="com.sriky.bakelicious"
             android:name=".provider.generated.BakeliciousContentProvider"
-            android:exported="false"/>
+            android:authorities="com.sriky.bakelicious"
+            android:exported="false" />
 
         <!-- Firebase JobService responsible for periodically syncing data in the background -->
         <service

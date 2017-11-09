@@ -23,16 +23,24 @@ public final class MessageEvent {
     public static class RecipeItemClicked {
         private int mRecipeId;
 
-        public RecipeItemClicked(int recipeId){ mRecipeId = recipeId; }
+        public RecipeItemClicked(int recipeId) {
+            mRecipeId = recipeId;
+        }
 
-        public int getmRecipeId() { return mRecipeId; }
+        public int getmRecipeId() {
+            return mRecipeId;
+        }
     }
 
     public static class RecipeDataLoaded {
         private int mRecipeId;
 
-        public RecipeDataLoaded(int recipeId) { mRecipeId = recipeId; }
+        public RecipeDataLoaded(int recipeId) {
+            mRecipeId = recipeId;
+        }
 
-        public int getRecipeId() { return mRecipeId; }
+        public int getRecipeId() {
+            return mRecipeId;
+        }
     }
 }
