@@ -66,7 +66,7 @@ public class BakeliciousActivity extends AppCompatActivity
 
         mIsTwoPane = findViewById(R.id.ll_recipe_detail) != null;
 
-        if(mIsTwoPane) {
+        if (mIsTwoPane) {
             /* register to get events */
             EventBus.getDefault().register(this);
         }
@@ -83,7 +83,7 @@ public class BakeliciousActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-        if(mIsTwoPane) {
+        if (mIsTwoPane) {
             EventBus.getDefault().unregister(this);
         }
         super.onStop();
@@ -144,10 +144,17 @@ public class BakeliciousActivity extends AppCompatActivity
         return false;
     }
 
+    /**
+     * Event receiver to listen to event when data is loaded into MasterListFragment.
+     *
+     * @param event {@link MessageEvent.RecipeDataLoaded}
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent.RecipeDataLoaded event) {
-        //TODO add the detail fragment after implementing a listener callback!
         Logger.d("Received event recipeId: " + event.getRecipeId());
+        BakeliciousUtils.addRecipeDetailFragment(getSupportFragmentManager(),
+                event.getRecipeId(),
+                R.id.fl_recipe_detail);
     }
 
     private void addNavigationDrawer() {
