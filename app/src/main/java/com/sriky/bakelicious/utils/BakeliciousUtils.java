@@ -16,11 +16,15 @@
 package com.sriky.bakelicious.utils;
 
 import android.content.ContentValues;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 
+import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
+import com.sriky.bakelicious.ui.RecipeDetailFragment;
 
 import java.util.Collection;
 
@@ -29,6 +33,8 @@ import java.util.Collection;
  */
 
 public final class BakeliciousUtils {
+
+    public static final int MASTER_LIST_FRAGMENT_LOADER_ID = 1;
 
     /**
      * Generates content values from the list of objects. Supported list types are {@link Recipe},
@@ -70,5 +76,21 @@ public final class BakeliciousUtils {
             }
         }
         return retContentValuesArray;
+    }
+
+    public static void addRecipeDetailFragment(FragmentManager fragmentManager,
+                                               int recipeId, int resourceId) {
+        Logger.d("recipeId:" + recipeId);
+
+        /* set the recipeId to a bundle and set it to the RecipeDetailFragment */
+        Bundle bundle = new Bundle();
+        bundle.putInt(RecipeDetailFragment.RECIPE_ID_BUNDLE_KEY, recipeId);
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        recipeDetailFragment.setArguments(bundle);
+
+        /* add the RecipeDetailFragment */
+        fragmentManager.beginTransaction()
+                .add(resourceId, recipeDetailFragment)
+                .commit();
     }
 }
