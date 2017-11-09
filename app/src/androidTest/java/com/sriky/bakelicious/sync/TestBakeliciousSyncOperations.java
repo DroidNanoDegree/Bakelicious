@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 
 import com.facebook.stetho.Stetho;
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.data.TestUtilities;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
@@ -62,7 +61,7 @@ public final class TestBakeliciousSyncOperations {
         List<Recipe> recipes = BakeliciousRetrofitClient.getRecipes();
         String errorMsg = "Unable to get recipes!";
         assertTrue(errorMsg, recipes != null && recipes.size() > 0);
-        Logger.d(recipes.size() + " recipes found!");
+        Timber.d(recipes.size() + " recipes found!");
     }
 
     /**
@@ -79,10 +78,10 @@ public final class TestBakeliciousSyncOperations {
         ContentResolver contentResolver = mContext.getContentResolver();
 
         Uri uri = contentResolver.insert(RecipeEntry.CONTENT_URI, contentValues);
-        Logger.d("uri:" + uri);
+        Timber.d("uri: %s", uri.toString());
 
         int recipeId = (int) contentValues.get(RecipeContract.COLUMN_RECIPE_ID);
-        Logger.d("recipeId:" + recipeId);
+        Timber.d("recipeId: %d", recipeId);
 
         /* get data from network and retain the favorited recipes */
         BakeliciousSyncTask.fetchRecipes(mContext);
@@ -93,7 +92,7 @@ public final class TestBakeliciousSyncOperations {
                 RecipeContract.COLUMN_RECIPE_ID + " =? ",
                 new String[]{Integer.toString(recipeId)}, null);
 
-        Logger.d("cursor.size():" + cursor.getCount());
+        Timber.d("cursor.size(): %d", cursor.getCount());
         assertTrue("Unable to retrieve record for recipeId: " + recipeId,
                 cursor != null && cursor.getCount() > 0);
 
@@ -130,7 +129,7 @@ public final class TestBakeliciousSyncOperations {
 
         cursor.moveToNext();
         String recipeId = cursor.getString(0);
-        Logger.d("Favorited recipe Id: " + recipeId);
+        Timber.d("Favorited recipe Id: %d" + recipeId);
         cursor.close();
 
         ContentValues contentValues = new ContentValues();
