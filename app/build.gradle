@@ -26,8 +26,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    /* Logger dependencies used for logging */
-    implementation 'com.orhanobut:logger:2.1.1'
+    /* Timber dependencies used for logging */
+    implementation 'com.jakewharton.timber:timber:4.6.0'
 
     /* Schematic dependencies for ContentProvider */
     annotationProcessor 'net.simonvt.schematic:schematic-compiler:0.7.0'

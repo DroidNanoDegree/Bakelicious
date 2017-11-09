@@ -21,7 +21,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
@@ -35,6 +34,8 @@ import com.sriky.bakelicious.utils.BakeliciousUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Helper class containing methods to facilitate network sync tasks.
@@ -114,7 +115,7 @@ public final class BakeliciousSyncTask {
                     new String[]{Integer.toString(recipeId)});
 
             if (updateCount == -1) {
-                Logger.e("Error while update favorite flag for recipeId:" + recipeId);
+                Timber.e("Error while update favorite flag for recipeId: %d", recipeId);
             }
         }
     }
@@ -135,7 +136,7 @@ public final class BakeliciousSyncTask {
 
         /* sanity check if recipe entries were inserted correctly */
             if (insertedCount != contentValuesArry.length) {
-                Logger.e("Error inserting entries! RecipeId : " + recipeId);
+                Timber.e("Error inserting entries! RecipeId : %d", recipeId);
             }
         }
     }

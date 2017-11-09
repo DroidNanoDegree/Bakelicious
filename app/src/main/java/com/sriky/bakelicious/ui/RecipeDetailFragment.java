@@ -22,9 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.databinding.FragmentRecipeDetailBinding;
-import com.sriky.bakelicious.utils.LoggerUtils;
+
+import timber.log.Timber;
 
 
 /**
@@ -38,7 +38,7 @@ public class RecipeDetailFragment extends Fragment {
     private int mRecipeId;
 
     public RecipeDetailFragment() {
-        LoggerUtils.initLogger(RecipeDetailFragment.class.getSimpleName());
+        //Timber.plant(new Timber.DebugTree());
     }
 
     @Nullable
@@ -50,7 +50,7 @@ public class RecipeDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(RECIPE_ID_BUNDLE_KEY)) {
             mRecipeId = bundle.getInt(RECIPE_ID_BUNDLE_KEY);
-            Logger.d("RecipeId:" + mRecipeId);
+            Timber.d("RecipeId:" + mRecipeId);
         } else {
             throw new RuntimeException("RecipeId not set!");
         }

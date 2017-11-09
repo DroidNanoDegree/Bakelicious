@@ -28,12 +28,13 @@ import com.sriky.bakelicious.data.TestUtilities;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.RecipeContract;
-import com.sriky.bakelicious.utils.LoggerUtils;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -49,7 +50,7 @@ public final class TestBakeliciousSyncOperations {
     @Before
     public void before() {
         TestUtilities.clearAllTables(mContext);
-        LoggerUtils.initLogger(TestBakeliciousSyncOperations.class.getSimpleName());
+        Timber.plant(new Timber.DebugTree());
         Stetho.initializeWithDefaults(mContext);
     }
 

@@ -19,7 +19,8 @@ import android.os.AsyncTask;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
-import com.orhanobut.logger.Logger;
+
+import timber.log.Timber;
 
 
 /**
@@ -62,7 +63,7 @@ public class BakeliciousFirebaseJobService extends JobService {
 
         @Override
         protected JobParameters doInBackground(JobParameters... jobParameters) {
-            Logger.d("doInBackground()");
+            Timber.d("doInBackground()");
             BakeliciousSyncTask.fetchRecipes(getApplicationContext());
             return jobParameters[0];
         }

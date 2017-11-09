@@ -5,10 +5,11 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.provider.RecipeContract;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class Recipe {
 
@@ -86,14 +87,12 @@ public class Recipe {
      */
     public ContentValues getContentValues() {
         if (id < 0 || id >= Integer.MAX_VALUE) {
-            Logger.e("Invalid RecipeId detected! "
-                    + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid RecipeId detected! %s", Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (name == null || name.isEmpty()) {
-            Logger.e("Invalid recipe name for RecipeId: " + id + " "
-                    + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid recipe name for RecipeId: %d %s ", id, Log.getStackTraceString(new Exception()));
             return null;
         }
 

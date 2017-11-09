@@ -5,8 +5,9 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.provider.InstructionContract;
+
+import timber.log.Timber;
 
 public class Step {
 
@@ -74,26 +75,27 @@ public class Step {
      */
     public ContentValues getContentValues(int recipeId) {
         if (recipeId < 0 || recipeId >= Integer.MAX_VALUE) {
-            Logger.e("Invalid RecipeId detected! "
-                    + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid RecipeId detected! %s",
+                    Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (id < 0 || id >= Integer.MAX_VALUE) {
-            Logger.e("Invalid step number for instruction with RecipeId: " + recipeId + " "
-                    + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid step number for instruction with RecipeId: %d %s",
+                    recipeId,
+                    Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (shortDescription == null || shortDescription.isEmpty()) {
-            Logger.e("Invalid shortDescription for instruction with RecipeId: " + recipeId
-                    + " and step number: " + id + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid shortDescription for instruction with RecipeId: %d and step number: %d %s",
+                    recipeId, id, Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (description == null || description.isEmpty()) {
-            Logger.e("Invalid Description for instruction with RecipeId: " + recipeId
-                    + " and step number: " + id + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid Description for instruction with RecipeId: %d  and step number: %d %s",
+                    recipeId, id, Log.getStackTraceString(new Exception()));
             return null;
         }
 

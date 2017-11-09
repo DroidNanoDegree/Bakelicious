@@ -26,12 +26,13 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.service.BakeliciousIntentService;
 
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 /**
  * Utility class that provides functionality for the data sync operations.
@@ -87,7 +88,7 @@ public final class BakeliciousSyncUtils {
      * @param context The context.
      */
     public static void fetchRecipeDataImmediately(Context context) {
-        Logger.d("fetchRecipeDataImmediately()");
+        Timber.d("fetchRecipeDataImmediately()");
         Intent intent = new Intent(context, BakeliciousIntentService.class);
         context.startService(intent);
     }

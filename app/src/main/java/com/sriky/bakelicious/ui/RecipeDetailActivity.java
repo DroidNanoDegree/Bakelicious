@@ -25,7 +25,6 @@ import android.view.MenuItem;
 
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-import com.sriky.bakelicious.utils.LoggerUtils;
 
 /**
  * Recipe Detail Activity.
@@ -37,7 +36,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        LoggerUtils.initLogger(RecipeDetailActivity.class.getSimpleName());
+        //Timber.plant(new Timber.DebugTree());
 
         //TODO: If required, fix the actionbar so we can see the back button!
         ActionBar actionBar = getSupportActionBar();

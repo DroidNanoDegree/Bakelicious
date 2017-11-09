@@ -20,13 +20,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
 import com.sriky.bakelicious.ui.RecipeDetailFragment;
 
 import java.util.Collection;
+
+import timber.log.Timber;
 
 /**
  * Utility class to process and convert data to different types.
@@ -80,7 +81,7 @@ public final class BakeliciousUtils {
 
     public static void addRecipeDetailFragment(FragmentManager fragmentManager,
                                                int recipeId, int resourceId) {
-        Logger.d("recipeId:" + recipeId);
+        Timber.d("recipeId: %d", recipeId);
 
         /* set the recipeId to a bundle and set it to the RecipeDetailFragment */
         Bundle bundle = new Bundle();

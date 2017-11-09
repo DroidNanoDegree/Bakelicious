@@ -17,7 +17,6 @@ package com.sriky.bakelicious.sync;
 
 import android.support.annotation.Nullable;
 
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.model.Recipe;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import timber.log.Timber;
 
 /**
  * Class to handle API calls using Retrofit client.
@@ -53,7 +53,7 @@ public final class BakeliciousRetrofitClient {
             if (response.isSuccessful()) {
                 return response.body();
             } else {
-                Logger.e(response.errorBody().string());
+                Timber.e(response.errorBody().string());
             }
         } catch (IOException e) {
             e.printStackTrace();

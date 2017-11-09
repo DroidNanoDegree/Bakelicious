@@ -5,8 +5,9 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.orhanobut.logger.Logger;
 import com.sriky.bakelicious.provider.IngredientContract;
+
+import timber.log.Timber;
 
 public class Ingredient {
 
@@ -52,26 +53,25 @@ public class Ingredient {
      */
     public ContentValues getContentValues(int recipeId) {
         if (recipeId < 0 || recipeId >= Integer.MAX_VALUE) {
-            Logger.e("Invalid RecipeId detected! "
-                    + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid RecipeId detected! %s", Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (ingredient == null || ingredient.isEmpty()) {
-            Logger.e("Invalid ingredient name for ingredient with RecipeId: " + recipeId
-                    + " " + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid ingredient name for ingredient with RecipeId: %d %s",
+                    recipeId, Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (measure == null || measure.isEmpty()) {
-            Logger.e("Invalid measure attribute for ingredient with RecipeId: "
-                    + recipeId + " " + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid measure attribute for ingredient with RecipeId: %d %s",
+                    recipeId, Log.getStackTraceString(new Exception()));
             return null;
         }
 
         if (quantity < 0 || quantity >= Float.MAX_VALUE) {
-            Logger.e("Invalid units for ingredient with RecipeId: " + recipeId + " "
-                    + Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid units for ingredient with RecipeId: %d %s",
+                    recipeId, Log.getStackTraceString(new Exception()));
             return null;
         }
 
