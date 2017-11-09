@@ -33,6 +33,8 @@ public class LoggerUtils {
      * @param tag The tag to be displayed in the log, i.e. could be used to filter logs.
      */
     public static void initLogger(String tag) {
+        Logger.clearLogAdapters();
+
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(0)         // (Optional) How many method line to show. Default 2
