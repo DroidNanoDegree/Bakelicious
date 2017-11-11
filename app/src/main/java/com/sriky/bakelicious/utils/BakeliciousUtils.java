@@ -23,7 +23,8 @@ import android.support.v4.app.FragmentManager;
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
-import com.sriky.bakelicious.ui.RecipeDetailFragment;
+import com.sriky.bakelicious.provider.RecipeContract;
+import com.sriky.bakelicious.ui.RecipeInstructionFragment;
 
 import java.util.Collection;
 
@@ -35,7 +36,31 @@ import timber.log.Timber;
 
 public final class BakeliciousUtils {
 
+    /* loader ids */
     public static final int MASTER_LIST_FRAGMENT_LOADER_ID = 1;
+    public static final int RECIPE_INSTRUCTION_LOADER_ID = 2;
+
+    /* projection array and indexes to query RecipeID and RecipeName from the recipe table */
+    public static final String[] PROJECTION_MASTER_LIST_FRAGMENT = {
+            RecipeContract.COLUMN_RECIPE_ID,
+            RecipeContract.COLUMN_RECIPE_NAME,
+            RecipeContract.COLUMN_RECIPE_SERVES,
+    };
+    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_ID = 0;
+    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_NAME = 1;
+    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_SERVINGS = 2;
+
+    /* projection array and indexes to query recipe details */
+    public static final String[] PROJECTION_RECIPE_DETAILS = {
+            RecipeContract.COLUMN_RECIPE_INGREDIENTS,
+            RecipeContract.COLUMN_RECIPE_INSTRUCTIONS
+    };
+    public static final int INDEX_PROJECTION_RECIPE_DETAILS_RECIPE_INGREDIENTS = 0;
+    public static final int INDEX_PROJECTION_RECIPE_DETAILS_RECIPE_INSTRUCTION = 1;
+
+    /* bundle keys */
+    public static final String RECIPE_ID_BUNDLE_KEY = "recipe_id";
+    public static final String RECIPE_NAME_BUNDLE_KEY = "recipe_name";
 
     /**
      * Generates content values from the list of objects. Supported list types are {@link Recipe},
@@ -47,7 +72,7 @@ public final class BakeliciousUtils {
      */
     @Nullable
     public static ContentValues[] getContentValues(Collection<?> c, int recipeId) {
-        /* bail out early if the collection is null or empty */
+        // bail out early if the collection is null or empty.
         if (c == null || c.size() == 0) return null;
 
         ContentValues[] retContentValuesArray = new ContentValues[c.size()];
@@ -60,18 +85,6 @@ public final class BakeliciousUtils {
                 if (cv != null) {
                     retContentValuesArray[idx++] = cv;
                 }
-            } else if (o instanceof Ingredient) {
-                Ingredient ingredient = (Ingredient) o;
-                ContentValues cv = (ingredient != null) ? ingredient.getContentValues(recipeId) : null;
-                if (cv != null) {
-                    retContentValuesArray[idx++] = cv;
-                }
-            } else if (o instanceof Step) {
-                Step step = (Step) o;
-                ContentValues cv = (step != null) ? step.getContentValues(recipeId) : null;
-                if (cv != null) {
-                    retContentValuesArray[idx++] = cv;
-                }
             } else {
                 throw new RuntimeException("UnSupported type:" + o.getClass());
             }
@@ -79,19 +92,21 @@ public final class BakeliciousUtils {
         return retContentValuesArray;
     }
 
-    public static void addRecipeDetailFragment(FragmentManager fragmentManager,
-                                               int recipeId, int resourceId) {
+    /*
+    public static void addRecipeInstructionFragment(FragmentManager fragmentManager,
+                                                    int recipeId, int resourceId) {
         Timber.d("recipeId: %d", recipeId);
 
-        /* set the recipeId to a bundle and set it to the RecipeDetailFragment */
+        // set the recipeId to a bundle and set it to the RecipeDetailFragment
         Bundle bundle = new Bundle();
-        bundle.putInt(RecipeDetailFragment.RECIPE_ID_BUNDLE_KEY, recipeId);
-        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-        recipeDetailFragment.setArguments(bundle);
+        bundle.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, recipeId);
+        RecipeInstructionFragment recipeInstructionFragment = new RecipeInstructionFragment();
+        recipeInstructionFragment.setArguments(bundle);
 
-        /* add the RecipeDetailFragment */
+        // add the RecipeInstructionFragment
         fragmentManager.beginTransaction()
-                .add(resourceId, recipeDetailFragment)
+                .add(resourceId, recipeInstructionFragment)
                 .commit();
     }
+    */
 }

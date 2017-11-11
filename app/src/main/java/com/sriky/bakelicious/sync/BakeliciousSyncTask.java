@@ -25,8 +25,6 @@ import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.IngredientEntry;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.InstructionEntry;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
@@ -57,22 +55,10 @@ public final class BakeliciousSyncTask {
 
             cacheFavoriteRecipeIds(contentResolver);
 
-            /* add recipes to recipe table */
+            // add recipes to recipe table
             addEntries(contentResolver, RecipeEntry.CONTENT_URI, 0, recipes);
 
             updatedFavoriteRecipesFlag(contentResolver);
-
-            /* add the ingredients and steps */
-            for (Recipe recipe : recipes) {
-                /* add ingredients to ingredient table */
-                addEntries(contentResolver,
-                        IngredientEntry.CONTENT_URI, recipe.getId(), recipe.getIngredients());
-
-                /* add instructions to instruction table */
-                addEntries(contentResolver,
-                        InstructionEntry.CONTENT_URI, recipe.getId(), recipe.getSteps());
-
-            }
         }
     }
 
@@ -84,14 +70,14 @@ public final class BakeliciousSyncTask {
     private static void cacheFavoriteRecipeIds(ContentResolver contentResolver) {
         sFavoriteRecipeIds = new ArrayList<>();
 
-        /* query for the favorite recipe IDs */
+        // query for the favorite recipe IDs
         Cursor cursor = contentResolver.query(RecipeEntry.CONTENT_URI,
                 new String[]{RecipeContract.COLUMN_RECIPE_ID},
                 RecipeContract.COLUMN_RECIPE_FAVORITE + " =? ",
                 new String[]{"1"},
                 null);
 
-        /* generate the array of ids */
+        // generate the array of ids
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 sFavoriteRecipeIds.add(cursor.getInt(0));
@@ -134,7 +120,7 @@ public final class BakeliciousSyncTask {
         if (contentValuesArry != null && contentValuesArry.length > 0) {
             int insertedCount = contentResolver.bulkInsert(uri, contentValuesArry);
 
-        /* sanity check if recipe entries were inserted correctly */
+            // sanity check if recipe entries were inserted correctly
             if (insertedCount != contentValuesArry.length) {
                 Timber.e("Error inserting entries! RecipeId : %d", recipeId);
             }

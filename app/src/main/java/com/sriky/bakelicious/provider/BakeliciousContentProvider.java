@@ -36,12 +36,6 @@ public final class BakeliciousContentProvider {
     /* path for the recipes directory */
     public static final String PATH_RECIPES = "recipes";
 
-    /* path for the ingredients directory */
-    public static final String PATH_INGREDIENTS = "ingredients";
-
-    /* path for the instructions directory */
-    public static final String PATH_INSTRUCTIONS = "instructions";
-
     /* The base content URI = "content://" + <authority> */
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
@@ -58,35 +52,5 @@ public final class BakeliciousContentProvider {
                 defaultSort = RecipeContract._ID + " ASC")
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RECIPES).build();
-    }
-
-    /**
-     * Ingredient Entry specifics
-     */
-    @TableEndpoint(table = BakeliciousDatabase.Ingredients)
-    public static final class IngredientEntry {
-
-        /* The base CONTENT_URI used to query the Ingredient table */
-        @ContentUri(
-                path = PATH_INGREDIENTS,
-                type = "vnd.android.cursor.dir/" + PATH_INGREDIENTS,
-                defaultSort = IngredientContract._ID + " ASC")
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGREDIENTS).build();
-    }
-
-    /**
-     * Instruction Entry specifics
-     */
-    @TableEndpoint(table = BakeliciousDatabase.Instructions)
-    public static final class InstructionEntry {
-
-        /* The base CONTENT_URI used to query the Instruction table */
-        @ContentUri(
-                path = PATH_INSTRUCTIONS,
-                type = "vnd.android.cursor.dir/" + PATH_INSTRUCTIONS,
-                defaultSort = InstructionContract.COLUMN_INSTRUCTION_NUMBER + " ASC")
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INSTRUCTIONS).build();
     }
 }

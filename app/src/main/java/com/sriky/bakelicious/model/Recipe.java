@@ -3,6 +3,7 @@ package com.sriky.bakelicious.model;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.sriky.bakelicious.provider.RecipeContract;
@@ -92,15 +93,31 @@ public class Recipe {
         }
 
         if (name == null || name.isEmpty()) {
-            Timber.e("Invalid recipe name for RecipeId: %d %s ", id, Log.getStackTraceString(new Exception()));
+            Timber.e("Invalid recipe name for RecipeId: %d %s ",
+                    id, Log.getStackTraceString(new Exception()));
             return null;
         }
 
+        if (steps == null || steps.size() == 0) {
+            Timber.e("No instruction found for RecipeId: %d %s ",
+                    id, Log.getStackTraceString(new Exception()));
+            return null;
+        }
+
+        if (ingredients == null || ingredients.size() == 0) {
+            Timber.e("No ingredients found for RecipeId: %d %s ",
+                    id, Log.getStackTraceString(new Exception()));
+            return null;
+        }
+
+        Gson gson = new Gson();
         ContentValues cv = new ContentValues();
         cv.put(RecipeContract.COLUMN_RECIPE_ID, id);
         cv.put(RecipeContract.COLUMN_RECIPE_NAME, name);
         cv.put(RecipeContract.COLUMN_RECIPE_SERVES, servings);
         cv.put(RecipeContract.COLUMN_RECIPE_IMAGE_URL, image);
+        cv.put(RecipeContract.COLUMN_RECIPE_INSTRUCTIONS, gson.toJson(steps));
+        cv.put(RecipeContract.COLUMN_RECIPE_INGREDIENTS, gson.toJson(ingredients));
         return cv;
     }
 }

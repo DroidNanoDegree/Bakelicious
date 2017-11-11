@@ -30,8 +30,4 @@ public final class BakeliciousDatabase {
 
     @Table(RecipeContract.class)
     public static final String Recipes = "bakelicious_recipes";
-    @Table(IngredientContract.class)
-    public static final String Ingredients = "bakelicious_ingredients";
-    @Table(InstructionContract.class)
-    public static final String Instructions = "bakelicious_instructions";
 }

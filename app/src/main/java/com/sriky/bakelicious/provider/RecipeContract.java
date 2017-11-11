@@ -46,6 +46,14 @@ public interface RecipeContract {
     @NotNull
     String COLUMN_RECIPE_NAME = "recipe_name";
 
+    @DataType(TEXT)
+    @NotNull
+    String COLUMN_RECIPE_INSTRUCTIONS = "recipe_instructions";
+
+    @DataType(TEXT)
+    @NotNull
+    String COLUMN_RECIPE_INGREDIENTS = "recipe_ingredients";
+
     @DataType(INTEGER)
     String COLUMN_RECIPE_SERVES = "recipe_serves";
 
