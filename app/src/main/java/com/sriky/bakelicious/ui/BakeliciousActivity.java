@@ -53,7 +53,6 @@ public class BakeliciousActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bakelicious);
         Timber.plant(new Timber.DebugTree());
 
         /* initiate data fetch */
@@ -136,9 +135,10 @@ public class BakeliciousActivity extends AppCompatActivity
     public void onRecipeDataLoaded(Message.EventRecipeDataLoaded event) {
         Timber.d("onRecipeDataLoaded() recipeId: %d", event.getRecipeId());
         if (mIsTwoPane) {
-            BakeliciousUtils.addRecipeDetailFragment(getSupportFragmentManager(),
+            /* TODO: table mode impl.
+            BakeliciousUtils.addRecipeInstructionFragment(getSupportFragmentManager(),
                     event.getRecipeId(),
-                    R.id.fl_recipe_detail);
+                    R.id.fl_recipe_detail); */
         }
     }
 
@@ -149,15 +149,15 @@ public class BakeliciousActivity extends AppCompatActivity
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRecipeItemClicked(Message.EventRecipeItemClicked event) {
-        int recipeId = event.getRecipeId();
-        Timber.d("onRecipeItemClicked() recipeId: %d", recipeId);
+        Bundle bundle = event.getBundle();
+        Timber.d("onRecipeItemClicked() recipeId: %d", bundle.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY));
         if (mIsTwoPane) {
-            BakeliciousUtils.addRecipeDetailFragment(getSupportFragmentManager(),
-                    recipeId, R.id.fl_recipe_detail);
+            /* TODO: table mode impl.
+            BakeliciousUtils.addRecipeInstructionFragment(getSupportFragmentManager(),
+                    recipeId, R.id.fl_recipe_detail); */
         } else {
-            Intent intent = new Intent(BakeliciousActivity.this,
-                    RecipeDetailActivity.class);
-            intent.putExtra(RecipeDetailFragment.RECIPE_ID_BUNDLE_KEY, recipeId);
+            Intent intent = new Intent(BakeliciousActivity.this, RecipeDetailActivity.class);
+            intent.putExtra(RecipeDetailActivity.RECIPE_INFO_BUNDLE_KEY, bundle);
             startActivity(intent);
         }
     }

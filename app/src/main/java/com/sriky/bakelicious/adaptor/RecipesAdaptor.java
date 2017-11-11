@@ -16,6 +16,7 @@
 package com.sriky.bakelicious.adaptor;
 
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ import android.widget.TextView;
 
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.event.Message;
-import com.sriky.bakelicious.provider.RecipeContract;
+import com.sriky.bakelicious.utils.BakeliciousUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -61,19 +62,31 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
     @Override
     public void onBindViewHolder(RecipesViewHolder holder, int position) {
         if (mRecipesCursor != null && mRecipesCursor.moveToPosition(position)) {
-            holder.recipeName.setText(mRecipesCursor.getString(
-                    mRecipesCursor.getColumnIndex(RecipeContract.COLUMN_RECIPE_NAME)));
+            /* set the recipe name */
+            String recipeName = mRecipesCursor.getString(
+                    BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_NAME);
+            holder.recipeName.setText(recipeName);
 
+            /* set the recipe servings number */
             holder.serves.setText(mRecipesCursor.getString(
-                    mRecipesCursor.getColumnIndex(RecipeContract.COLUMN_RECIPE_SERVES)));
+                    BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_SERVINGS));
 
             /* set the RecipeID as a tag so it can be passed to the onRecipeItemClicked Listener */
             int recipeId = mRecipesCursor.getInt(
-                    mRecipesCursor.getColumnIndex(RecipeContract.COLUMN_RECIPE_ID));
+                    BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_ID);
+
+            /* set the bundle with recipeId */
+            Bundle bundle = new Bundle();
+            bundle.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, recipeId);
+            bundle.putString(BakeliciousUtils.RECIPE_NAME_BUNDLE_KEY, recipeName);
+            holder.itemView.setTag(bundle);
+
+            /* trigger an event to pass the recipeId of the first item in the list,
+             * which is used in the TwoPane mode for tablets.
+             */
             if (position == 0) {
                 EventBus.getDefault().post(new Message.EventRecipeDataLoaded(recipeId));
             }
-            holder.itemView.setTag(recipeId);
         }
     }
 
@@ -81,6 +94,12 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
     public int getItemCount() {
         if (mRecipesCursor == null) return 0;
         return mRecipesCursor.getCount();
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        mRecipesCursor.close();
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 
     /**
@@ -100,7 +119,7 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
 
         @Override
         public void onClick(View view) {
-            EventBus.getDefault().post(new Message.EventRecipeItemClicked((int) view.getTag()));
+            EventBus.getDefault().post(new Message.EventRecipeItemClicked((Bundle) view.getTag()));
         }
     }
 }
