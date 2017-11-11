@@ -23,23 +23,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sriky.bakelicious.databinding.FragmentRecipeDetailBinding;
+import com.sriky.bakelicious.utils.BakeliciousUtils;
 
 import timber.log.Timber;
 
 
 /**
- * Recipe Detail Fragment.
+ * Recipe Instruction Fragment.
  */
 
-public class RecipeDetailFragment extends Fragment {
-    public static final String RECIPE_ID_BUNDLE_KEY = "recipe_id";
+public class RecipeInstructionFragment extends Fragment {
+
+    public static final String INSTRUCTION_SHORT_DESCRIPTION_BUNDLE_KEY = "instruction_short_desc";
+    public static final String INSTRUCTION_DESCRIPTION_BUNDLE_KEY = "instruction_desc";
+    public static final String INSTRUCTION_VIDEO_URL_BUNDLE_KEY = "instruction_video_url";
+    public static final String INSTRUCTION_THUMBNAIL_URL_BUNDLE_KEY = "instruction_thumbnail_url";
 
     private FragmentRecipeDetailBinding mFragmentRecipeDetailBinding;
     private int mRecipeId;
 
-    public RecipeDetailFragment() {
-        //Timber.plant(new Timber.DebugTree());
-    }
+    public RecipeInstructionFragment() {}
 
     @Nullable
     @Override
@@ -48,12 +51,18 @@ public class RecipeDetailFragment extends Fragment {
                 container, false);
 
         Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(RECIPE_ID_BUNDLE_KEY)) {
-            mRecipeId = bundle.getInt(RECIPE_ID_BUNDLE_KEY);
-            Timber.d("RecipeId:" + mRecipeId);
-        } else {
-            throw new RuntimeException("RecipeId not set!");
-        }
+        if(bundle == null)  throw new RuntimeException("Bundle is empty!");
+
+        String shortDesc = bundle.getString(INSTRUCTION_SHORT_DESCRIPTION_BUNDLE_KEY);
+        String desc = bundle.getString(INSTRUCTION_DESCRIPTION_BUNDLE_KEY);
+        String videoUrl = bundle.getString(INSTRUCTION_VIDEO_URL_BUNDLE_KEY);
+        String thumbUrl = bundle.getString(INSTRUCTION_THUMBNAIL_URL_BUNDLE_KEY);
+
+        if(shortDesc == null || shortDesc.isEmpty()) throw new RuntimeException("ShortDesc not set to bundle!");
+        if(desc == null || desc.isEmpty()) throw new RuntimeException("Recipe description not set to bundle!");
+
+        Timber.d("shortDesc: %s", shortDesc);
+
         return mFragmentRecipeDetailBinding.getRoot();
     }
 }
