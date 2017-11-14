@@ -68,6 +68,8 @@ public class RecipeInstructionPagerAdaptor extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        if(mInstructions == null) return null;
+
         return String.format(Locale.getDefault(),
                 "%d: %s", mInstructions.get(position).getId() + 1,
                 mInstructions.get(position).getShortDescription()).toUpperCase();
