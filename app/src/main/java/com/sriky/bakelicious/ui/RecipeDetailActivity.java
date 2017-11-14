@@ -29,6 +29,7 @@ import android.view.MenuItem;
 
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.adaptor.RecipeInstructionPagerAdaptor;
+import com.sriky.bakelicious.controller.RecipeDetailViewPagerController;
 import com.sriky.bakelicious.databinding.ActivityRecipeDetailBinding;
 import com.sriky.bakelicious.loader.RecipeDetailsCursorLoader;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
@@ -39,8 +40,7 @@ import timber.log.Timber;
  * Recipe Detail Activity.
  */
 
-public class RecipeDetailActivity extends AppCompatActivity
-        implements ViewPager.OnPageChangeListener {
+public class RecipeDetailActivity extends AppCompatActivity {
 
     public static final String RECIPE_INFO_BUNDLE_KEY = "recipe_info";
 
@@ -48,6 +48,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     private int mRecipeId;
     private RecipeInstructionPagerAdaptor mRecipeInstructionPagerAdaptor;
     private RecipeDetailsCursorLoader mRecipeDetailsCursorLoader;
+    private RecipeDetailViewPagerController mRecipeDetailViewPagerController;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +79,11 @@ public class RecipeDetailActivity extends AppCompatActivity
         /* initialize and setup the RecipeInstructionPagerAdaptor and set it to the ViewPager */
         mRecipeInstructionPagerAdaptor = new RecipeInstructionPagerAdaptor(getSupportFragmentManager());
         mActivityRecipeDetailBinding.pagerRecipeInstructions.setAdapter(mRecipeInstructionPagerAdaptor);
-        mActivityRecipeDetailBinding.pagerRecipeInstructions.addOnPageChangeListener(this);
+
+        /* add the controller to handle page changes for the ViewPager */
+        mRecipeDetailViewPagerController =
+                new RecipeDetailViewPagerController(mActivityRecipeDetailBinding.pagerRecipeInstructions);
+        mActivityRecipeDetailBinding.pagerRecipeInstructions.addOnPageChangeListener(mRecipeDetailViewPagerController);
 
         /* init the cursor loader to query instruction data */
         mRecipeDetailsCursorLoader = new RecipeDetailsCursorLoader(RecipeDetailActivity.this,
@@ -86,7 +91,7 @@ public class RecipeDetailActivity extends AppCompatActivity
                 mRecipeId);
 
         /* init the loader */
-        getLoaderManager().initLoader(BakeliciousUtils.RECIPE_INSTRUCTION_LOADER_ID,
+        getSupportLoaderManager().initLoader(BakeliciousUtils.RECIPE_INSTRUCTION_LOADER_ID,
                 null,
                 mRecipeDetailsCursorLoader);
     }
@@ -103,18 +108,9 @@ public class RecipeDetailActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        Timber.d("onTabSelected: tab.position: % d", position);
-        mActivityRecipeDetailBinding.pagerRecipeInstructions.setCurrentItem(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
+    protected void onDestroy() {
+        mRecipeDetailViewPagerController = null;
+        mRecipeDetailsCursorLoader = null;
+        super.onDestroy();
     }
 }
