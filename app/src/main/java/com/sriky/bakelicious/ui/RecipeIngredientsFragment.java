@@ -27,18 +27,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sriky.bakelicious.adaptor.IngredientsAdaptor;
 import com.sriky.bakelicious.databinding.FragmentRecipeIngredientsBinding;
-import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -106,21 +99,7 @@ public class RecipeIngredientsFragment extends Fragment
 
         switch (loaderId) {
             case BakeliciousUtils.RECIPE_INGREDIENTS_FRAGMENT_LOADER_ID: {
-
-                if (!data.moveToFirst()) throw new RuntimeException("Invalid cursor returned!");
-
-                /* load ingredients */
-                Gson gson = new Gson();
-
-                String ingredients = data.getString(
-                        BakeliciousUtils.INDEX_PROJECTION_RECIPE_INGREDIENTS_FRAGMENT_INGREDIENTS);
-
-                Type listType = new TypeToken<ArrayList<Ingredient>>() {
-                }.getType();
-                List<Ingredient> ingredientList = gson.fromJson(ingredients, listType);
-                Timber.d("%d ingredients loaded for recipeId: %d", ingredientList.size(), mRecipeId);
-
-                mIngredientsAdaptor.updateIngredients(ingredientList);
+                mIngredientsAdaptor.updateIngredients(data);
                 break;
             }
 

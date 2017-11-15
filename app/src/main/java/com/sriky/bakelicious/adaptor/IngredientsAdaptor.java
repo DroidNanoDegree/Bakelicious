@@ -15,15 +15,23 @@
 
 package com.sriky.bakelicious.adaptor;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sriky.bakelicious.databinding.IngredientListItemBinding;
 import com.sriky.bakelicious.model.Ingredient;
+import com.sriky.bakelicious.utils.BakeliciousUtils;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * The Adaptor for the {@link com.sriky.bakelicious.ui.RecipeIngredientsFragment}'s
@@ -32,6 +40,7 @@ import java.util.List;
 
 public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.IngredientsViewHolder> {
 
+    private Cursor mCursor;
     private List<Ingredient> mIngredients;
     private IngredientListItemBinding mIngredientListItemBinding;
 
@@ -39,8 +48,23 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
         mIngredients = ingredients;
     }
 
-    public void updateIngredients(List<Ingredient> ingredients) {
-        mIngredients = ingredients;
+    public void updateIngredients(Cursor cursor) {
+        mCursor = cursor;
+
+        if (!mCursor.moveToFirst()) throw new RuntimeException("Invalid cursor returned!");
+
+        // load ingredients
+        Gson gson = new Gson();
+
+        String ingredients = mCursor.getString(
+                BakeliciousUtils.INDEX_PROJECTION_RECIPE_INGREDIENTS_FRAGMENT_INGREDIENTS);
+
+        Type listType = new TypeToken<ArrayList<Ingredient>>() {
+        }.getType();
+        List<Ingredient> ingredientList = gson.fromJson(ingredients, listType);
+        Timber.d("%d ingredients loaded!", ingredientList.size());
+        mIngredients = ingredientList;
+
         notifyDataSetChanged();
     }
 
@@ -70,6 +94,12 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
     @Override
     public int getItemCount() {
         return mIngredients == null ? 0 : mIngredients.size();
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        if (mCursor != null) mCursor.close();
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 
     public class IngredientsViewHolder extends RecyclerView.ViewHolder {
