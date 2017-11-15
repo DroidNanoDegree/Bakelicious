@@ -12,4 +12,6 @@
     <string name="data_download_error">Failed to get data! Please check the internet connection and try again.</string>
 
     <string name="add_recipes_to_favorite">No recipes added to favorites yet!</string>
+    <string name="tab_ingredients">Ingredients</string>
+    <string name="tab_instructions">Instructions</string>
 </resources>

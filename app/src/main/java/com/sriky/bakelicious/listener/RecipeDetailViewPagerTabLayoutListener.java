@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.sriky.bakelicious.controller;
+package com.sriky.bakelicious.listener;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+
+import com.sriky.bakelicious.custom.WrapContentViewPager;
 
 import timber.log.Timber;
 
@@ -23,11 +26,13 @@ import timber.log.Timber;
  * The controller class to handle {@link android.support.v4.view.ViewPager.OnPageChangeListener}
  */
 
-public class RecipeDetailViewPagerController implements ViewPager.OnPageChangeListener {
-    private ViewPager mViewPager;
+public class RecipeDetailViewPagerTabLayoutListener implements
+        ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
-    public RecipeDetailViewPagerController(ViewPager viewPager) {
-        mViewPager = viewPager;
+    private WrapContentViewPager mWrapContentViewPager;
+
+    public RecipeDetailViewPagerTabLayoutListener(WrapContentViewPager viewPager) {
+        mWrapContentViewPager = viewPager;
     }
 
     @Override
@@ -36,11 +41,28 @@ public class RecipeDetailViewPagerController implements ViewPager.OnPageChangeLi
 
     @Override
     public void onPageSelected(int position) {
-        Timber.d("onTabSelected: tab.position: % d", position);
-        mViewPager.setCurrentItem(position);
+        Timber.d("onPageSelected: position: % d", position);
+        mWrapContentViewPager.reMeasureCurrentPage(mWrapContentViewPager.getCurrentItem());
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        int position = tab.getPosition();
+        Timber.d("onTabSelected: tab.position: %d", position);
+        mWrapContentViewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }

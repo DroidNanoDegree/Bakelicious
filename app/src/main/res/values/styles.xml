@@ -27,4 +27,31 @@
         <item name="android:layout_margin">@dimen/error_textview_layout_margin</item>
     </style>
 
+    <style name="Bakelicious.TabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/activity_bakelicious_tablayout_margin_left
+        </item>
+        <item name="android:layout_marginRight">@dimen/activity_bakelicious_tablayout_margin_right
+        </item>
+        <item name="android:background">@color/primaryColor</item>
+        <item name="tabSelectedTextColor">@color/primaryTextColor</item>
+        <item name="tabTextColor">@color/primaryTextColor</item>
+        <item name="android:gravity">fill</item>
+    </style>
+
+    <style name="WrapContentViewPager">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">
+            @dimen/activity_bakelicious_wrap_content_view_pager_margin_left
+        </item>
+        <item name="android:layout_marginRight">
+            @dimen/activity_bakelicious_wrap_content_view_pager_margin_right
+        </item>
+        <item name="android:layout_marginBottom">
+            @dimen/activity_bakelicious_wrap_content_view_pager_margin_bottom
+        </item>
+    </style>
+
 </resources>

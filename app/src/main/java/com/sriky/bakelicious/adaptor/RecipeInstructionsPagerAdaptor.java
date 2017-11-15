@@ -30,10 +30,10 @@ import java.util.Locale;
  * The {@link android.support.v4.view.ViewPager} Adaptor for recipe instructions.
  */
 
-public class RecipeInstructionPagerAdaptor extends FragmentStatePagerAdapter {
+public class RecipeInstructionsPagerAdaptor extends FragmentStatePagerAdapter {
     private List<Step> mInstructions;
 
-    public RecipeInstructionPagerAdaptor(FragmentManager fm) {
+    public RecipeInstructionsPagerAdaptor(FragmentManager fm) {
         super(fm);
     }
 

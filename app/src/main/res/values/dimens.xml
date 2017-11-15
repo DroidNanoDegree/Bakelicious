@@ -28,4 +28,26 @@
     <dimen name="movie_overview_layout_items_margin">4dp</dimen>
     <dimen name="error_textview_padding">4dp</dimen>
     <dimen name="error_textview_layout_margin">8dp</dimen>
+
+    <dimen name="activity_bakelicious_tablayout_margin">2dp</dimen>
+    <dimen name="activity_bakelicious_tablayout_margin_top">
+        @dimen/activity_bakelicious_tablayout_margin
+    </dimen>
+    <dimen name="activity_bakelicious_tablayout_margin_left">
+        @dimen/activity_bakelicious_tablayout_margin
+    </dimen>
+    <dimen name="activity_bakelicious_tablayout_margin_right">
+        @dimen/activity_bakelicious_tablayout_margin
+    </dimen>
+
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin">2dp</dimen>
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin_bottom">
+        @dimen/activity_bakelicious_wrap_content_view_pager_margin
+    </dimen>
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin_left">
+        @dimen/activity_bakelicious_wrap_content_view_pager_margin
+    </dimen>
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin_right">
+        @dimen/activity_bakelicious_wrap_content_view_pager_margin
+    </dimen>
 </resources>
