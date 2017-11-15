@@ -17,6 +17,8 @@ package com.sriky.bakelicious.event;
 
 import android.os.Bundle;
 
+import com.sriky.bakelicious.ui.RecipeInstructionsFragment;
+
 /**
  * Events used by Bakelicious.
  */
@@ -44,7 +46,7 @@ public final class Message {
      * Event Class for sending and receiving updates when recipes data is loaded successfully into
      * the {@link com.sriky.bakelicious.ui.MasterListFragment}. This event is used required by
      * {@link com.sriky.bakelicious.ui.BakeliciousActivity} to setup
-     * {@link com.sriky.bakelicious.ui.RecipeInstructionFragment} during TwoPane mode(on tables).
+     * {@link RecipeInstructionsFragment} during TwoPane mode(on tables).
      */
     public static class EventRecipeDataLoaded {
         private int mRecipeId;

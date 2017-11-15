@@ -22,14 +22,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sriky.bakelicious.databinding.FragmentRecipeDetailBinding;
-import com.sriky.bakelicious.utils.BakeliciousUtils;
+import com.sriky.bakelicious.databinding.FragmentRecipeInstructionBinding;
 
 import timber.log.Timber;
 
-
 /**
- * Recipe Instruction Fragment.
+ * The fragment for an Recipe Instruction.
  */
 
 public class RecipeInstructionFragment extends Fragment {
@@ -39,16 +37,13 @@ public class RecipeInstructionFragment extends Fragment {
     public static final String INSTRUCTION_VIDEO_URL_BUNDLE_KEY = "instruction_video_url";
     public static final String INSTRUCTION_THUMBNAIL_URL_BUNDLE_KEY = "instruction_thumbnail_url";
 
-    private FragmentRecipeDetailBinding mFragmentRecipeDetailBinding;
-    private int mRecipeId;
-
+    private FragmentRecipeInstructionBinding mFragmentRecipeInstructionBinding;
     public RecipeInstructionFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mFragmentRecipeDetailBinding = FragmentRecipeDetailBinding.inflate(inflater,
-                container, false);
+        mFragmentRecipeInstructionBinding = FragmentRecipeInstructionBinding.inflate(inflater, container, false);
 
         Bundle bundle = getArguments();
         if(bundle == null)  throw new RuntimeException("Bundle is empty!");
@@ -63,6 +58,6 @@ public class RecipeInstructionFragment extends Fragment {
 
         Timber.d("shortDesc: %s", shortDesc);
 
-        return mFragmentRecipeDetailBinding.getRoot();
+        return mFragmentRecipeInstructionBinding.getRoot();
     }
 }

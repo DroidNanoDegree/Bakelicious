@@ -50,18 +50,11 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/darker_gray" />
 
-            <LinearLayout
-                android:id="@+id/ll_recipe_detail"
+            <FrameLayout
+                android:id="@+id/fl_recipe_details"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent"/>
 
-                <FrameLayout
-                    android:id="@+id/fl_recipe_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

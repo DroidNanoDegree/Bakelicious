@@ -45,38 +45,43 @@ import timber.log.Timber;
 public class BakeliciousActivity extends AppCompatActivity
         implements Drawer.OnDrawerItemClickListener {
 
+    private static final String SELECTED_TAB_INDEX_BUNDLE_KEY = "selected_tab";
     private Drawer mNavigationDrawer;
     private ActivityBakeliciousBinding mActivityBakeliciousBinding;
+    private RecipeDetailsFragment mRecipeDetailsFragment;
     private boolean mIsTwoPane;
-    private boolean mCanDetailFragment;
+    private boolean mCanReplaceDetailsFragement;
+    private int mSelectedRecipeId;
+    private int mPreviousSelectedRecipeId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Timber.plant(new Timber.DebugTree());
 
-        /* initiate data fetch */
+        // initiate data fetch
         BakeliciousSyncUtils.initDataSync(BakeliciousActivity.this);
 
         mActivityBakeliciousBinding = DataBindingUtil.setContentView(BakeliciousActivity.this,
                 R.layout.activity_bakelicious);
 
-        mIsTwoPane = findViewById(R.id.ll_recipe_detail) != null;
-
         if (savedInstanceState == null) {
-            /* add the MasterListFragment */
+            // add the MasterListFragment
             addMasterListFragment(null);
-            mCanDetailFragment = true;
+            Timber.plant(new Timber.DebugTree());
+            mCanReplaceDetailsFragement = true;
         }
 
-        /* add the navigation drawer */
+        mIsTwoPane = findViewById(R.id.fl_recipe_details) != null;
+
+        // add the navigation drawer
         addNavigationDrawer();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        /* register to get events */
+        // register to get events only when in TwoPane.
         EventBus.getDefault().register(this);
     }
 
@@ -92,7 +97,7 @@ public class BakeliciousActivity extends AppCompatActivity
             case R.id.action_discover: {
                 Timber.d("action_discover");
 
-                /* add the MasterFragment with all recipes */
+                // add the MasterFragment with all recipes
                 addMasterListFragment(null);
                 break;
             }
@@ -133,12 +138,11 @@ public class BakeliciousActivity extends AppCompatActivity
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRecipeDataLoaded(Message.EventRecipeDataLoaded event) {
-        Timber.d("onRecipeDataLoaded() recipeId: %d", event.getRecipeId());
-        if (mIsTwoPane) {
-            /* TODO: table mode impl.
-            BakeliciousUtils.addRecipeInstructionFragment(getSupportFragmentManager(),
-                    event.getRecipeId(),
-                    R.id.fl_recipe_detail); */
+        mSelectedRecipeId = event.getRecipeId();
+        Timber.d("onRecipeDataLoaded() recipeId: %d", mSelectedRecipeId);
+
+        if (mIsTwoPane && mCanReplaceDetailsFragement) {
+            updateRecipeDetailsFragment();
         }
     }
 
@@ -151,10 +155,10 @@ public class BakeliciousActivity extends AppCompatActivity
     public void onRecipeItemClicked(Message.EventRecipeItemClicked event) {
         Bundle bundle = event.getBundle();
         Timber.d("onRecipeItemClicked() recipeId: %d", bundle.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY));
+
         if (mIsTwoPane) {
-            /* TODO: table mode impl.
-            BakeliciousUtils.addRecipeInstructionFragment(getSupportFragmentManager(),
-                    recipeId, R.id.fl_recipe_detail); */
+            mSelectedRecipeId = bundle.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, 0);
+            updateRecipeDetailsFragment();
         } else {
             Intent intent = new Intent(BakeliciousActivity.this, RecipeDetailActivity.class);
             intent.putExtra(RecipeDetailActivity.RECIPE_INFO_BUNDLE_KEY, bundle);
@@ -163,7 +167,7 @@ public class BakeliciousActivity extends AppCompatActivity
     }
 
     private void addNavigationDrawer() {
-        /* add toolbar */
+        // add toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.drawer_item_menu_drawer);
@@ -174,7 +178,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 .withHeaderBackground(R.drawable.ic_launcher_background)
                 .build();
 
-        /* Create the drawer */
+        // Create the drawer
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -182,17 +186,36 @@ public class BakeliciousActivity extends AppCompatActivity
                 .inflateMenu(R.menu.navigation_drawer_menu)
                 .withOnDrawerItemClickListener(BakeliciousActivity.this)
                 .build();
-
     }
 
     private void addMasterListFragment(Bundle args) {
         MasterListFragment masterListFragment = new MasterListFragment();
-        /* set the arguments for the MasterListFragment */
+        // set the arguments for the MasterListFragment
         masterListFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fl_master_list, masterListFragment)
                 .commit();
+    }
+
+    private void updateRecipeDetailsFragment() {
+        Timber.d("updateRecipeDetailsFragment(), mSelectedRecipeId: %d", mSelectedRecipeId);
+
+        if(mSelectedRecipeId != mPreviousSelectedRecipeId) {
+
+            mPreviousSelectedRecipeId = mSelectedRecipeId;
+
+            //add the new fragment.
+            Bundle bundle = new Bundle();
+            bundle.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, mSelectedRecipeId);
+
+            mRecipeDetailsFragment = new RecipeDetailsFragment();
+            mRecipeDetailsFragment.setArguments(bundle);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fl_recipe_details, mRecipeDetailsFragment)
+                    .commit();
+        }
     }
 }
