@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sriky.bakelicious.adaptor.IngredientsAdpator;
+import com.sriky.bakelicious.adaptor.IngredientsAdaptor;
 import com.sriky.bakelicious.databinding.FragmentRecipeIngredientsBinding;
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
@@ -50,7 +50,7 @@ public class RecipeIngredientsFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private FragmentRecipeIngredientsBinding mFragmentRecipeIngredientsBinding;
-    private IngredientsAdpator mIngredientsAdpator;
+    private IngredientsAdaptor mIngredientsAdaptor;
     private int mRecipeId;
 
     public RecipeIngredientsFragment() {
@@ -65,8 +65,8 @@ public class RecipeIngredientsFragment extends Fragment
         mRecipeId = BakeliciousUtils.validateBundleAndGetRecipeId(getArguments(),
                 RecipeIngredientsFragment.class.getSimpleName());
 
-        mIngredientsAdpator = new IngredientsAdpator(null);
-        mFragmentRecipeIngredientsBinding.rvIngredients.setAdapter(mIngredientsAdpator);
+        mIngredientsAdaptor = new IngredientsAdaptor(null);
+        mFragmentRecipeIngredientsBinding.rvIngredients.setAdapter(mIngredientsAdaptor);
 
         mFragmentRecipeIngredientsBinding.rvIngredients.setHasFixedSize(true);
 
@@ -120,7 +120,7 @@ public class RecipeIngredientsFragment extends Fragment
                 List<Ingredient> ingredientList = gson.fromJson(ingredients, listType);
                 Timber.d("%d ingredients loaded for recipeId: %d", ingredientList.size(), mRecipeId);
 
-                mIngredientsAdpator.updateIngredients(ingredientList);
+                mIngredientsAdaptor.updateIngredients(ingredientList);
                 break;
             }
 
