@@ -50,7 +50,7 @@ public class BakeliciousActivity extends AppCompatActivity
     private ActivityBakeliciousBinding mActivityBakeliciousBinding;
     private RecipeDetailsFragment mRecipeDetailsFragment;
     private boolean mIsTwoPane;
-    private boolean mCanReplaceDetailsFragement;
+    private boolean mCanReplaceDetailsFragment;
     private int mSelectedRecipeId;
     private int mPreviousSelectedRecipeId;
 
@@ -69,7 +69,7 @@ public class BakeliciousActivity extends AppCompatActivity
             // add the MasterListFragment
             addMasterListFragment(null);
             Timber.plant(new Timber.DebugTree());
-            mCanReplaceDetailsFragement = true;
+            mCanReplaceDetailsFragment = true;
         }
 
         mIsTwoPane = findViewById(R.id.fl_recipe_details) != null;
@@ -141,7 +141,7 @@ public class BakeliciousActivity extends AppCompatActivity
         mSelectedRecipeId = event.getRecipeId();
         Timber.d("onRecipeDataLoaded() recipeId: %d", mSelectedRecipeId);
 
-        if (mIsTwoPane && mCanReplaceDetailsFragement) {
+        if (mIsTwoPane && mCanReplaceDetailsFragment) {
             updateRecipeDetailsFragment();
         }
     }
@@ -202,7 +202,7 @@ public class BakeliciousActivity extends AppCompatActivity
     private void updateRecipeDetailsFragment() {
         Timber.d("updateRecipeDetailsFragment(), mSelectedRecipeId: %d", mSelectedRecipeId);
 
-        if(mSelectedRecipeId != mPreviousSelectedRecipeId) {
+        if (mSelectedRecipeId != mPreviousSelectedRecipeId) {
 
             mPreviousSelectedRecipeId = mSelectedRecipeId;
 

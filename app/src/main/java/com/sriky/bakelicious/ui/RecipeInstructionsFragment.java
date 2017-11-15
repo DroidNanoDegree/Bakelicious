@@ -75,7 +75,7 @@ public class RecipeInstructionsFragment extends Fragment
 
         mFragmentRecipeInstructionsBinding.pagerRecipeInstructions.addOnPageChangeListener(this);
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_PAGE_NUMBER_BUNDLE_KEY)){
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_PAGE_NUMBER_BUNDLE_KEY)) {
             mSelectedPageNumber = savedInstanceState.getInt(SELECTED_PAGE_NUMBER_BUNDLE_KEY);
             Timber.d("onCreateView() mSelectedPageNumber: %d", mSelectedPageNumber);
         }
@@ -151,7 +151,7 @@ public class RecipeInstructionsFragment extends Fragment
 
                 mRecipeInstructionsPagerAdaptor.updateInstructions(instructionList);
 
-                if(mSelectedPageNumber != -1) {
+                if (mSelectedPageNumber != -1) {
                     mFragmentRecipeInstructionsBinding.pagerRecipeInstructions.setCurrentItem(
                             mSelectedPageNumber, true);
                 }

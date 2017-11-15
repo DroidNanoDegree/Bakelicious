@@ -29,10 +29,10 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <FrameLayout
-                android:id="@+id/fl_recipe_details"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <FrameLayout
+            android:id="@+id/fl_recipe_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </layout>

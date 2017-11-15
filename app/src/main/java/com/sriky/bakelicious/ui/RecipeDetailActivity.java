@@ -51,9 +51,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        if(intent == null) throw new RuntimeException("Intent empty!");
+        if (intent == null) throw new RuntimeException("Intent empty!");
 
-        if(!intent.hasExtra(RECIPE_INFO_BUNDLE_KEY)) {
+        if (!intent.hasExtra(RECIPE_INFO_BUNDLE_KEY)) {
             throw new RuntimeException("RecipeInfo bundle not set to intent!");
         }
 
@@ -70,7 +70,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         // set the action bar title to the recipeName.
         actionBar.setTitle(recipeName);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
             recipeDetailsFragment.setArguments(bundle);
 
