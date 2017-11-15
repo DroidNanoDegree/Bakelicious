@@ -96,6 +96,13 @@ public final class BakeliciousUtils {
         return retContentValuesArray;
     }
 
+    /**
+     * Validates the bundle and returns the RecipeID.
+     *
+     * @param args      {@link Bundle} that was passed to the activity or fragment.
+     * @param className The class from where the method was called.
+     * @return RecipeID if the bundle is validate and contains the entry.
+     */
     public static int validateBundleAndGetRecipeId(Bundle args, String className) {
         if (args == null)
             throw new RuntimeException(String.format("No arguments bundle set for %s", className));
