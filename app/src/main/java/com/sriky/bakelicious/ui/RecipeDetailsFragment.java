@@ -21,9 +21,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.adaptor.RecipeDetailPagerAdaptor;
 import com.sriky.bakelicious.databinding.FragmentRecipeDetailsBinding;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
@@ -38,6 +42,9 @@ public class RecipeDetailsFragment extends Fragment
         implements ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
     private FragmentRecipeDetailsBinding mFragmentRecipeDetailsBinding;
+    private int mRecipeId;
+    private boolean mRecipeFavorite;
+    private String mRecipeName;
 
     public RecipeDetailsFragment() {
     }
@@ -53,15 +60,19 @@ public class RecipeDetailsFragment extends Fragment
         Bundle bundle = getArguments();
         if (bundle == null) throw new RuntimeException("RecipeInfo bundle is null!");
 
-        int recipeId = BakeliciousUtils.validateBundleAndGetRecipeId(getArguments(),
+        mRecipeId = BakeliciousUtils.validateBundleAndGetRecipeId(bundle,
                 RecipeDetailsFragment.class.getSimpleName());
 
-        Timber.d("onCreateView(), recipeId: %d", recipeId);
+        mRecipeName = bundle.getString(BakeliciousUtils.RECIPE_NAME_BUNDLE_KEY);
+        mRecipeFavorite = bundle.getInt(BakeliciousUtils.RECIPE_FAVORITE_BUNDLE_KEY) > 0;
+
+        Timber.d("onCreateView(), Recipe Id: %d, Name: %s, Favorite: %b",
+                mRecipeId, mRecipeName, mRecipeFavorite);
 
         // initialize and setup the RecipeDetails and set it to the ViewPager.
         RecipeDetailPagerAdaptor recipeDetailPagerAdaptor =
                 new RecipeDetailPagerAdaptor(getChildFragmentManager(),
-                        BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT, recipeId);
+                        BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT, mRecipeId);
 
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setAdapter(recipeDetailPagerAdaptor);
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setOffscreenPageLimit(BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT);
@@ -72,7 +83,54 @@ public class RecipeDetailsFragment extends Fragment
         mFragmentRecipeDetailsBinding.vpRecipeDetails.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mFragmentRecipeDetailsBinding.tlRecipeDetails));
 
+        setHasOptionsMenu(true);
+
         return mFragmentRecipeDetailsBinding.getRoot();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.recipe_detail_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+         /* set the icon to indicate whether the movie has been favorited by the user or not */
+        if (mRecipeFavorite) {
+            MenuItem favorite = menu.findItem(R.id.action_favorite);
+            if (favorite != null) {
+                favorite.setIcon(R.drawable.ic_favorite_black);
+            }
+        }
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.action_favorite: {
+                mRecipeFavorite = !mRecipeFavorite;
+                if (mRecipeFavorite) {
+                    item.setIcon(R.drawable.ic_favorite_black);
+                } else {
+                    item.setIcon(R.drawable.ic_favorite_border_black);
+                }
+
+                //update the record.
+                BakeliciousUtils.updateFavoriteRecipe(getContext(),
+                        mRecipeId, mRecipeName, mRecipeFavorite);
+                break;
+            }
+
+            default: {
+                Timber.e("Unsupported action detected: %s",
+                        new RuntimeException().getStackTrace().toString());
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

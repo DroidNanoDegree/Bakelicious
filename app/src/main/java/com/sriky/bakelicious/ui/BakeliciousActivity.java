@@ -52,6 +52,7 @@ public class BakeliciousActivity extends AppCompatActivity
     private boolean mIsTwoPane;
     private boolean mCanReplaceDetailsFragment;
     private int mSelectedRecipeId;
+    private Bundle mSelectedBundleArgs;
     private int mPreviousSelectedRecipeId;
 
 
@@ -97,6 +98,10 @@ public class BakeliciousActivity extends AppCompatActivity
             case R.id.action_discover: {
                 Timber.d("action_discover");
 
+                //remove the old details fragment.
+                if (mIsTwoPane) {
+                    removeRecipeDetailsFragment();
+                }
                 // add the MasterFragment with all recipes
                 addMasterListFragment(null);
                 break;
@@ -104,6 +109,12 @@ public class BakeliciousActivity extends AppCompatActivity
 
             case R.id.action_favorite: {
                 Timber.d("action_favorite");
+
+                //remove the old details fragment.
+                if (mIsTwoPane) {
+                    removeRecipeDetailsFragment();
+                }
+
                 Bundle bundle = new Bundle();
                 /* set the selection query */
                 bundle.putString(MasterListFragment.SELECTION_BUNDLE_KEY,
@@ -138,8 +149,11 @@ public class BakeliciousActivity extends AppCompatActivity
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRecipeDataLoaded(Message.EventRecipeDataLoaded event) {
-        mSelectedRecipeId = event.getRecipeId();
-        Timber.d("onRecipeDataLoaded() recipeId: %d", mSelectedRecipeId);
+        Bundle bundle = event.getBundle();
+        mSelectedRecipeId = bundle.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY);
+        mSelectedBundleArgs = bundle;
+
+        Timber.d("onRecipeDataLoaded() selected recipeid: %d", mSelectedRecipeId);
 
         if (mIsTwoPane && mCanReplaceDetailsFragment) {
             updateRecipeDetailsFragment();
@@ -158,6 +172,7 @@ public class BakeliciousActivity extends AppCompatActivity
 
         if (mIsTwoPane) {
             mSelectedRecipeId = bundle.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, 0);
+            mSelectedBundleArgs = bundle;
             updateRecipeDetailsFragment();
         } else {
             Intent intent = new Intent(BakeliciousActivity.this, RecipeDetailActivity.class);
@@ -207,15 +222,24 @@ public class BakeliciousActivity extends AppCompatActivity
             mPreviousSelectedRecipeId = mSelectedRecipeId;
 
             //add the new fragment.
-            Bundle bundle = new Bundle();
-            bundle.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, mSelectedRecipeId);
-
             mRecipeDetailsFragment = new RecipeDetailsFragment();
-            mRecipeDetailsFragment.setArguments(bundle);
+            mRecipeDetailsFragment.setArguments(mSelectedBundleArgs);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fl_recipe_details, mRecipeDetailsFragment)
                     .commit();
+        }
+    }
+
+    /**
+     * Removes the {@link RecipeDetailsFragment}
+     */
+    private void removeRecipeDetailsFragment() {
+        if (mRecipeDetailsFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(mRecipeDetailsFragment)
+                    .commit();
+            mPreviousSelectedRecipeId = -1;
         }
     }
 }

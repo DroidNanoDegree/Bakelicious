@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Bakelicious</string>
     <string name="drawer_item_home">Home</string>
     <string name="drawer_item_settings">Settings</string>
@@ -14,4 +14,11 @@
     <string name="add_recipes_to_favorite">No recipes added to favorites yet!</string>
     <string name="tab_ingredients">Ingredients</string>
     <string name="tab_instructions">Instructions</string>
+
+    <string name="recipe_added_to_favorites">
+        <xliff:g id="ratings">%s</xliff:g> added to favorites!
+    </string>
+    <string name="recipe_removed_from_favorites">
+        <xliff:g id="ratings">%s</xliff:g> removed from favorites!
+    </string>
 </resources>

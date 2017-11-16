@@ -49,14 +49,14 @@ public final class Message {
      * {@link RecipeInstructionsFragment} during TwoPane mode(on tables).
      */
     public static class EventRecipeDataLoaded {
-        private int mRecipeId;
+        private Bundle mBundle;
 
-        public EventRecipeDataLoaded(int recipeId) {
-            mRecipeId = recipeId;
+        public EventRecipeDataLoaded(Bundle bundle) {
+            mBundle = bundle;
         }
 
-        public int getRecipeId() {
-            return mRecipeId;
+        public Bundle getBundle() {
+            return mBundle;
         }
     }
 }

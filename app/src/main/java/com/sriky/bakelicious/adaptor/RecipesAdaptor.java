@@ -79,13 +79,16 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
             Bundle bundle = new Bundle();
             bundle.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, recipeId);
             bundle.putString(BakeliciousUtils.RECIPE_NAME_BUNDLE_KEY, recipeName);
+            bundle.putInt(BakeliciousUtils.RECIPE_FAVORITE_BUNDLE_KEY,
+                    mRecipesCursor.getInt(
+                            BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_FAVORITE));
             holder.itemView.setTag(bundle);
 
             /* trigger an event to pass the recipeId of the first item in the list,
              * which is used in the TwoPane mode for tablets.
              */
             if (position == 0) {
-                EventBus.getDefault().post(new Message.EventRecipeDataLoaded(recipeId));
+                EventBus.getDefault().post(new Message.EventRecipeDataLoaded(bundle));
             }
         }
     }

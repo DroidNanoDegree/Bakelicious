@@ -16,15 +16,22 @@
 package com.sriky.bakelicious.utils;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
+import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
+import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.RecipeContract;
 
 import java.util.Collection;
+
+import timber.log.Timber;
 
 /**
  * Utility class to process and convert data to different types.
@@ -43,16 +50,19 @@ public final class BakeliciousUtils {
     /* bundle keys */
     public static final String RECIPE_ID_BUNDLE_KEY = "recipe_id";
     public static final String RECIPE_NAME_BUNDLE_KEY = "recipe_name";
+    public static final String RECIPE_FAVORITE_BUNDLE_KEY = "recipe_favorite";
 
     /* projection array and indexes to query RecipeID and RecipeName from the recipe table */
     public static final String[] PROJECTION_MASTER_LIST_FRAGMENT = {
             RecipeContract.COLUMN_RECIPE_ID,
             RecipeContract.COLUMN_RECIPE_NAME,
             RecipeContract.COLUMN_RECIPE_SERVES,
+            RecipeContract.COLUMN_RECIPE_FAVORITE
     };
     public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_ID = 0;
     public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_NAME = 1;
     public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_SERVINGS = 2;
+    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_FAVORITE = 3;
 
     /* projection array and indexes to query RecipeID and RecipeName from the recipe table */
     public static final String[] PROJECTION_RECIPE_INGREDIENTS_FRAGMENT = {
@@ -112,5 +122,52 @@ public final class BakeliciousUtils {
         }
 
         return args.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY);
+    }
+
+    /**
+     * Updates the DB record for the specified recipeId and shows a Toast if the update was successful.
+     *
+     * @param context    The context.
+     * @param recipeId   The RecipeID for which the record needs to be updated.
+     * @param favorite   true/false.
+     * @param recipeName The name of the recipe for which the record is being updated.
+     */
+    public static void updateFavoriteRecipe(final Context context,
+                                            final int recipeId,
+                                            final String recipeName,
+                                            final boolean favorite) {
+
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(RecipeContract.COLUMN_RECIPE_FAVORITE, favorite ? 1 : 0);
+                return context.getContentResolver().update(
+                        BakeliciousContentProvider.RecipeEntry.CONTENT_URI,
+                        contentValues,
+                        RecipeContract.COLUMN_RECIPE_ID + " =? ",
+                        new String[]{Integer.toString(recipeId)});
+            }
+
+            @Override
+            protected void onPostExecute(Integer count) {
+                super.onPostExecute(count);
+
+                Timber.d("updateRecord() count = %d", count);
+                if (count <= 0) {
+                    throw new RuntimeException("Unable to update record with id: " + recipeId);
+                }
+
+                int formatId =
+                        (favorite) ? R.string.recipe_added_to_favorites
+                                : R.string.recipe_removed_from_favorites;
+
+                Toast.makeText(context,
+                        String.format(context.getString(formatId), recipeName),
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }.execute();
     }
 }
