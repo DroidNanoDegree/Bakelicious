@@ -110,7 +110,10 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
 
         //set the desc.
         String regexMatchingNonWordChars = "^\\d+\\W+";
-        mFragmentRecipeInstructionBinding.tvInstruction.setText(desc.replaceAll(regexMatchingNonWordChars, ""));
+        desc = desc.replaceAll(regexMatchingNonWordChars, "");
+        mFragmentRecipeInstructionBinding.tvInstruction.setText(desc);
+        //a11y support
+        mFragmentRecipeInstructionBinding.playerView.setContentDescription(desc);
 
         return mFragmentRecipeInstructionBinding.getRoot();
     }
