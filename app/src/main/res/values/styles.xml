@@ -1,8 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar"></style>
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/secondaryLightColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
 
+    <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@color/secondaryLightColor</item>
+    </style>
 
     <style name="Display1.Base.Style" parent="@style/TextAppearance.AppCompat.Display1">
         <item name="android:layout_width">wrap_content</item>
@@ -20,7 +29,7 @@
 
     <style name="Bakelicious.ErrorTextView" parent="Display1.Base.Style">
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">@color/primary_light</item>
+        <item name="android:background">@color/primaryLight</item>
         <item name="android:textSize">@dimen/display1_font_size_medium</item>
         <item name="android:padding">@dimen/error_textview_padding</item>
         <item name="android:layout_margin">@dimen/error_textview_layout_margin</item>
@@ -33,7 +42,7 @@
         </item>
         <item name="android:layout_marginRight">@dimen/activity_bakelicious_tablayout_margin_right
         </item>
-        <item name="android:background">@color/primaryColor</item>
+        <item name="android:background">@color/primary</item>
         <item name="tabSelectedTextColor">@color/primaryTextColor</item>
         <item name="tabTextColor">@color/primaryTextColor</item>
         <item name="android:gravity">fill</item>

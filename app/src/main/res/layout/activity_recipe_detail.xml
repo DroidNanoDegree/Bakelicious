@@ -26,8 +26,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            style="@style/Material.DrawerArrowStyle"
+            app:titleTextColor="@color/primaryTextColor" />
 
         <FrameLayout
             android:id="@+id/fl_recipe_details"
