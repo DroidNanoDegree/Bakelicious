@@ -30,7 +30,10 @@ import android.view.ViewGroup;
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.adaptor.RecipeDetailPagerAdaptor;
 import com.sriky.bakelicious.databinding.FragmentRecipeDetailsBinding;
+import com.sriky.bakelicious.event.Message;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import timber.log.Timber;
 
@@ -140,7 +143,7 @@ public class RecipeDetailsFragment extends Fragment
 
     @Override
     public void onPageSelected(int position) {
-        Timber.d("onPageSelected: position: % d", position);
+        //Timber.d("onPageSelected: position: % d", position);
         mFragmentRecipeDetailsBinding.vpRecipeDetails.reMeasureCurrentPage(
                 mFragmentRecipeDetailsBinding.vpRecipeDetails.getCurrentItem());
     }
@@ -152,7 +155,10 @@ public class RecipeDetailsFragment extends Fragment
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int position = tab.getPosition();
-        Timber.d("onTabSelected: tab.position: %d", position);
+        //Timber.d("onTabSelected: tab.position: %d", position);
+        
+        //broadcast an event.
+        EventBus.getDefault().post(new Message.EventRecipeDetailsTabChanged());
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setCurrentItem(position);
     }
 

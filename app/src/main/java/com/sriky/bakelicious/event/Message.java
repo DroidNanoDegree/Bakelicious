@@ -69,4 +69,13 @@ public final class Message {
         public EventRecipesAdaptorEmpty() {
         }
     }
+
+    /**
+     * Event Class used for sending events when user toggles between the instruction and ingredients
+     * tabs. This event is required to pause videos that would continue to play in the background.
+     */
+    public static class EventRecipeDetailsTabChanged {
+        public EventRecipeDetailsTabChanged() {
+        }
+    }
 }

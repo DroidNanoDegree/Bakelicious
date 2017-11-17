@@ -42,6 +42,11 @@ import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.databinding.FragmentRecipeInstructionBinding;
+import com.sriky.bakelicious.event.Message;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import timber.log.Timber;
 
@@ -115,27 +120,54 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
         //a11y support
         mFragmentRecipeInstructionBinding.playerView.setContentDescription(desc);
 
+        EventBus.getDefault().register(RecipeInstructionFragment.this);
+
         return mFragmentRecipeInstructionBinding.getRoot();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        //Timber.d("setUserVisibleHint() %s", mShortDesc);
         if (mIsPlayerSetup) {
             if (isVisibleToUser) {
-                Timber.d("Playing video playback %s", mShortDesc);
+                //Timber.d("Playing video playback %s", mShortDesc);
                 mExoPlayer.setPlayWhenReady(true);
             } else {
-                Timber.d("Stopping video playback %s", mShortDesc);
+                //Timber.d("Stopping video playback %s", mShortDesc);
                 mExoPlayer.setPlayWhenReady(false);
             }
         }
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mIsPlayerSetup) {
+            //Timber.d("onPause() - Stopping video playback %s", mShortDesc);
+            mExoPlayer.setPlayWhenReady(false);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         releasePlayer();
+        EventBus.getDefault().unregister(RecipeInstructionFragment.this);
         super.onDestroy();
+    }
+
+    /**
+     * Event receiver to process recipes removed from the favorites.
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTabChanged(Message.EventRecipeDetailsTabChanged event) {
+        //Timber.d("onTabChanged()");
+        if (mIsPlayerSetup) {
+            //Timber.d("onTabChanged() - Stopping video playback %s", mShortDesc);
+            mExoPlayer.setPlayWhenReady(false);
+        }
     }
 
     /**
