@@ -15,30 +15,17 @@
 
 package com.sriky.bakelicious.ui;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sriky.bakelicious.adaptor.RecipeInstructionsPagerAdaptor;
 import com.sriky.bakelicious.databinding.FragmentRecipeInstructionsBinding;
-import com.sriky.bakelicious.model.Step;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider;
-import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -49,14 +36,12 @@ import timber.log.Timber;
  */
 
 public class RecipeInstructionsFragment extends Fragment
-        implements ViewPager.OnPageChangeListener, LoaderManager.LoaderCallbacks<Cursor> {
+        implements ViewPager.OnPageChangeListener {
 
     private static final String SELECTED_PAGE_NUMBER_BUNDLE_KEY = "selected_tab";
 
     private FragmentRecipeInstructionsBinding mFragmentRecipeInstructionsBinding;
     private RecipeInstructionsPagerAdaptor mRecipeInstructionsPagerAdaptor;
-    private int mRecipeId;
-    private int mSelectedPageNumber = -1;
 
     public RecipeInstructionsFragment() {
     }
@@ -67,21 +52,26 @@ public class RecipeInstructionsFragment extends Fragment
         mFragmentRecipeInstructionsBinding = FragmentRecipeInstructionsBinding.inflate(inflater,
                 container, false);
 
-        mRecipeId = BakeliciousUtils.validateBundleAndGetRecipeId(getArguments(),
+        Bundle args = getArguments();
+        int recipeId = BakeliciousUtils.validateBundleAndGetRecipeId(args,
                 RecipeInstructionsFragment.class.getSimpleName());
 
-        mRecipeInstructionsPagerAdaptor = new RecipeInstructionsPagerAdaptor(getChildFragmentManager());
+        mRecipeInstructionsPagerAdaptor =
+                new RecipeInstructionsPagerAdaptor(getChildFragmentManager(),
+                        args.getString(BakeliciousUtils.RECIPE_INSTRUCTIONS_BUNDLE_KEY));
         mFragmentRecipeInstructionsBinding.pagerRecipeInstructions.setAdapter(mRecipeInstructionsPagerAdaptor);
 
         mFragmentRecipeInstructionsBinding.pagerRecipeInstructions.addOnPageChangeListener(this);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_PAGE_NUMBER_BUNDLE_KEY)) {
-            mSelectedPageNumber = savedInstanceState.getInt(SELECTED_PAGE_NUMBER_BUNDLE_KEY);
-            Timber.d("onCreateView() mSelectedPageNumber: %d", mSelectedPageNumber);
-        }
+        // restore the selected page upon a configuration change.
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(SELECTED_PAGE_NUMBER_BUNDLE_KEY)) {
+            int selectedPageNumber = savedInstanceState.getInt(SELECTED_PAGE_NUMBER_BUNDLE_KEY);
+            Timber.d("onCreateView() selectedPageNumber: %d", selectedPageNumber);
 
-        getLoaderManager().initLoader(BakeliciousUtils.RECIPE_INSTRUCTIONS_FRAGMENT_LOADER_ID,
-                null, RecipeInstructionsFragment.this);
+            mFragmentRecipeInstructionsBinding.pagerRecipeInstructions.setCurrentItem(
+                    selectedPageNumber, true);
+        }
 
         return mFragmentRecipeInstructionsBinding.getRoot();
     }
@@ -106,66 +96,6 @@ public class RecipeInstructionsFragment extends Fragment
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        switch (id) {
-            case BakeliciousUtils.RECIPE_INSTRUCTIONS_FRAGMENT_LOADER_ID: {
-                return new CursorLoader(getContext(),
-                        BakeliciousContentProvider.RecipeEntry.CONTENT_URI,
-                        BakeliciousUtils.PROJECTION_RECIPE_INSTRUCTIONS_FRAGMENT,
-                        RecipeContract.COLUMN_RECIPE_ID + " =? ",
-                        new String[]{Integer.toString(mRecipeId)},
-                        null);
-            }
-
-            default: {
-                throw new RuntimeException("Unsupported loader id: " + id);
-            }
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        int id = loader.getId();
-        Timber.d("onLoadFinished() loaderid: %d, cursorSize: %d", id, data.getCount());
-
-        switch (id) {
-            case BakeliciousUtils.RECIPE_INSTRUCTIONS_FRAGMENT_LOADER_ID: {
-
-                if (!data.moveToFirst()) throw new RuntimeException("Invalid cursor returned!");
-
-                /* load instructions */
-                Gson gson = new Gson();
-
-                String instructions = data.getString(
-                        BakeliciousUtils.INDEX_PROJECTION_RECIPE_INSTRUCTIONS_FRAGMENT_INSTRUCTIONS);
-
-                Type listType = new TypeToken<ArrayList<Step>>() {
-                }.getType();
-                List<Step> instructionList = gson.fromJson(instructions, listType);
-                Timber.d("%d instructions loaded for recipeId: %d", instructionList.size(), mRecipeId);
-
-                mRecipeInstructionsPagerAdaptor.updateInstructions(instructionList);
-
-                if (mSelectedPageNumber != -1) {
-                    mFragmentRecipeInstructionsBinding.pagerRecipeInstructions.setCurrentItem(
-                            mSelectedPageNumber, true);
-                }
-                break;
-            }
-
-            default: {
-                throw new RuntimeException("Unsupported impl. for loader id: " + id);
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 }

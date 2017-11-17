@@ -59,4 +59,14 @@ public final class Message {
             return mBundle;
         }
     }
+
+    /**
+     * Event Class for sending updates when Recipes Adaptor's is empty. This event is
+     * required in the TwoPane mode to maintain sync between the master and detail fragments and
+     * managing the layouts.
+     */
+    public static class EventRecipesAdaptorEmpty {
+        public EventRecipesAdaptorEmpty() {
+        }
+    }
 }

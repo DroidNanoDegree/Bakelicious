@@ -15,13 +15,9 @@
 
 package com.sriky.bakelicious.ui;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,18 +25,13 @@ import android.view.ViewGroup;
 
 import com.sriky.bakelicious.adaptor.IngredientsAdaptor;
 import com.sriky.bakelicious.databinding.FragmentRecipeIngredientsBinding;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider;
-import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
-
-import timber.log.Timber;
 
 /**
  * Recipe Ingredient fragment.
  */
 
-public class RecipeIngredientsFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RecipeIngredientsFragment extends Fragment {
 
     private FragmentRecipeIngredientsBinding mFragmentRecipeIngredientsBinding;
     private IngredientsAdaptor mIngredientsAdaptor;
@@ -55,10 +46,12 @@ public class RecipeIngredientsFragment extends Fragment
         mFragmentRecipeIngredientsBinding = FragmentRecipeIngredientsBinding.inflate(inflater,
                 container, false);
 
-        mRecipeId = BakeliciousUtils.validateBundleAndGetRecipeId(getArguments(),
+        Bundle args = getArguments();
+        mRecipeId = BakeliciousUtils.validateBundleAndGetRecipeId(args,
                 RecipeIngredientsFragment.class.getSimpleName());
 
-        mIngredientsAdaptor = new IngredientsAdaptor(null);
+        mIngredientsAdaptor =
+                new IngredientsAdaptor(args.getString(BakeliciousUtils.RECIPE_INGREDIENTS_BUNDLE_KEY));
         mFragmentRecipeIngredientsBinding.rvIngredients.setAdapter(mIngredientsAdaptor);
 
         mFragmentRecipeIngredientsBinding.rvIngredients.setHasFixedSize(true);
@@ -66,51 +59,6 @@ public class RecipeIngredientsFragment extends Fragment
         mFragmentRecipeIngredientsBinding.rvIngredients.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        getLoaderManager().initLoader(BakeliciousUtils.RECIPE_INGREDIENTS_FRAGMENT_LOADER_ID,
-                null, RecipeIngredientsFragment.this);
-
         return mFragmentRecipeIngredientsBinding.getRoot();
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        switch (id) {
-            case BakeliciousUtils.RECIPE_INGREDIENTS_FRAGMENT_LOADER_ID: {
-                return new CursorLoader(getContext(),
-                        BakeliciousContentProvider.RecipeEntry.CONTENT_URI,
-                        BakeliciousUtils.PROJECTION_RECIPE_INGREDIENTS_FRAGMENT,
-                        RecipeContract.COLUMN_RECIPE_ID + " =? ",
-                        new String[]{Integer.toString(mRecipeId)},
-                        null);
-
-            }
-
-            default: {
-                throw new RuntimeException(id + " loader not supported yet!");
-            }
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        int loaderId = loader.getId();
-        Timber.d("onLoadFinished() loaderid: %d, cursorSize: %d", loaderId, data.getCount());
-
-        switch (loaderId) {
-            case BakeliciousUtils.RECIPE_INGREDIENTS_FRAGMENT_LOADER_ID: {
-                mIngredientsAdaptor.updateIngredients(data);
-                break;
-            }
-
-            default: {
-                throw new RuntimeException(loaderId + " impl. not supported yet!");
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }

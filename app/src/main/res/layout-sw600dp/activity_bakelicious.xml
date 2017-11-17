@@ -46,6 +46,7 @@
 
             <!-- A small divider -->
             <View
+                android:id="@+id/divider"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/darker_gray" />

@@ -41,8 +41,6 @@ public final class BakeliciousUtils {
 
     /* loader ids */
     public static final int MASTER_LIST_FRAGMENT_LOADER_ID = 1;
-    public static final int RECIPE_INGREDIENTS_FRAGMENT_LOADER_ID = 2;
-    public static final int RECIPE_INSTRUCTIONS_FRAGMENT_LOADER_ID = 3;
 
     /* recipe details number of tabs, currently set to 2, #1 for ingredients & #2 for instructions */
     public static final int RECIPE_DETAILS_TAB_COUNT = 2;
@@ -51,30 +49,8 @@ public final class BakeliciousUtils {
     public static final String RECIPE_ID_BUNDLE_KEY = "recipe_id";
     public static final String RECIPE_NAME_BUNDLE_KEY = "recipe_name";
     public static final String RECIPE_FAVORITE_BUNDLE_KEY = "recipe_favorite";
-
-    /* projection array and indexes to query RecipeID and RecipeName from the recipe table */
-    public static final String[] PROJECTION_MASTER_LIST_FRAGMENT = {
-            RecipeContract.COLUMN_RECIPE_ID,
-            RecipeContract.COLUMN_RECIPE_NAME,
-            RecipeContract.COLUMN_RECIPE_SERVES,
-            RecipeContract.COLUMN_RECIPE_FAVORITE
-    };
-    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_ID = 0;
-    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_NAME = 1;
-    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_SERVINGS = 2;
-    public static final int INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_FAVORITE = 3;
-
-    /* projection array and indexes to query RecipeID and RecipeName from the recipe table */
-    public static final String[] PROJECTION_RECIPE_INGREDIENTS_FRAGMENT = {
-            RecipeContract.COLUMN_RECIPE_INGREDIENTS
-    };
-    public static final int INDEX_PROJECTION_RECIPE_INGREDIENTS_FRAGMENT_INGREDIENTS = 0;
-
-    /* projection array and indexes to query RecipeID and RecipeName from the recipe table */
-    public static final String[] PROJECTION_RECIPE_INSTRUCTIONS_FRAGMENT = {
-            RecipeContract.COLUMN_RECIPE_INSTRUCTIONS
-    };
-    public static final int INDEX_PROJECTION_RECIPE_INSTRUCTIONS_FRAGMENT_INSTRUCTIONS = 0;
+    public static final String RECIPE_INGREDIENTS_BUNDLE_KEY = "recipe_ingredients";
+    public static final String RECIPE_INSTRUCTIONS_BUNDLE_KEY = "recipe_instructions";
 
     /**
      * Generates content values from the list of objects. Supported list types are {@link Recipe},

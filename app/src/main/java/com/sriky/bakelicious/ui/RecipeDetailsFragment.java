@@ -72,7 +72,7 @@ public class RecipeDetailsFragment extends Fragment
         // initialize and setup the RecipeDetails and set it to the ViewPager.
         RecipeDetailPagerAdaptor recipeDetailPagerAdaptor =
                 new RecipeDetailPagerAdaptor(getChildFragmentManager(),
-                        BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT, mRecipeId);
+                        bundle, BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT);
 
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setAdapter(recipeDetailPagerAdaptor);
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setOffscreenPageLimit(BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT);

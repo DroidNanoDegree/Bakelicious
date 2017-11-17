@@ -20,11 +20,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sriky.bakelicious.model.Step;
 import com.sriky.bakelicious.ui.RecipeInstructionFragment;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 /**
  * The {@link android.support.v4.view.ViewPager} Adaptor for recipe instructions.
@@ -33,13 +39,22 @@ import java.util.Locale;
 public class RecipeInstructionsPagerAdaptor extends FragmentStatePagerAdapter {
     private List<Step> mInstructions;
 
-    public RecipeInstructionsPagerAdaptor(FragmentManager fm) {
+    public RecipeInstructionsPagerAdaptor(FragmentManager fm, String instructions) {
         super(fm);
-    }
+        if (instructions == null || instructions.isEmpty()) {
+            Timber.e("Instructions string is empty!!!");
+            return;
+        }
 
-    public void updateInstructions(List<Step> instructions) {
-        mInstructions = instructions;
-        notifyDataSetChanged();
+        /* load instructions */
+        Gson gson = new Gson();
+
+        Type listType = new TypeToken<ArrayList<Step>>() {
+        }.getType();
+        List<Step> instructionList = gson.fromJson(instructions, listType);
+
+        Timber.d("%d instructions loaded", instructionList.size());
+        mInstructions = instructionList;
     }
 
     @Override

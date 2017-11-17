@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.event.Message;
+import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,6 +38,8 @@ import org.greenrobot.eventbus.EventBus;
 public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesViewHolder> {
 
     private Cursor mRecipesCursor;
+    private boolean mEventAlreadySent;
+    private int mPreviousItemsCount;
 
     public RecipesAdaptor(Cursor cursor) {
         mRecipesCursor = cursor;
@@ -48,6 +51,12 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
      * @param cursor
      */
     public void swapCursor(Cursor cursor) {
+        //in an event of an item removed from the list (which can happen in TwoPane mode, when
+        // a recipe is removed from the favorite list), reset the selected item to the first item.
+        if (mRecipesCursor != null && cursor != null
+                && mRecipesCursor.getCount() != cursor.getCount()) {
+            mEventAlreadySent = false;
+        }
         mRecipesCursor = cursor;
         notifyDataSetChanged();
     }
@@ -63,32 +72,30 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
     public void onBindViewHolder(RecipesViewHolder holder, int position) {
         if (mRecipesCursor != null && mRecipesCursor.moveToPosition(position)) {
             /* set the recipe name */
-            String recipeName = mRecipesCursor.getString(
-                    BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_NAME);
+            String recipeName = getRecipeName();
             holder.recipeName.setText(recipeName);
 
             /* set the recipe servings number */
-            holder.serves.setText(mRecipesCursor.getString(
-                    BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_SERVINGS));
+            holder.serves.setText(Integer.toString(getServings()));
 
             /* set the RecipeID as a tag so it can be passed to the onRecipeItemClicked Listener */
-            int recipeId = mRecipesCursor.getInt(
-                    BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_ID);
+            int recipeId = getRecipeId();
 
             /* set the bundle with recipeId */
             Bundle bundle = new Bundle();
             bundle.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, recipeId);
+            bundle.putInt(BakeliciousUtils.RECIPE_FAVORITE_BUNDLE_KEY, getRecipeFavorite());
             bundle.putString(BakeliciousUtils.RECIPE_NAME_BUNDLE_KEY, recipeName);
-            bundle.putInt(BakeliciousUtils.RECIPE_FAVORITE_BUNDLE_KEY,
-                    mRecipesCursor.getInt(
-                            BakeliciousUtils.INDEX_PROJECTION_MASTER_LIST_FRAGMENT_RECIPE_FAVORITE));
+            bundle.putString(BakeliciousUtils.RECIPE_INGREDIENTS_BUNDLE_KEY, getRecipeIngredients());
+            bundle.putString(BakeliciousUtils.RECIPE_INSTRUCTIONS_BUNDLE_KEY, getRecipeInstructions());
             holder.itemView.setTag(bundle);
 
             /* trigger an event to pass the recipeId of the first item in the list,
-             * which is used in the TwoPane mode for tablets.
+             * which is used in the TwoPane mode for tablets. This event should ONLY be triggered once!
              */
-            if (position == 0) {
+            if (!mEventAlreadySent && position == 0) {
                 EventBus.getDefault().post(new Message.EventRecipeDataLoaded(bundle));
+                mEventAlreadySent = true;
             }
         }
     }
@@ -96,13 +103,60 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
     @Override
     public int getItemCount() {
         if (mRecipesCursor == null) return 0;
-        return mRecipesCursor.getCount();
+
+        int count = mRecipesCursor.getCount();
+        if (count == 0 && !mEventAlreadySent) {
+            EventBus.getDefault().post(new Message.EventRecipesAdaptorEmpty());
+            mEventAlreadySent = true;
+        }
+        return count;
     }
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         mRecipesCursor.close();
         super.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    private String getRecipeName() {
+        return mRecipesCursor.getString(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_NAME));
+    }
+
+    private int getRecipeId() {
+        return mRecipesCursor.getInt(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_ID));
+
+    }
+
+    private int getServings() {
+        return mRecipesCursor.getInt(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_SERVES));
+    }
+
+    private int getRecipeFavorite() {
+        return mRecipesCursor.getInt(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_FAVORITE));
+    }
+
+    private String getRecipeIngredients() {
+        return mRecipesCursor.getString(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_INGREDIENTS));
+    }
+
+    private String getRecipeInstructions() {
+        return mRecipesCursor.getString(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_INSTRUCTIONS));
+    }
+
+    /**
+     * Helper to return column index for the specified column name from the mRecipesCursor.
+     *
+     * @param columnName Name of the column the index we seek.
+     * @return Column Index.
+     */
+    private int getColumnIndex(String columnName) {
+        return mRecipesCursor.getColumnIndex(columnName);
     }
 
     /**

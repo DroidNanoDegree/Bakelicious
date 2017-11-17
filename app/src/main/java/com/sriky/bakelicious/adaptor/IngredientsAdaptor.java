@@ -15,7 +15,6 @@
 
 package com.sriky.bakelicious.adaptor;
 
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sriky.bakelicious.databinding.IngredientListItemBinding;
 import com.sriky.bakelicious.model.Ingredient;
-import com.sriky.bakelicious.utils.BakeliciousUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -40,32 +38,23 @@ import timber.log.Timber;
 
 public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.IngredientsViewHolder> {
 
-    private Cursor mCursor;
     private List<Ingredient> mIngredients;
     private IngredientListItemBinding mIngredientListItemBinding;
 
-    public IngredientsAdaptor(List<Ingredient> ingredients) {
-        mIngredients = ingredients;
-    }
-
-    public void updateIngredients(Cursor cursor) {
-        mCursor = cursor;
-
-        if (!mCursor.moveToFirst()) throw new RuntimeException("Invalid cursor returned!");
+    public IngredientsAdaptor(String ingredients) {
+        if (ingredients == null || ingredients.isEmpty()) {
+            throw new RuntimeException("Ingredients string empty!");
+        }
 
         // load ingredients
         Gson gson = new Gson();
 
-        String ingredients = mCursor.getString(
-                BakeliciousUtils.INDEX_PROJECTION_RECIPE_INGREDIENTS_FRAGMENT_INGREDIENTS);
-
         Type listType = new TypeToken<ArrayList<Ingredient>>() {
         }.getType();
         List<Ingredient> ingredientList = gson.fromJson(ingredients, listType);
+
         Timber.d("%d ingredients loaded!", ingredientList.size());
         mIngredients = ingredientList;
-
-        notifyDataSetChanged();
     }
 
     @Override
@@ -83,6 +72,7 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
 
         //TODO ally support
         mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient());
+        mIngredientListItemBinding.tvIngredient.refreshDrawableState();
 
         //TODO ally support
         mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure());
@@ -94,12 +84,6 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
     @Override
     public int getItemCount() {
         return mIngredients == null ? 0 : mIngredients.size();
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        if (mCursor != null) mCursor.close();
-        super.onDetachedFromRecyclerView(recyclerView);
     }
 
     public class IngredientsViewHolder extends RecyclerView.ViewHolder {

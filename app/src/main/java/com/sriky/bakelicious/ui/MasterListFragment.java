@@ -104,7 +104,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
                 return new CursorLoader(getContext(),
                         BakeliciousContentProvider.RecipeEntry.CONTENT_URI,
-                        BakeliciousUtils.PROJECTION_MASTER_LIST_FRAGMENT,
+                        null,
                         selection,
                         selectionArgs,
                         null);

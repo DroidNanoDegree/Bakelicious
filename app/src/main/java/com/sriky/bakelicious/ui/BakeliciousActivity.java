@@ -101,6 +101,8 @@ public class BakeliciousActivity extends AppCompatActivity
                 //remove the old details fragment.
                 if (mIsTwoPane) {
                     removeRecipeDetailsFragment();
+                    mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
+                    mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
                 }
                 // add the MasterFragment with all recipes
                 addMasterListFragment(null);
@@ -113,6 +115,8 @@ public class BakeliciousActivity extends AppCompatActivity
                 //remove the old details fragment.
                 if (mIsTwoPane) {
                     removeRecipeDetailsFragment();
+                    mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
+                    mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
                 }
 
                 Bundle bundle = new Bundle();
@@ -156,6 +160,8 @@ public class BakeliciousActivity extends AppCompatActivity
         Timber.d("onRecipeDataLoaded() selected recipeid: %d", mSelectedRecipeId);
 
         if (mIsTwoPane && mCanReplaceDetailsFragment) {
+            mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
+            mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
             updateRecipeDetailsFragment();
         }
     }
@@ -178,6 +184,24 @@ public class BakeliciousActivity extends AppCompatActivity
             Intent intent = new Intent(BakeliciousActivity.this, RecipeDetailActivity.class);
             intent.putExtra(RecipeDetailActivity.RECIPE_INFO_BUNDLE_KEY, bundle);
             startActivity(intent);
+        }
+    }
+
+    /**
+     * Event receiver to process recipes removed from the favorites.
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRecipesListUpdated(Message.EventRecipesAdaptorEmpty event) {
+        Timber.d("onRecipesListUpdated()");
+
+        //remove the details fragment because it should be displaying details of the recipe item
+        // that was removed from favorites.
+        if (mIsTwoPane) {
+            removeRecipeDetailsFragment();
+            mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.GONE);
+            mActivityBakeliciousBinding.divider.setVisibility(View.GONE);
         }
     }
 
