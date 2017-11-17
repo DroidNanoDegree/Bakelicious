@@ -47,15 +47,15 @@ public class RecipeDetailPagerAdaptor extends FragmentPagerAdapter {
 
         switch (position) {
             case 0: {
-                RecipeIngredientsFragment recipeIngredientsFragment = new RecipeIngredientsFragment();
-                recipeIngredientsFragment.setArguments(mArguments);
-                return recipeIngredientsFragment;
-            }
-
-            case 1: {
                 RecipeInstructionsFragment recipeInstructionsFragment = new RecipeInstructionsFragment();
                 recipeInstructionsFragment.setArguments(mArguments);
                 return recipeInstructionsFragment;
+            }
+
+            case 1: {
+                RecipeIngredientsFragment recipeIngredientsFragment = new RecipeIngredientsFragment();
+                recipeIngredientsFragment.setArguments(mArguments);
+                return recipeIngredientsFragment;
             }
 
             default:

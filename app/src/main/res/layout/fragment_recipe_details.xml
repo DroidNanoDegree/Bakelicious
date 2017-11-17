@@ -41,14 +41,14 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tab_ingredients"
-                style="@style/TextAppearance.Design.Tab"
-                android:text="@string/tab_ingredients" />
-
-            <android.support.design.widget.TabItem
                 android:id="@+id/tab_instructions"
                 style="@style/TextAppearance.Design.Tab"
                 android:text="@string/tab_instructions" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_ingredients"
+                style="@style/TextAppearance.Design.Tab"
+                android:text="@string/tab_ingredients" />
 
         </android.support.design.widget.TabLayout>
 
