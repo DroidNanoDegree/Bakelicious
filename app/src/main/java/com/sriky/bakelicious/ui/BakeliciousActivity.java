@@ -23,6 +23,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -54,7 +56,8 @@ public class BakeliciousActivity extends AppCompatActivity
     private int mSelectedRecipeId;
     private Bundle mSelectedBundleArgs;
     private int mPreviousSelectedRecipeId;
-
+    private MasterListFragment mMasterListFragment;
+    private LibsSupportFragment mAboutFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 //remove the old details fragment.
                 if (mIsTwoPane) {
                     removeRecipeDetailsFragment();
+                    removeAboutFragment();
                     mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
                     mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
                 }
@@ -115,6 +119,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 //remove the old details fragment.
                 if (mIsTwoPane) {
                     removeRecipeDetailsFragment();
+                    removeAboutFragment();
                     mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
                     mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
                 }
@@ -135,6 +140,32 @@ public class BakeliciousActivity extends AppCompatActivity
 
             case R.id.action_about: {
                 Timber.d("action_about");
+
+                //remove detail fragments.
+                if (mIsTwoPane) {
+                    removeRecipeDetailsFragment();
+                    //hide views.
+                    mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.GONE);
+                    mActivityBakeliciousBinding.divider.setVisibility(View.GONE);
+                }
+
+                //remove masterlist.
+                removeMasterListFragment();
+
+                //add the about fragment.
+                mAboutFragment = new LibsBuilder()
+                        .withAboutAppName(getString(R.string.app_name))
+                        .withAboutDescription(getString(R.string.about_the_app))
+                        .withAboutIconShown(true)
+                        .withAboutVersionShown(true)
+                        .withAboutVersionShownCode(true)
+                        .withAutoDetect(true)
+                        .supportFragment();
+
+                //TODO: fix the FL width for the About fragment for TwoPane mode.
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fl_master_list, mAboutFragment)
+                        .commit();
                 break;
             }
 
@@ -228,13 +259,13 @@ public class BakeliciousActivity extends AppCompatActivity
     }
 
     private void addMasterListFragment(Bundle args) {
-        MasterListFragment masterListFragment = new MasterListFragment();
+        mMasterListFragment = new MasterListFragment();
         // set the arguments for the MasterListFragment
-        masterListFragment.setArguments(args);
+        mMasterListFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fl_master_list, masterListFragment)
+                .replace(R.id.fl_master_list, mMasterListFragment)
                 .commit();
     }
 
@@ -264,6 +295,31 @@ public class BakeliciousActivity extends AppCompatActivity
                     .remove(mRecipeDetailsFragment)
                     .commit();
             mPreviousSelectedRecipeId = -1;
+            mRecipeDetailsFragment = null;
+        }
+    }
+
+    /**
+     * Removes the {@link MasterListFragment}.
+     */
+    private void removeMasterListFragment() {
+        if (mMasterListFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(mMasterListFragment)
+                    .commit();
+            mMasterListFragment = null;
+        }
+    }
+
+    /**
+     * Removes the About fragment.
+     */
+    private void removeAboutFragment() {
+        if (mAboutFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(mAboutFragment)
+                    .commit();
+            mAboutFragment = null;
         }
     }
 }

@@ -61,6 +61,12 @@ dependencies {
     /* Picasso */
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    /* About screen helper */
+    implementation('com.mikepenz:aboutlibraries:6.0.0@aar') {
+        transitive = true
+    }
+    implementation 'com.android.support:cardview-v7:26.1.0'
+
     implementation "com.android.support:recyclerview-v7:26.1.0"
     implementation "com.android.support:support-annotations:27.0.0"
     implementation "com.android.support:design:26.1.0"

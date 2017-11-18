@@ -1,7 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Bakelicious</string>
-    <string name="drawer_item_home">Home</string>
-    <string name="drawer_item_settings">Settings</string>
+
+    <!-- Navigation drawer -->
     <string name="drawer_item_menu_drawer">Recipes</string>
     <string name="action_about">About</string>
     <string name="action_discover">Discover</string>
@@ -15,10 +15,15 @@
     <string name="tab_ingredients">Ingredients</string>
     <string name="tab_instructions">Instructions</string>
 
+    <!-- Toast messages -->
     <string name="recipe_added_to_favorites">
         <xliff:g id="ratings">%s</xliff:g> added to favorites!
     </string>
     <string name="recipe_removed_from_favorites">
         <xliff:g id="ratings">%s</xliff:g> removed from favorites!
     </string>
+
+    <!-- About the app fragment -->
+    <string name="about_the_app">"Bakelicious (Baking App) is a project part of the Android Developer Nanodegree program by Udacity.</string>
+
 </resources>
