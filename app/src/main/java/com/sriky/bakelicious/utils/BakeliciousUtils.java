@@ -15,6 +15,8 @@
 
 package com.sriky.bakelicious.utils;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -28,6 +30,7 @@ import com.sriky.bakelicious.model.Recipe;
 import com.sriky.bakelicious.model.Step;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.RecipeContract;
+import com.sriky.bakelicious.widget.BakeliciousWidgetProvider;
 
 import java.util.Collection;
 
@@ -134,6 +137,12 @@ public final class BakeliciousUtils {
                 if (count <= 0) {
                     throw new RuntimeException("Unable to update record with id: " + recipeId);
                 }
+
+                //Trigger data update to handle the GridView widgets and force a data refresh
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BakeliciousWidgetProvider.class));
+
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
 
                 int formatId =
                         (favorite) ? R.string.recipe_added_to_favorites

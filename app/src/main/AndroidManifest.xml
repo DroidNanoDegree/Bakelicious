@@ -19,6 +19,7 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +37,7 @@
         <provider
             android:name=".provider.generated.BakeliciousContentProvider"
             android:authorities="com.sriky.bakelicious"
-            android:exported="false" />
+            android:exported="true" />
 
         <!-- Firebase JobService responsible for periodically syncing data in the background -->
         <service
@@ -51,6 +52,22 @@
         <service
             android:name=".service.BakeliciousIntentService"
             android:exported="false" />
+
+        <!-- Recipes Widget -->
+        <receiver android:name=".widget.BakeliciousWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/bakelicious_widget_provider_info" />
+        </receiver>
+
+        <!-- Widget GridView service -->
+        <service
+            android:name=".widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
 
