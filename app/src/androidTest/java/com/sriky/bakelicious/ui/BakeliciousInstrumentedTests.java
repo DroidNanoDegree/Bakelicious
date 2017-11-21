@@ -50,7 +50,7 @@ import static org.hamcrest.CoreMatchers.is;
  */
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class BakeliciousActivityTests {
+public class BakeliciousInstrumentedTests {
 
     private static final String FIRST_ITEM_IN_RECIPES_RECYCLER_VIEW = "Nutella Pie";
     @Rule
@@ -86,7 +86,7 @@ public class BakeliciousActivityTests {
     }
 
     /**
-     * If the test above {@link BakeliciousActivityTests#testA_recipeDataLoading()} passed, then we
+     * If the test above {@link BakeliciousInstrumentedTests#testA_recipeDataLoading()} passed, then we
      * can perform a click event on the first item(i.e "Nutella Pie") and verify it opens up the
      * recipes details. On the phones, it should launch {@link RecipeDetailActivity} which should
      * instantiate {@link RecipeDetailsFragment} whereas on tables, i.e. in TwoPane mode,
@@ -132,7 +132,7 @@ public class BakeliciousActivityTests {
 
     /**
      * Test removing favorited recipe from the Recipes List. This test relies on the previous test
-     * {@link BakeliciousActivityTests#testC_AddRecipeToFavorites()} to be successful in adding
+     * {@link BakeliciousInstrumentedTests#testC_AddRecipeToFavorites()} to be successful in adding
      * the first item to favorite lists.
      */
     @Test
