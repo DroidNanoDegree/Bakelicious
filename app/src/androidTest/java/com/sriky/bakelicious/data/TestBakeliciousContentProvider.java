@@ -20,8 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.IngredientEntry;
-import com.sriky.bakelicious.provider.BakeliciousContentProvider.InstructionEntry;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 
 import org.junit.Before;
@@ -45,7 +43,7 @@ public class TestBakeliciousContentProvider {
 
     @Before
     public void before() {
-        TestUtilities.clearAllTables(mContext);
+        TestUtilities.clearRecipesTable(mContext);
     }
 
     /**
@@ -70,54 +68,6 @@ public class TestBakeliciousContentProvider {
         TestUtilities.bulkInsert(mContext.getContentResolver(),
                 RecipeEntry.CONTENT_URI,
                 TestUtilities.createRecipeContentValuesArray());
-    }
-
-    /**
-     * Tests insertion of data into the ingredient table via the content provider.
-     */
-    @Test
-    public void testSingleInsertion_IntoIngredientTable() {
-
-        TestUtilities.insert(mContext.getContentResolver(),
-                IngredientEntry.CONTENT_URI,
-                TestUtilities.createIngredientContentValues());
-    }
-
-    /**
-     * This test tests the bulkInsert feature of the ContentProvider for ingredient table
-     */
-    @Test
-    public void testBulkInsert_IntoIngredientTable() {
-
-        TestUtilities.clearIngredientsTable(mContext);
-
-        TestUtilities.bulkInsert(mContext.getContentResolver(),
-                IngredientEntry.CONTENT_URI,
-                TestUtilities.createIngredientContentValuesArray());
-    }
-
-    /**
-     * Tests insertion of data into the instruction table via the content provider.
-     */
-    @Test
-    public void testSingleInsertion_IntoInstructionTable() {
-
-        TestUtilities.insert(mContext.getContentResolver(),
-                InstructionEntry.CONTENT_URI,
-                TestUtilities.createInstructionContentValues());
-    }
-
-    /**
-     * This test tests the bulkInsert feature of the ContentProvider for instruction table
-     */
-    @Test
-    public void testBulkInsert_IntoInstructionTable() {
-
-        TestUtilities.clearInstructionsTable(mContext);
-
-        TestUtilities.bulkInsert(mContext.getContentResolver(),
-                InstructionEntry.CONTENT_URI,
-                TestUtilities.createInstructionContentValuesArray());
     }
 
     /**

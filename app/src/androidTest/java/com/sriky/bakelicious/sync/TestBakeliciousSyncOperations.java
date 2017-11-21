@@ -48,7 +48,7 @@ public final class TestBakeliciousSyncOperations {
 
     @Before
     public void before() {
-        TestUtilities.clearAllTables(mContext);
+        TestUtilities.clearRecipesTable(mContext);
         Timber.plant(new Timber.DebugTree());
         Stetho.initializeWithDefaults(mContext);
     }

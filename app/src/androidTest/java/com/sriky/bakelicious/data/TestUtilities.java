@@ -22,8 +22,6 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
-import com.sriky.bakelicious.provider.IngredientContract;
-import com.sriky.bakelicious.provider.InstructionContract;
 import com.sriky.bakelicious.provider.RecipeContract;
 
 import java.util.Map;
@@ -41,6 +39,15 @@ import static junit.framework.Assert.assertTrue;
 
 public class TestUtilities {
 
+    /* sample ingredients json */
+    private static final String INGREDIENTS =
+            "[{\"quantity\": 2, \"measure\": \"CUP\",\"ingredient\": \"Graham Cracker crumbs}," +
+                    "{\"quantity\": 6,\"measure\": \"TBLSP\",\"ingredient\": \"unsalted butter, melted}]";
+
+    /* sample instruction json */
+    private static final String INSTRUCTIONS =
+            "[{\"id\": 0,\"shortDescription\": \"Recipe Introduction\",\"description\": \"Recipe Introduction\",\"videoURL\": \"https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4\",\"thumbnailURL\": \"\"},{\"id\": 1,\"shortDescription\": \"Starting prep\",\"description\": \"1. Preheat the oven to 350\\u00b0F. Butter a 9\\\" deep dish pie pan.\",\"videoURL\": \"\",\"thumbnailURL\": \"\"}";
+
     /**
      * Creates and returns ContentValues that represents an item in the "recipes" table.
      *
@@ -57,6 +64,8 @@ public class TestUtilities {
         cv.put(RecipeContract.COLUMN_RECIPE_ID, recipeId);
         cv.put(RecipeContract.COLUMN_RECIPE_NAME, "Special Brownies");
         cv.put(RecipeContract.COLUMN_RECIPE_SERVES, 8);
+        cv.put(RecipeContract.COLUMN_RECIPE_INGREDIENTS, INGREDIENTS);
+        cv.put(RecipeContract.COLUMN_RECIPE_INSTRUCTIONS, INSTRUCTIONS);
         return cv;
     }
 
@@ -70,72 +79,6 @@ public class TestUtilities {
         cvArray[0] = createRecipeContentValues();
         cvArray[1] = createRecipeContentValues();
         cvArray[2] = createRecipeContentValues();
-        return cvArray;
-    }
-
-    /**
-     * Creates and returns ContentValues that represents an item in the "ingredient" table.
-     *
-     * @return ContentValue.
-     */
-    public static ContentValues createIngredientContentValues() {
-        /* generate a random recipe ID */
-        final int min = 20;
-        final int max = 80;
-        final Random random = new Random();
-        int recipeId = random.nextInt((max - min) + 1) + min;
-
-        ContentValues cv = new ContentValues();
-        cv.put(IngredientContract.COLUMN_RECIPE_ID, recipeId);
-        cv.put(IngredientContract.COLUMN_INGREDIENT_NAME, "Eggs");
-        cv.put(IngredientContract.COLUMN_INGREDIENT_QUANTITY, 3);
-        cv.put(IngredientContract.COLUMN_INGREDIENT_MEASURE, "UNIT");
-        return cv;
-    }
-
-    /**
-     * Creates and returns ContentValues Array where each element represents an item in the "ingredient" table.
-     *
-     * @return ContentValue[]
-     */
-    public static ContentValues[] createIngredientContentValuesArray() {
-        ContentValues[] cvArray = new ContentValues[3];
-        cvArray[0] = createIngredientContentValues();
-        cvArray[1] = createIngredientContentValues();
-        cvArray[2] = createIngredientContentValues();
-        return cvArray;
-    }
-
-    /**
-     * Creates and returns ContentValues that represents an item in the "instruction" table.
-     *
-     * @return ContentValue.
-     */
-    public static ContentValues createInstructionContentValues() {
-        /* generate a random recipe ID */
-        final int min = 20;
-        final int max = 80;
-        final Random random = new Random();
-        int recipeId = random.nextInt((max - min) + 1) + min;
-
-        ContentValues cv = new ContentValues();
-        cv.put(InstructionContract.COLUMN_RECIPE_ID, recipeId);
-        cv.put(InstructionContract.COLUMN_INSTRUCTION_SHORT, "Short Desc.");
-        cv.put(InstructionContract.COLUMN_INSTRUCTION_LONG, "Longggggggggggggggggggg...");
-        cv.put(InstructionContract.COLUMN_INSTRUCTION_NUMBER, 1);
-        return cv;
-    }
-
-    /**
-     * Creates and returns ContentValues Array where each element represents an item in the "instruction" table.
-     *
-     * @return ContentValue[]
-     */
-    public static ContentValues[] createInstructionContentValuesArray() {
-        ContentValues[] cvArray = new ContentValues[3];
-        cvArray[0] = createInstructionContentValues();
-        cvArray[1] = createInstructionContentValues();
-        cvArray[2] = createInstructionContentValues();
         return cvArray;
     }
 
@@ -251,39 +194,11 @@ public class TestUtilities {
         cursor.close();
     }
 
-
-    /**
-     * Clears all the tables used in Bakelicious
-     *
-     * @param context The context.
-     */
-    public static void clearAllTables(Context context) {
-        clearRecipesTable(context);
-        clearIngredientsTable(context);
-        clearInstructionsTable(context);
-    }
-
     /**
      * delete all items from the recipes table
      */
     public static void clearRecipesTable(Context context) {
         TestUtilities.deleteAllEntries(context.getContentResolver(),
                 BakeliciousContentProvider.RecipeEntry.CONTENT_URI);
-    }
-
-    /**
-     * delete all items from the ingredients table
-     */
-    public static void clearIngredientsTable(Context context) {
-        TestUtilities.deleteAllEntries(context.getContentResolver(),
-                BakeliciousContentProvider.IngredientEntry.CONTENT_URI);
-    }
-
-    /**
-     * delete all items from the instruction table
-     */
-    public static void clearInstructionsTable(Context context) {
-        TestUtilities.deleteAllEntries(context.getContentResolver(),
-                BakeliciousContentProvider.InstructionEntry.CONTENT_URI);
     }
 }
