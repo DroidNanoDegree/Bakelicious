@@ -51,7 +51,10 @@ import timber.log.Timber;
 public class BakeliciousActivity extends AppCompatActivity
         implements Drawer.OnDrawerItemClickListener {
 
-    private static final String SELECTED_TAB_INDEX_BUNDLE_KEY = "selected_tab";
+    private static final String MASTER_LIST_FRAGMENT_TAG = "master_list_fragment";
+    private static final String RECIPE_DETAILS_FRAGMENT_TAG = "recipe_details_fragment";
+    private static final String ABOUT_FRAGMENT_TAG = "about_fragment";
+
     private Drawer mNavigationDrawer;
     private ActivityBakeliciousBinding mActivityBakeliciousBinding;
     private RecipeDetailsFragment mRecipeDetailsFragment;
@@ -78,6 +81,17 @@ public class BakeliciousActivity extends AppCompatActivity
             addMasterListFragment(null);
             Timber.plant(new Timber.DebugTree());
             mCanReplaceDetailsFragment = true;
+        } else {
+            //set the value for the fields after a configuration change, this way fragments can
+            //fragment transactions can be done properly.
+            FragmentManager fm = getSupportFragmentManager();
+            mMasterListFragment =
+                    (MasterListFragment) fm.findFragmentByTag(MASTER_LIST_FRAGMENT_TAG);
+
+            mRecipeDetailsFragment =
+                    (RecipeDetailsFragment) fm.findFragmentByTag(RECIPE_DETAILS_FRAGMENT_TAG);
+
+            mAboutFragment = (LibsSupportFragment) fm.findFragmentByTag(ABOUT_FRAGMENT_TAG);
         }
 
         mIsTwoPane = findViewById(R.id.fl_recipe_details) != null;
@@ -112,10 +126,12 @@ public class BakeliciousActivity extends AppCompatActivity
             case R.id.drawer_action_discover: {
                 Timber.d("action_discover");
 
-                //remove the old details fragment.
                 if (mIsTwoPane) {
+                    //remove the old details fragment.
                     removeRecipeDetailsFragment();
+                    //remove the details fragment.
                     removeAboutFragment();
+                    //show the views.
                     mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
                     mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
                 }
@@ -152,14 +168,6 @@ public class BakeliciousActivity extends AppCompatActivity
             case R.id.drawer_action_about: {
                 Timber.d("action_about");
 
-                //remove detail fragments.
-                if (mIsTwoPane) {
-                    removeRecipeDetailsFragment();
-                    //hide views.
-                    mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.GONE);
-                    mActivityBakeliciousBinding.divider.setVisibility(View.GONE);
-                }
-
                 //remove masterlist.
                 removeMasterListFragment();
 
@@ -173,10 +181,21 @@ public class BakeliciousActivity extends AppCompatActivity
                         .withAutoDetect(true)
                         .supportFragment();
 
-                //TODO: fix the FL width for the About fragment for TwoPane mode.
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fl_master_list, mAboutFragment)
-                        .commit();
+                if (mIsTwoPane) {
+                    //remove detail fragments.
+                    removeRecipeDetailsFragment();
+                    //add the about fragment.
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fl_main, mAboutFragment, ABOUT_FRAGMENT_TAG)
+                            .commit();
+                    //hide views.
+                    mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.GONE);
+                    mActivityBakeliciousBinding.divider.setVisibility(View.GONE);
+                } else {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fl_master_list, mAboutFragment, ABOUT_FRAGMENT_TAG)
+                            .commit();
+                }
                 break;
             }
 
@@ -204,7 +223,7 @@ public class BakeliciousActivity extends AppCompatActivity
 
         Timber.d("onRecipeDataLoaded() selected recipeid: %d", mSelectedRecipeId);
 
-        if (mIsTwoPane && mCanReplaceDetailsFragment) {
+        if (mIsTwoPane && (mRecipeDetailsFragment == null || mCanReplaceDetailsFragment)) {
             mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
             mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
             updateRecipeDetailsFragment();
@@ -298,7 +317,7 @@ public class BakeliciousActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fl_master_list, mMasterListFragment)
+                .replace(R.id.fl_master_list, mMasterListFragment, MASTER_LIST_FRAGMENT_TAG)
                 .commit();
     }
 
@@ -314,7 +333,7 @@ public class BakeliciousActivity extends AppCompatActivity
             mRecipeDetailsFragment.setArguments(mSelectedBundleArgs);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fl_recipe_details, mRecipeDetailsFragment)
+                    .replace(R.id.fl_recipe_details, mRecipeDetailsFragment, RECIPE_DETAILS_FRAGMENT_TAG)
                     .commit();
         }
     }
