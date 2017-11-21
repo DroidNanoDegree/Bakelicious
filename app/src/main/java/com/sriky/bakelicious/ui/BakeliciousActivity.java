@@ -18,6 +18,9 @@ package com.sriky.bakelicious.ui;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +37,7 @@ import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.databinding.ActivityBakeliciousBinding;
 import com.sriky.bakelicious.event.Message;
+import com.sriky.bakelicious.idling_resource.BakeliciousIdlingResource;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.sync.BakeliciousSyncUtils;
 import com.sriky.bakelicious.utils.BakeliciousUtils;
@@ -58,13 +62,13 @@ public class BakeliciousActivity extends AppCompatActivity
     private int mPreviousSelectedRecipeId;
     private MasterListFragment mMasterListFragment;
     private LibsSupportFragment mAboutFragment;
+    /* the idling resource used for UI testing. */
+    @Nullable
+    private BakeliciousIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // initiate data fetch
-        BakeliciousSyncUtils.initDataSync(BakeliciousActivity.this);
 
         mActivityBakeliciousBinding = DataBindingUtil.setContentView(BakeliciousActivity.this,
                 R.layout.activity_bakelicious);
@@ -83,6 +87,13 @@ public class BakeliciousActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // initiate data fetch
+        BakeliciousSyncUtils.initDataSync(BakeliciousActivity.this, getIdlingResource());
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         // register to get events only when in TwoPane.
@@ -98,7 +109,7 @@ public class BakeliciousActivity extends AppCompatActivity
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         switch (view.getId()) {
-            case R.id.action_discover: {
+            case R.id.drawer_action_discover: {
                 Timber.d("action_discover");
 
                 //remove the old details fragment.
@@ -113,7 +124,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 break;
             }
 
-            case R.id.action_favorite: {
+            case R.id.drawer_action_favorite: {
                 Timber.d("action_favorite");
 
                 //remove the old details fragment.
@@ -138,7 +149,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 break;
             }
 
-            case R.id.action_about: {
+            case R.id.drawer_action_about: {
                 Timber.d("action_about");
 
                 //remove detail fragments.
@@ -184,6 +195,9 @@ public class BakeliciousActivity extends AppCompatActivity
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRecipeDataLoaded(Message.EventRecipeDataLoaded event) {
+        //set the idle state to true so UI testing can resume.
+        getIdlingResource().setIdleState(true);
+
         Bundle bundle = event.getBundle();
         mSelectedRecipeId = bundle.getInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY);
         mSelectedBundleArgs = bundle;
@@ -234,6 +248,25 @@ public class BakeliciousActivity extends AppCompatActivity
             mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.GONE);
             mActivityBakeliciousBinding.divider.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * Create or returns an instance of idling resource to test {@link MasterListFragment}
+     *
+     * @return {@link BakeliciousIdlingResource} instance.
+     */
+    @VisibleForTesting
+    @NonNull
+    public BakeliciousIdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new BakeliciousIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
+    @VisibleForTesting
+    public boolean isTwoPane() {
+        return mIsTwoPane;
     }
 
     private void addNavigationDrawer() {

@@ -78,6 +78,7 @@ public class RecipeDetailsFragment extends Fragment
                         bundle, BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT);
 
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setAdapter(recipeDetailPagerAdaptor);
+        mFragmentRecipeDetailsBinding.vpRecipeDetails.setTag(mRecipeName);
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setOffscreenPageLimit(BakeliciousUtils.RECIPE_DETAILS_TAB_COUNT);
 
         // add the listeners to the ViewPager and TabLayout.

@@ -18,21 +18,20 @@
 
     <group android:id="@id/material_drawer_menu_default_group">
         <item
-            android:id="@+id/action_discover"
+            android:id="@+id/drawer_action_discover"
             android:title="@string/action_discover"
             app:showAsAction="never" />
         <item
-            android:id="@+id/action_favorite"
+            android:id="@+id/drawer_action_favorite"
             android:title="@string/action_favorite"
             app:showAsAction="never" />
     </group>
 
     <group android:id="@+id/md_menu_second_group">
         <item
-            android:id="@+id/action_about"
-            android:orderInCategory="100"
+            android:id="@+id/drawer_action_about"
             android:title="@string/action_about"
-            app:showAsAction="ifRoom" />
+            app:showAsAction="never" />
     </group>
 
 </menu>

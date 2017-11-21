@@ -18,6 +18,7 @@ package com.sriky.bakelicious.sync;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
@@ -26,6 +27,7 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
+import com.sriky.bakelicious.idling_resource.BakeliciousIdlingResource;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 import com.sriky.bakelicious.provider.RecipeContract;
 import com.sriky.bakelicious.service.BakeliciousIntentService;
@@ -55,10 +57,16 @@ public final class BakeliciousSyncUtils {
      *
      * @param context
      */
-    synchronized public static void initDataSync(final Context context) {
+    synchronized public static void initDataSync(final Context context,
+                                                 @Nullable BakeliciousIdlingResource idlingResource) {
         if (sInitialized) return;
 
         sInitialized = true;
+
+        if (idlingResource != null) {
+            //pause the UI testing until data is loaded.
+            idlingResource.setIdleState(false);
+        }
 
         scheduleFirebaseFetchJob(context);
 
