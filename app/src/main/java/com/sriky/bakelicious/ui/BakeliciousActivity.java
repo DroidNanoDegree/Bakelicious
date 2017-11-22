@@ -55,6 +55,8 @@ public class BakeliciousActivity extends AppCompatActivity
     private static final String RECIPE_DETAILS_FRAGMENT_TAG = "recipe_details_fragment";
     private static final String ABOUT_FRAGMENT_TAG = "about_fragment";
     private static final String DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY = "drawer_selected_item_position";
+    private static final String LAYOUT_DIVIDER_VISIBILITY_BUNDLE_KEY = "divider_view_visibility";
+    private static final String LAYOUT_RECIPE_DETAILS_VISIBILITY_BUNDLE_KEY = "recipe_details_layout_visibility";
 
     private Drawer mNavigationDrawer;
     private ActivityBakeliciousBinding mActivityBakeliciousBinding;
@@ -78,6 +80,8 @@ public class BakeliciousActivity extends AppCompatActivity
         mActivityBakeliciousBinding = DataBindingUtil.setContentView(BakeliciousActivity.this,
                 R.layout.activity_bakelicious);
 
+        mIsTwoPane = findViewById(R.id.fl_recipe_details) != null;
+
         if (savedInstanceState == null) {
             // add the MasterListFragment
             addMasterListFragment(null);
@@ -85,25 +89,8 @@ public class BakeliciousActivity extends AppCompatActivity
             mCanReplaceDetailsFragment = true;
             mRestoredSelectedItemPosition = 0;
         } else {
-            //set the value for the fields after a configuration change, this way fragments can
-            //fragment transactions can be done properly.
-            FragmentManager fm = getSupportFragmentManager();
-            mMasterListFragment =
-                    (MasterListFragment) fm.findFragmentByTag(MASTER_LIST_FRAGMENT_TAG);
-
-            mRecipeDetailsFragment =
-                    (RecipeDetailsFragment) fm.findFragmentByTag(RECIPE_DETAILS_FRAGMENT_TAG);
-
-            mAboutFragment = (LibsSupportFragment) fm.findFragmentByTag(ABOUT_FRAGMENT_TAG);
-
-            //get the previous selected item position of the drawer.
-            if (savedInstanceState.containsKey(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY)) {
-                mRestoredSelectedItemPosition =
-                        savedInstanceState.getInt(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY);
-            }
+            restoreStates(savedInstanceState);
         }
-
-        mIsTwoPane = findViewById(R.id.fl_recipe_details) != null;
 
         // add the navigation drawer
         addNavigationDrawer();
@@ -127,6 +114,14 @@ public class BakeliciousActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY,
                 mNavigationDrawer.getCurrentSelectedPosition());
+
+        if (mIsTwoPane) {
+            outState.putInt(LAYOUT_DIVIDER_VISIBILITY_BUNDLE_KEY,
+                    mActivityBakeliciousBinding.divider.getVisibility());
+
+            outState.putInt(LAYOUT_RECIPE_DETAILS_VISIBILITY_BUNDLE_KEY,
+                    mActivityBakeliciousBinding.flRecipeDetails.getVisibility());
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -352,6 +347,40 @@ public class BakeliciousActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fl_recipe_details, mRecipeDetailsFragment, RECIPE_DETAILS_FRAGMENT_TAG)
                     .commit();
+        }
+    }
+
+    /**
+     * Restores the states of the components after a configuration change.
+     */
+    private void restoreStates(Bundle savedInstanceState) {
+        //set the value for the fields after a configuration change, this way fragments can
+        //fragment transactions can be done properly.
+        FragmentManager fm = getSupportFragmentManager();
+        mMasterListFragment =
+                (MasterListFragment) fm.findFragmentByTag(MASTER_LIST_FRAGMENT_TAG);
+
+        mRecipeDetailsFragment =
+                (RecipeDetailsFragment) fm.findFragmentByTag(RECIPE_DETAILS_FRAGMENT_TAG);
+
+        mAboutFragment = (LibsSupportFragment) fm.findFragmentByTag(ABOUT_FRAGMENT_TAG);
+
+        //get the previous selected item position of the drawer.
+        if (savedInstanceState.containsKey(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY)) {
+            mRestoredSelectedItemPosition =
+                    savedInstanceState.getInt(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY);
+        }
+
+        if (mIsTwoPane) {
+            if (savedInstanceState.containsKey(LAYOUT_RECIPE_DETAILS_VISIBILITY_BUNDLE_KEY)) {
+                mActivityBakeliciousBinding.flRecipeDetails.setVisibility(
+                        savedInstanceState.getInt(LAYOUT_RECIPE_DETAILS_VISIBILITY_BUNDLE_KEY));
+            }
+
+            if (savedInstanceState.containsKey(LAYOUT_DIVIDER_VISIBILITY_BUNDLE_KEY)) {
+                mActivityBakeliciousBinding.divider.setVisibility(
+                        savedInstanceState.getInt(LAYOUT_DIVIDER_VISIBILITY_BUNDLE_KEY));
+            }
         }
     }
 
