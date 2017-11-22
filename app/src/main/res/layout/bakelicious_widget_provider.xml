@@ -31,11 +31,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            style="@style/Bakelicious.WidgetTextView.Default" />
+        <TextView style="@style/Bakelicious.WidgetTextView.Default" />
 
-        <ImageView
-            style="@style/WidgetImageViewDefault" />
+        <ImageView style="@style/WidgetImageViewDefault" />
 
     </LinearLayout>
 

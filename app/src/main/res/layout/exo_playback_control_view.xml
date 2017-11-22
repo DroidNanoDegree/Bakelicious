@@ -14,10 +14,9 @@
   -->
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="bottom"
     android:background="@null"
     android:layoutDirection="ltr"
@@ -34,11 +33,11 @@
         android:layout_marginTop="8dp"
         android:background="@null"
         android:contentDescription="@string/exo_controls_play_description"
-        app:srcCompat="@drawable/ic_play"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_play" />
 
     <ImageButton
         android:id="@id/exo_pause"
@@ -50,22 +49,22 @@
         android:layout_marginTop="8dp"
         android:background="@null"
         android:contentDescription="@string/exo_controls_pause_description"
-        app:srcCompat="@drawable/ic_pause"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_pause" />
 
 
     <TextView
         android:id="@id/exo_position"
-        android:background="@color/primaryBackgroundColor"
-        android:alpha="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0.5"
+        android:background="@color/primaryBackgroundColor"
         android:includeFontPadding="false"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
@@ -92,13 +91,13 @@
 
     <TextView
         android:id="@id/exo_duration"
-        android:background="@color/primaryBackgroundColor"
-        android:alpha="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0.5"
+        android:background="@color/primaryBackgroundColor"
         android:includeFontPadding="false"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"

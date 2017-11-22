@@ -18,9 +18,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/primaryBackgroundColor"
         android:gravity="center"
-        android:orientation="vertical"
-        android:background="@color/primaryBackgroundColor">
+        android:orientation="vertical">
 
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
@@ -38,8 +38,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="2dp"
             android:layout_marginStart="2dp"
-            android:visibility="invisible"
-            android:contentDescription="@string/recipe_prep_instruction"/>
+            android:contentDescription="@string/recipe_prep_instruction"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_instruction"
