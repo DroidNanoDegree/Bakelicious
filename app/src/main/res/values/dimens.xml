@@ -14,6 +14,8 @@
   -->
 
 <resources>
+    <dimen name="action_bar_font_size">20sp</dimen>
+
     <dimen name="display1_font_size_large">16sp</dimen>
     <dimen name="display1_font_size_medium">14sp</dimen>
     <dimen name="display1_font_size_small">12sp</dimen>

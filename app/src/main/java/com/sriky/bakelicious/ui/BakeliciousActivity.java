@@ -136,6 +136,8 @@ public class BakeliciousActivity extends AppCompatActivity
         switch (view.getId()) {
             case R.id.drawer_action_discover: {
                 Timber.d("action_discover");
+                //set the actionbar title
+                mActivityBakeliciousBinding.toolbarTitle.setText(getString(R.string.action_discover));
 
                 if (mIsTwoPane) {
                     //remove the old details fragment.
@@ -146,6 +148,7 @@ public class BakeliciousActivity extends AppCompatActivity
                     mActivityBakeliciousBinding.flRecipeDetails.setVisibility(View.VISIBLE);
                     mActivityBakeliciousBinding.divider.setVisibility(View.VISIBLE);
                 }
+
                 // add the MasterFragment with all recipes
                 addMasterListFragment(null);
                 break;
@@ -171,6 +174,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 bundle.putStringArray(MasterListFragment.SELECTION_ARGS_BUNDLE_KEY,
                         new String[]{"1"});
 
+                mActivityBakeliciousBinding.toolbarTitle.setText(getString(R.string.action_favorite));
                 /* add the favorites recipes fragment */
                 addMasterListFragment(bundle);
                 break;
@@ -181,6 +185,8 @@ public class BakeliciousActivity extends AppCompatActivity
 
                 //remove masterlist.
                 removeMasterListFragment();
+
+                mActivityBakeliciousBinding.toolbarTitle.setText(getString(R.string.action_about));
 
                 //add the about fragment.
                 mAboutFragment = new LibsBuilder()
@@ -301,9 +307,13 @@ public class BakeliciousActivity extends AppCompatActivity
 
     private void addNavigationDrawer() {
         // add toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.drawer_item_menu_drawer);
+        setSupportActionBar(mActivityBakeliciousBinding.toolbar);
+
+        //disable the tile.
+        getSupportActionBar().setTitle("");
+
+        //set the actionbar title
+        mActivityBakeliciousBinding.toolbarTitle.setText(getString(R.string.action_discover));
 
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -314,7 +324,7 @@ public class BakeliciousActivity extends AppCompatActivity
         // Create the drawer
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
-                .withToolbar(toolbar)
+                .withToolbar(mActivityBakeliciousBinding.toolbar)
                 .withAccountHeader(headerResult)
                 .withSelectedItemByPosition(mRestoredSelectedItemPosition)
                 .inflateMenu(R.menu.navigation_drawer_menu)
