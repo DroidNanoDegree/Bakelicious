@@ -13,8 +13,7 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,10 +23,11 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/Bakelicious.Toolbar" >
+            style="@style/Bakelicious.Toolbar">
+
             <TextView
                 android:id="@+id/toolbar_title"
-                style="@style/Bakelicious.Toolbar.Text"/>
+                style="@style/Bakelicious.Toolbar.Text" />
         </android.support.v7.widget.Toolbar>
 
         <FrameLayout
