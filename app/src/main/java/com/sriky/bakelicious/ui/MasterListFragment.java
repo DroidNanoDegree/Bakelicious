@@ -46,6 +46,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
     public static final String SELECTION_BUNDLE_KEY = "selection";
     public static final String SELECTION_ARGS_BUNDLE_KEY = "selection_args";
+    public static final String FAVORITE_FRAGMENT_BUNDLE_KEY = "favorite_fragment";
     /* the amount time to wait prior to displaying an error message if data isn't loader by the
     * time(millis) specified here. */
     private static final long DATA_LOAD_TIMEOUT_LIMIT = 30000;
@@ -79,6 +80,11 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
 
         mMasterListBinding.rvRecipes.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        //after a config. change, check to see if the fragment was a favorite type.
+        if (savedInstanceState != null && savedInstanceState.containsKey(FAVORITE_FRAGMENT_BUNDLE_KEY)) {
+            mIsFavoritesFragment = savedInstanceState.getBoolean(FAVORITE_FRAGMENT_BUNDLE_KEY);
+        }
 
         /* trigger the loader to get data from local db */
         getLoaderManager().initLoader(BakeliciousUtils.MASTER_LIST_FRAGMENT_LOADER_ID,
@@ -155,6 +161,14 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mIsFavoritesFragment) {
+            outState.putBoolean(FAVORITE_FRAGMENT_BUNDLE_KEY, mIsFavoritesFragment);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     /**
