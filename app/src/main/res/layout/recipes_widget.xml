@@ -23,14 +23,14 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_kitchen" />
+        android:src="@drawable/ic_cake" />
 
     <TextView
         android:id="@+id/tv_widget_recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp"
         android:textAlignment="center"
         android:textSize="12sp"
         android:textStyle="bold" />

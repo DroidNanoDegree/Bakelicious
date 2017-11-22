@@ -104,7 +104,7 @@ public class RecipeDetailsFragment extends Fragment
         if (mRecipeFavorite) {
             MenuItem favorite = menu.findItem(R.id.action_favorite);
             if (favorite != null) {
-                favorite.setIcon(R.drawable.ic_favorite_black);
+                favorite.setIcon(R.drawable.ic_favorite_pink);
             }
         }
         super.onPrepareOptionsMenu(menu);
@@ -118,9 +118,9 @@ public class RecipeDetailsFragment extends Fragment
             case R.id.action_favorite: {
                 mRecipeFavorite = !mRecipeFavorite;
                 if (mRecipeFavorite) {
-                    item.setIcon(R.drawable.ic_favorite_black);
+                    item.setIcon(R.drawable.ic_favorite_pink);
                 } else {
-                    item.setIcon(R.drawable.ic_favorite_border_black);
+                    item.setIcon(R.drawable.ic_favorite_border_pink);
                 }
 
                 //update the record.

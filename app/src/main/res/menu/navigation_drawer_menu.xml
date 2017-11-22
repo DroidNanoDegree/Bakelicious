@@ -19,10 +19,12 @@
     <group android:id="@id/material_drawer_menu_default_group">
         <item
             android:id="@+id/drawer_action_discover"
+            android:icon="@drawable/ic_discover"
             android:title="@string/action_discover"
             app:showAsAction="never" />
         <item
             android:id="@+id/drawer_action_favorite"
+            android:icon="@drawable/ic_favorite"
             android:title="@string/action_favorite"
             app:showAsAction="never" />
     </group>
@@ -30,6 +32,7 @@
     <group android:id="@+id/md_menu_second_group">
         <item
             android:id="@+id/drawer_action_about"
+            android:icon="@drawable/ic_info"
             android:title="@string/action_about"
             app:showAsAction="never" />
     </group>
