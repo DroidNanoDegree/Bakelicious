@@ -16,7 +16,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/primaryBackgroundColor" android:state_activated="true" android:state_focused="false" />
 
-    <item android:drawable="@color/background_material_light" android:state_window_focused="false" />
+    <item android:drawable="@color/primaryBackgroundColor" android:state_window_focused="false" />
 
     <!-- Even though these two point to the same resource, have two states so the drawable will
     invalidate itself when coming out of pressed state. -->
@@ -32,5 +32,5 @@
 
     <!-- Default, "just hangin' out" state.  This is part of
          ActionBarCompat -->
-    <item android:drawable="@color/background_material_light" />
+    <item android:drawable="@color/primaryBackgroundColor" />
 </selector>
