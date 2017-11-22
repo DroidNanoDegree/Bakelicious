@@ -24,11 +24,16 @@
     <dimen name="caption_font_size_medium">14sp</dimen>
     <dimen name="caption_font_size_small">12sp</dimen>
 
+    <dimen name="bakelicious_widget_image_width">40dp</dimen>
+    <dimen name="bakelicious_widget_image_height">40dp</dimen>
+
     <dimen name="movie_details_label_textview_height">20dp</dimen>
 
-    <dimen name="movie_overview_layout_items_margin">4dp</dimen>
-    <dimen name="error_textview_padding">4dp</dimen>
-    <dimen name="error_textview_layout_margin">8dp</dimen>
+    <dimen name="bakelicious_default_layout_views_margin">4dp</dimen>
+    <dimen name="bakelicious_default_textview_padding">4dp</dimen>
+    <dimen name="bakelicious_default_textview_margin">8dp</dimen>
+
+    <dimen name="bakelicious_widget_imageview_margin">4dp</dimen>
 
     <dimen name="activity_bakelicious_tablayout_margin">2dp</dimen>
     <dimen name="activity_bakelicious_tablayout_margin_top">

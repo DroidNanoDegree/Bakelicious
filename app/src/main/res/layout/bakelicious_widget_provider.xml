@@ -15,7 +15,8 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primaryBackgroundColor">
 
     <GridView
         android:id="@+id/widget_grid_view"
@@ -24,28 +25,18 @@
         android:gravity="center"
         android:numColumns="1" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- TODO: apply style -->
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/add_recipes_to_favorite"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp" />
+            style="@style/Bakelicious.WidgetTextView.Default" />
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.2"
-            android:src="@drawable/ic_cake" />
+            style="@style/WidgetImageViewDefault" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>

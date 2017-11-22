@@ -11,6 +11,7 @@
     <string name="recipe_servers_label">serves</string>
     <string name="data_download_error">Failed to get data! Please check the internet connection and try again.</string>
 
+    <!-- Recipe Details -->
     <string name="add_recipes_to_favorite">No recipes added to favorites yet!</string>
     <string name="tab_ingredients">Ingredients</string>
     <string name="tab_instructions">Instructions</string>
@@ -26,4 +27,7 @@
     <!-- About the app fragment -->
     <string name="about_the_app">"Bakelicious (Baking App) is a project part of the Android Developer Nanodegree program by Udacity.</string>
 
+    <!-- Widget -->
+    <string name="open_recipe_details">Open recipe details</string>
+    <string name="recipe_prep_instruction">Recipe preparation instruction</string>
 </resources>

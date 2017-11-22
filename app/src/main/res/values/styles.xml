@@ -31,8 +31,8 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/primaryLight</item>
         <item name="android:textSize">@dimen/display1_font_size_medium</item>
-        <item name="android:padding">@dimen/error_textview_padding</item>
-        <item name="android:layout_margin">@dimen/error_textview_layout_margin</item>
+        <item name="android:padding">@dimen/bakelicious_default_textview_padding</item>
+        <item name="android:layout_margin">@dimen/bakelicious_default_textview_margin</item>
     </style>
 
     <style name="Bakelicious.TabLayout" parent="Base.Widget.Design.TabLayout">
@@ -77,6 +77,39 @@
         <item name="android:textSize">@dimen/action_bar_font_size</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="WidgetImageViewDefault">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:src">@drawable/ic_cake</item>
+        <item name="android:contentDescription">@string/add_recipes_to_favorite</item>
+    </style>
+
+    <style name="Bakelicious.WidgetTextView.Default" parent="Display1.Base.Style">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/display1_font_size_small</item>
+        <item name="android:padding">@dimen/bakelicious_default_textview_padding</item>
+        <item name="android:layout_margin">@dimen/bakelicious_default_textview_margin</item>
+        <item name="android:text">@string/add_recipes_to_favorite</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="Bakelicious.WidgetImageView" parent="WidgetImageViewDefault">
+        <item name="android:layout_width">@dimen/bakelicious_widget_image_width</item>
+        <item name="android:layout_height">@dimen/bakelicious_widget_image_height</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:contentDescription">@string/open_recipe_details</item>
+    </style>
+
+    <style name="Bakelicious.WidgetTextView" parent="Bakelicious.WidgetTextView.Default">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textSize">@dimen/display1_font_size_small</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>
