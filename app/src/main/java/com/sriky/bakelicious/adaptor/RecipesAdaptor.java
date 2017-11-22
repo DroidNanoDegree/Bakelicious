@@ -30,6 +30,8 @@ import com.sriky.bakelicious.utils.BakeliciousUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Locale;
+
 /**
  * Adaptor for the Recipes {@link RecyclerView} used in the
  * {@link com.sriky.bakelicious.ui.MasterListFragment}
@@ -76,7 +78,7 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
             holder.recipeName.setText(recipeName);
 
             /* set the recipe servings number */
-            holder.serves.setText(Integer.toString(getServings()));
+            holder.serves.setText(String.format(Locale.getDefault(), Integer.toString(getServings())));
 
             /* set the RecipeID as a tag so it can be passed to the onRecipeItemClicked Listener */
             int recipeId = getRecipeId();

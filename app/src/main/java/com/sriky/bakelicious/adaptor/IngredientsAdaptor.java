@@ -28,6 +28,7 @@ import com.sriky.bakelicious.model.Ingredient;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -78,7 +79,8 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
         mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure());
 
         //TODO ally support
-        mIngredientListItemBinding.tvQuantity.setText(Float.toString(ingredient.getQuantity()));
+        mIngredientListItemBinding.tvQuantity.setText(
+                String.format(Locale.getDefault(), Float.toString(ingredient.getQuantity())));
     }
 
     @Override

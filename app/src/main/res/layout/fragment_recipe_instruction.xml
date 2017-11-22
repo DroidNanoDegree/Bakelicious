@@ -38,7 +38,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="2dp"
             android:layout_marginStart="2dp"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:contentDescription="@string/recipe_prep_instruction"/>
 
         <TextView
             android:id="@+id/tv_instruction"
