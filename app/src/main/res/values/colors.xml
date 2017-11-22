@@ -16,6 +16,8 @@
 
     <color name="bakelicious_section_divider_color">#fefefe</color>
 
+    <!-- -->
+    <color name="primaryBackgroundColor">#edf9fa</color>
 
     <!-- Material DEFAULT colors -->
     <color name="material_drawer_primary">@color/primary</color>
@@ -25,29 +27,17 @@
 
     <!-- OVERWRITE THESE COLORS FOR A LIGHT THEME -->
     <!-- MaterialDrawer DEFAULT colors -->
-    <!-- <color name="material_drawer_background">@color/secondaryLightColor</color> -->
+    <color name="material_drawer_background">@color/primaryBackgroundColor</color>
+
     <!-- Material DEFAULT text / items colors -->
     <color name="material_drawer_primary_text">@color/primaryTextColor</color>
     <color name="material_drawer_primary_icon">@color/secondaryColor</color>
     <color name="material_drawer_secondary_text">@color/primaryTextColor</color>
     <color name="material_drawer_hint_text">@color/secondaryTextColor</color>
     <color name="material_drawer_divider">@color/bakelicious_section_divider_color</color>
+
     <!-- Material DEFAULT drawer colors -->
     <color name="material_drawer_selected">@color/secondaryLightColor</color>
     <color name="material_drawer_selected_text">@color/primaryTextColor</color>
     <color name="material_drawer_header_selection_text">@color/primaryTextColor</color>
-
-    <!-- OVERWRITE THESE COLORS FOR A DARK THEME -->
-    <!-- MaterialDrawer DEFAULT DARK colors
-    <color name="material_drawer_dark_background">@color/secondaryDarkColor</color> -->
-    <!-- MaterialDrawer DEFAULT DARK text / items colors
-    <color name="material_drawer_dark_primary_text">@color/primaryTextColor</color>
-    <color name="material_drawer_dark_primary_icon">@color/secondaryColor</color>
-    <color name="material_drawer_dark_secondary_text">@color/secondaryTextColor</color>
-    <color name="material_drawer_dark_hint_text">@color/secondaryTextColor</color>
-    <color name="material_drawer_dark_divider">@color/secondaryLightColor</color> -->
-    <!-- MaterialDrawer DEFAULT DARK drawer colors
-    <color name="material_drawer_dark_selected">@color/secondaryLightColor</color>
-    <color name="material_drawer_dark_selected_text">@color/secondaryTextColor</color>
-    <color name="material_drawer_dark_header_selection_text">@color/primaryTextColor</color> -->
 </resources>
