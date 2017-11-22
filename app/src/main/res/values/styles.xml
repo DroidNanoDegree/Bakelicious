@@ -32,7 +32,7 @@
         <item name="android:background">@color/primaryLight</item>
         <item name="android:textSize">@dimen/display1_font_size_medium</item>
         <item name="android:padding">@dimen/bakelicious_default_textview_padding</item>
-        <item name="android:layout_margin">@dimen/bakelicious_default_textview_margin</item>
+        <item name="android:layout_margin">@dimen/bakelicious_error_textview_margin</item>
     </style>
 
     <style name="Bakelicious.TabLayout" parent="Base.Widget.Design.TabLayout">
@@ -81,7 +81,9 @@
     <style name="WidgetImageViewDefault">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_margin">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:layout_marginLeft">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:layout_marginRight">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:layout_marginTop">@dimen/bakelicious_widget_imageview_margin</item>
         <item name="android:alpha">0.8</item>
         <item name="android:src">@drawable/ic_cake</item>
         <item name="android:contentDescription">@string/add_recipes_to_favorite</item>
@@ -90,7 +92,6 @@
     <style name="Bakelicious.WidgetTextView.Default" parent="Display1.Base.Style">
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">@dimen/display1_font_size_small</item>
-        <item name="android:padding">@dimen/bakelicious_default_textview_padding</item>
         <item name="android:layout_margin">@dimen/bakelicious_default_textview_margin</item>
         <item name="android:text">@string/add_recipes_to_favorite</item>
         <item name="android:layout_centerInParent">true</item>
@@ -105,8 +106,9 @@
 
     <style name="Bakelicious.WidgetTextView" parent="Bakelicious.WidgetTextView.Default">
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">@dimen/bakelicious_default_textview_margin</item>
+        <item name="android:layout_marginRight">@dimen/bakelicious_default_textview_margin</item>
         <item name="android:textSize">@dimen/display1_font_size_small</item>
         <item name="android:textStyle">bold</item>
     </style>

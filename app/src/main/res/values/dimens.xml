@@ -31,7 +31,9 @@
 
     <dimen name="bakelicious_default_layout_views_margin">4dp</dimen>
     <dimen name="bakelicious_default_textview_padding">4dp</dimen>
-    <dimen name="bakelicious_default_textview_margin">8dp</dimen>
+    <dimen name="bakelicious_default_textview_margin">4dp</dimen>
+
+    <dimen name="bakelicious_error_textview_margin">8dp</dimen>
 
     <dimen name="bakelicious_widget_imageview_margin">4dp</dimen>
 
