@@ -54,6 +54,7 @@ public class BakeliciousActivity extends AppCompatActivity
     private static final String MASTER_LIST_FRAGMENT_TAG = "master_list_fragment";
     private static final String RECIPE_DETAILS_FRAGMENT_TAG = "recipe_details_fragment";
     private static final String ABOUT_FRAGMENT_TAG = "about_fragment";
+    private static final String DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY = "drawer_selected_item_position";
 
     private Drawer mNavigationDrawer;
     private ActivityBakeliciousBinding mActivityBakeliciousBinding;
@@ -65,6 +66,7 @@ public class BakeliciousActivity extends AppCompatActivity
     private int mPreviousSelectedRecipeId;
     private MasterListFragment mMasterListFragment;
     private LibsSupportFragment mAboutFragment;
+    private int mRestoredSelectedItemPosition;
     /* the idling resource used for UI testing. */
     @Nullable
     private BakeliciousIdlingResource mIdlingResource;
@@ -81,6 +83,7 @@ public class BakeliciousActivity extends AppCompatActivity
             addMasterListFragment(null);
             Timber.plant(new Timber.DebugTree());
             mCanReplaceDetailsFragment = true;
+            mRestoredSelectedItemPosition = 0;
         } else {
             //set the value for the fields after a configuration change, this way fragments can
             //fragment transactions can be done properly.
@@ -92,6 +95,12 @@ public class BakeliciousActivity extends AppCompatActivity
                     (RecipeDetailsFragment) fm.findFragmentByTag(RECIPE_DETAILS_FRAGMENT_TAG);
 
             mAboutFragment = (LibsSupportFragment) fm.findFragmentByTag(ABOUT_FRAGMENT_TAG);
+
+            //get the previous selected item position of the drawer.
+            if (savedInstanceState.containsKey(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY)) {
+                mRestoredSelectedItemPosition =
+                        savedInstanceState.getInt(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY);
+            }
         }
 
         mIsTwoPane = findViewById(R.id.fl_recipe_details) != null;
@@ -112,6 +121,13 @@ public class BakeliciousActivity extends AppCompatActivity
         super.onStart();
         // register to get events only when in TwoPane.
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(DRAWER_SELECTED_ITEM_POSITION_BUNDLE_KEY,
+                mNavigationDrawer.getCurrentSelectedPosition());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -305,6 +321,7 @@ public class BakeliciousActivity extends AppCompatActivity
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
+                .withSelectedItemByPosition(mRestoredSelectedItemPosition)
                 .inflateMenu(R.menu.navigation_drawer_menu)
                 .withOnDrawerItemClickListener(BakeliciousActivity.this)
                 .build();
