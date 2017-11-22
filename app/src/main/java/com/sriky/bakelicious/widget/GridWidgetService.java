@@ -107,7 +107,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipes_widget);
 
-        // Update the plant image
+        // Update the text
         views.setTextViewText(R.id.tv_widget_recipe_name, recipeName);
 
         // Fill in the onClick PendingIntent Template using the specific recipeId for each item individually
