@@ -30,4 +30,7 @@
     <!-- Widget -->
     <string name="open_recipe_details">Open recipe details</string>
     <string name="recipe_prep_instruction">Recipe preparation instruction</string>
+    <string name="ingredient">INGREDIENT</string>
+    <string name="quantity">QUANTITY</string>
+    <string name="measure">MEASURE</string>
 </resources>

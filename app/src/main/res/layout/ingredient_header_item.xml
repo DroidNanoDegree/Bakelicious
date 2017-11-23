@@ -28,9 +28,13 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="@dimen/display1_font_size_medium"
-            android:textColor="@color/primaryTextColor"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textSize="@dimen/display1_font_size_large"
+            android:text="@string/ingredient"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:background="@color/primaryLight"/>
 
         <!-- A small divider -->
         <View
@@ -49,9 +53,13 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/divider1"
             app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="@dimen/display1_font_size_medium"
-            android:textColor="@color/primaryTextColor" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textSize="@dimen/display1_font_size_large"
+            android:text="@string/quantity"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:background="@color/primaryLight"/>
 
         <!-- A small divider -->
         <View
@@ -70,10 +78,13 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/divider2"
             app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="@dimen/display1_font_size_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textSize="@dimen/display1_font_size_large"
             android:text="@string/measure"
+            android:textStyle="bold"
+            android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            />
+            android:background="@color/primaryLight"/>
+
     </android.support.constraint.ConstraintLayout>
 </layout>

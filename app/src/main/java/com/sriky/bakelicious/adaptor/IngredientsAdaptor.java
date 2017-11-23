@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sriky.bakelicious.databinding.IngredientHeaderItemBinding;
 import com.sriky.bakelicious.databinding.IngredientListItemBinding;
 import com.sriky.bakelicious.model.Ingredient;
 
@@ -41,6 +42,10 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
 
     private List<Ingredient> mIngredients;
     private IngredientListItemBinding mIngredientListItemBinding;
+    private IngredientHeaderItemBinding mIngredientHeaderItemBinding;
+
+    private static final int VIEW_TYPE_HEADER = 0;
+    private static final int VIEW_TYPE_LIST_ITEM = 1;
 
     public IngredientsAdaptor(String ingredients) {
         if (ingredients == null || ingredients.isEmpty()) {
@@ -61,31 +66,69 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
     @Override
     public IngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        mIngredientListItemBinding =
-                IngredientListItemBinding.inflate(layoutInflater, parent, false);
 
-        return new IngredientsViewHolder(mIngredientListItemBinding.getRoot());
+        switch (viewType) {
+            case VIEW_TYPE_HEADER: {
+                mIngredientHeaderItemBinding =
+                        IngredientHeaderItemBinding.inflate(layoutInflater, parent, false);
+
+                return new IngredientsViewHolder(mIngredientHeaderItemBinding.getRoot());
+            }
+
+            case VIEW_TYPE_LIST_ITEM: {
+                mIngredientListItemBinding =
+                        IngredientListItemBinding.inflate(layoutInflater, parent, false);
+
+                return new IngredientsViewHolder(mIngredientListItemBinding.getRoot());
+            }
+
+            default:{
+                throw new RuntimeException("Unsupported viewType for id:" + viewType);
+            }
+        }
     }
 
     @Override
     public void onBindViewHolder(IngredientsViewHolder holder, int position) {
-        Ingredient ingredient = mIngredients.get(position);
 
-        //TODO ally support
-        mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient());
-        mIngredientListItemBinding.tvIngredient.refreshDrawableState();
+        switch (getItemViewType(position)) {
+            case VIEW_TYPE_HEADER: {
+                break;
+            }
 
-        //TODO ally support
-        mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure());
+            case VIEW_TYPE_LIST_ITEM: {
+                Ingredient ingredient = mIngredients.get(position);
 
-        //TODO ally support
-        mIngredientListItemBinding.tvQuantity.setText(
-                String.format(Locale.getDefault(), Float.toString(ingredient.getQuantity())));
+                //TODO ally support
+                mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient());
+                mIngredientListItemBinding.tvIngredient.refreshDrawableState();
+
+                //TODO ally support
+                mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure());
+
+                //TODO ally support
+                mIngredientListItemBinding.tvQuantity.setText(
+                        String.format(Locale.getDefault(), Float.toString(ingredient.getQuantity())));
+                break;
+            }
+
+            default: {
+                throw new RuntimeException("Unsupported viewType!");
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
         return mIngredients == null ? 0 : mIngredients.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position == 0){
+            return VIEW_TYPE_HEADER;
+        }
+        return VIEW_TYPE_LIST_ITEM;
     }
 
     public class IngredientsViewHolder extends RecyclerView.ViewHolder {
