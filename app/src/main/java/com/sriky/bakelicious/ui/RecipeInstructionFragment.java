@@ -17,8 +17,10 @@ package com.sriky.bakelicious.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,11 +62,13 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
     public static final String INSTRUCTION_DESCRIPTION_BUNDLE_KEY = "instruction_desc";
     public static final String INSTRUCTION_VIDEO_URL_BUNDLE_KEY = "instruction_video_url";
     public static final String INSTRUCTION_THUMBNAIL_URL_BUNDLE_KEY = "instruction_thumbnail_url";
+    public static final String EXO_PLAYER_POSITION_BUNDLE_KEY = "exo_player_position";
 
     private FragmentRecipeInstructionBinding mFragmentRecipeInstructionBinding;
     private SimpleExoPlayer mExoPlayer;
     private boolean mIsPlayerSetup;
     private String mShortDesc;
+    private long mExoPlayerPosition;
 
     public RecipeInstructionFragment() {
     }
@@ -82,11 +86,11 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
         String videoUrl = bundle.getString(INSTRUCTION_VIDEO_URL_BUNDLE_KEY);
         String thumbUrl = bundle.getString(INSTRUCTION_THUMBNAIL_URL_BUNDLE_KEY);
 
-        if (mShortDesc == null || mShortDesc.isEmpty()) {
+        if (TextUtils.isEmpty(mShortDesc)) {
             throw new RuntimeException("ShortDesc not set to bundle!");
         }
 
-        if (desc == null || desc.isEmpty()) {
+        if (TextUtils.isEmpty(desc)) {
             throw new RuntimeException("Recipe description not set to bundle!");
         }
 
@@ -95,7 +99,12 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
         //set the video, if url exists.
         if (videoUrl != null && !videoUrl.isEmpty()) {
 
-            Timber.d("VideoUrl: %s", videoUrl);
+            mExoPlayerPosition = 0;
+            if (savedInstanceState != null &&
+                    savedInstanceState.containsKey(EXO_PLAYER_POSITION_BUNDLE_KEY)) {
+                mExoPlayerPosition = savedInstanceState.getLong(EXO_PLAYER_POSITION_BUNDLE_KEY);
+            }
+            Timber.d("VideoUrl: %s, mExoPlayerPosition: %d", videoUrl, mExoPlayerPosition);
             initializePlayer(Uri.parse(videoUrl));
 
         } else if (thumbUrl != null && !thumbUrl.isEmpty()) {
@@ -131,7 +140,6 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        //Timber.d("setUserVisibleHint() %s", mShortDesc);
         if (mIsPlayerSetup) {
             if (isVisibleToUser) {
                 //Timber.d("Playing video playback %s", mShortDesc);
@@ -147,14 +155,19 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
     public void onPause() {
         super.onPause();
         if (mIsPlayerSetup) {
-            //Timber.d("onPause() - Stopping video playback %s", mShortDesc);
             mExoPlayer.setPlayWhenReady(false);
         }
+        releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putLong(EXO_PLAYER_POSITION_BUNDLE_KEY, mExoPlayerPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
-        releasePlayer();
         EventBus.getDefault().unregister(RecipeInstructionFragment.this);
         super.onDestroy();
     }
@@ -195,6 +208,7 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.seekTo(mExoPlayerPosition);
             mIsPlayerSetup = true;
         }
     }
@@ -204,6 +218,7 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
      */
     private void releasePlayer() {
         if (mExoPlayer != null) {
+            mExoPlayerPosition = mExoPlayer.getCurrentPosition();
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
