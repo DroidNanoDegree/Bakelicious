@@ -315,17 +315,10 @@ public class BakeliciousActivity extends AppCompatActivity
         //set the actionbar title
         mActivityBakeliciousBinding.toolbarTitle.setText(getString(R.string.action_discover));
 
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(true)
-                .withHeaderBackground(R.drawable.ic_launcher_background)
-                .build();
-
         // Create the drawer
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mActivityBakeliciousBinding.toolbar)
-                .withAccountHeader(headerResult)
                 .withSelectedItemByPosition(mRestoredSelectedItemPosition)
                 .inflateMenu(R.menu.navigation_drawer_menu)
                 .withOnDrawerItemClickListener(BakeliciousActivity.this)
