@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.sriky.bakelicious;
+package com.sriky.bakelicious.service;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.app.IntentService;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 
-import com.sriky.bakelicious.utils.LoggerUtils;
+import com.sriky.bakelicious.sync.BakeliciousSyncTask;
 
-public class BakeliciousActivity extends AppCompatActivity {
+/**
+ * Background service used to fetch data from API.
+ */
+
+public class BakeliciousIntentService extends IntentService {
+
+    public BakeliciousIntentService() {
+        super(BakeliciousIntentService.class.getSimpleName());
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bakelicious);
-        LoggerUtils.initLogger(BakeliciousActivity.class.getSimpleName());
+    protected void onHandleIntent(@Nullable Intent intent) {
+        BakeliciousSyncTask.fetchRecipes(this);
     }
 }

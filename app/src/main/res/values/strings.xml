@@ -1,3 +1,36 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Bakelicious</string>
+
+    <!-- Navigation drawer -->
+    <string name="drawer_item_menu_drawer">Recipes</string>
+    <string name="action_about">About</string>
+    <string name="action_discover">Discover</string>
+    <string name="action_favorite">Favorite</string>
+
+    <!-- Recipes recyclerview list item-->
+    <string name="recipe_servers_label">serves</string>
+    <string name="data_download_error">Failed to get data! Please check the internet connection and try again.</string>
+
+    <!-- Recipe Details -->
+    <string name="add_recipes_to_favorite">No recipes added to favorites yet!</string>
+    <string name="tab_ingredients">Ingredients</string>
+    <string name="tab_instructions">Instructions</string>
+
+    <!-- Toast messages -->
+    <string name="recipe_added_to_favorites">
+        <xliff:g id="ratings">%s</xliff:g> added to favorites!
+    </string>
+    <string name="recipe_removed_from_favorites">
+        <xliff:g id="ratings">%s</xliff:g> removed from favorites!
+    </string>
+
+    <!-- About the app fragment -->
+    <string name="about_the_app">"Bakelicious (Baking App) is a project part of the Android Developer Nanodegree program by Udacity.</string>
+
+    <!-- Widget -->
+    <string name="open_recipe_details">Open recipe details</string>
+    <string name="recipe_prep_instruction">Recipe preparation instruction</string>
+    <string name="ingredient">INGREDIENT</string>
+    <string name="quantity">QUANTITY</string>
+    <string name="measure">MEASURE</string>
 </resources>

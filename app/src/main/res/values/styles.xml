@@ -1,11 +1,116 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/secondaryLightColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@color/secondaryLightColor</item>
+    </style>
+
+    <style name="Display1.Base.Style" parent="@style/TextAppearance.AppCompat.Display1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/display1_font_size_large</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Bakelicious.ProgressBar" parent="@style/Base.Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+    </style>
+
+    <style name="Bakelicious.ErrorTextView" parent="Display1.Base.Style">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@color/primaryLight</item>
+        <item name="android:textSize">@dimen/display1_font_size_medium</item>
+        <item name="android:padding">@dimen/bakelicious_default_textview_padding</item>
+        <item name="android:layout_margin">@dimen/bakelicious_error_textview_margin</item>
+    </style>
+
+    <style name="Bakelicious.TabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/activity_bakelicious_tablayout_margin_left
+        </item>
+        <item name="android:layout_marginRight">@dimen/activity_bakelicious_tablayout_margin_right
+        </item>
+        <item name="android:background">@color/primary</item>
+        <item name="tabSelectedTextColor">@color/primaryTextColor</item>
+        <item name="tabTextColor">@color/primaryTextColor</item>
+        <item name="android:gravity">fill</item>
+    </style>
+
+    <style name="WrapContentViewPager">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">
+            @dimen/activity_bakelicious_wrap_content_view_pager_margin_left
+        </item>
+        <item name="android:layout_marginRight">
+            @dimen/activity_bakelicious_wrap_content_view_pager_margin_right
+        </item>
+        <item name="android:layout_marginBottom">
+            @dimen/activity_bakelicious_wrap_content_view_pager_margin_bottom
+        </item>
+    </style>
+
+
+    <style name="Bakelicious.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:actionBarStyle">@style/Material.DrawerArrowStyle</item>
+        <item name="titleTextColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="Bakelicious.Toolbar.Text" parent="Display1.Base.Style">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/action_bar_font_size</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="WidgetImageViewDefault">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:layout_marginRight">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:layout_marginTop">@dimen/bakelicious_widget_imageview_margin</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:src">@drawable/ic_cake</item>
+        <item name="android:contentDescription">@string/add_recipes_to_favorite</item>
+    </style>
+
+    <style name="Bakelicious.WidgetTextView.Default" parent="Display1.Base.Style">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/display1_font_size_small</item>
+        <item name="android:layout_margin">@dimen/bakelicious_default_textview_margin</item>
+        <item name="android:text">@string/add_recipes_to_favorite</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="Bakelicious.WidgetImageView" parent="WidgetImageViewDefault">
+        <item name="android:layout_width">@dimen/bakelicious_widget_image_width</item>
+        <item name="android:layout_height">@dimen/bakelicious_widget_image_height</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:contentDescription">@string/open_recipe_details</item>
+    </style>
+
+    <style name="Bakelicious.WidgetTextView" parent="Bakelicious.WidgetTextView.Default">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">@dimen/bakelicious_default_textview_margin</item>
+        <item name="android:layout_marginRight">@dimen/bakelicious_default_textview_margin</item>
+        <item name="android:textSize">@dimen/display1_font_size_small</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

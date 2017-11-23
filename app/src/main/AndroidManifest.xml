@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sriky.bakelicious">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,13 +12,63 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BakeliciousActivity">
+
+        <!-- Main/Launcher activity -->
+        <activity
+            android:name=".ui.BakeliciousActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Recipe Detail Activity -->
+        <activity
+            android:name=".ui.RecipeDetailActivity"
+            android:parentActivityName=".ui.BakeliciousActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.BakeliciousActivity" />
+        </activity>
+
+        <!-- The ContentProvider -->
+        <provider
+            android:name=".provider.generated.BakeliciousContentProvider"
+            android:authorities="com.sriky.bakelicious"
+            android:exported="true" />
+
+        <!-- Firebase JobService responsible for periodically syncing data in the background -->
+        <service
+            android:name=".sync.BakeliciousFirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <!-- IntentService responsible for fetching recipe data -->
+        <service
+            android:name=".service.BakeliciousIntentService"
+            android:exported="false" />
+
+        <!-- Recipes Widget -->
+        <receiver android:name=".widget.BakeliciousWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/bakelicious_widget_provider_info" />
+        </receiver>
+
+        <!-- Widget GridView service -->
+        <service
+            android:name=".widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

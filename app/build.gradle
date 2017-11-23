@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.sriky.bakelicious"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion 17
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -16,15 +17,78 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    /* enable data binding */
+    dataBinding.enabled = true;
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.orhanobut:logger:2.1.1'
 
+    /* Timber dependencies used for logging */
+    implementation 'com.jakewharton.timber:timber:4.6.0'
+
+    /* Schematic dependencies for ContentProvider */
+    annotationProcessor 'net.simonvt.schematic:schematic-compiler:0.7.0'
+    implementation 'net.simonvt.schematic:schematic:0.7.0'
+
+    /* Retrofit networking library */
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+
+    /* GSON with Retrofit */
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    /* Setho for debugging */
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    /* Firebase JobDispatcher */
+    implementation 'com.firebase:firebase-jobdispatcher:0.5.2'
+
+    /* Material Drawer */
+    implementation("com.mikepenz:materialdrawer:6.0.1@aar") {
+        transitive = true
+    }
+
+    /* Event Bus */
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    /* ExoPlayer */
+    implementation 'com.google.android.exoplayer:exoplayer:r2.2.0'
+
+    /* Picasso */
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    /* About screen helper */
+    implementation('com.mikepenz:aboutlibraries:6.0.0@aar') {
+        transitive = true
+    }
+    implementation 'com.android.support:cardview-v7:27.0.1'
+
+    implementation 'com.android.support:recyclerview-v7:27.0.1'
+    implementation 'com.android.support:support-annotations:27.0.1'
+    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
+
+    /* For testing */
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support:support-annotations:27.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+
+    /* For testing RecyclerViews */
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:2.2') {
+        // Necessary to avoid version conflicts
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
 }

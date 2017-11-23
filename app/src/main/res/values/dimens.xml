@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2017 Srikanth Basappa
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and limitations under the License.
+  -->
+
+<resources>
+    <dimen name="action_bar_font_size">20sp</dimen>
+
+    <dimen name="display1_font_size_large">16sp</dimen>
+    <dimen name="display1_font_size_medium">14sp</dimen>
+    <dimen name="display1_font_size_small">12sp</dimen>
+
+    <dimen name="caption_font_size_large">16sp</dimen>
+    <dimen name="caption_font_size_medium">14sp</dimen>
+    <dimen name="caption_font_size_small">12sp</dimen>
+
+    <dimen name="bakelicious_widget_image_width">40dp</dimen>
+    <dimen name="bakelicious_widget_image_height">40dp</dimen>
+
+    <dimen name="movie_details_label_textview_height">20dp</dimen>
+
+    <dimen name="bakelicious_default_layout_views_margin">4dp</dimen>
+    <dimen name="bakelicious_default_textview_padding">4dp</dimen>
+    <dimen name="bakelicious_default_textview_margin">4dp</dimen>
+
+    <dimen name="bakelicious_error_textview_margin">8dp</dimen>
+
+    <dimen name="bakelicious_widget_imageview_margin">4dp</dimen>
+
+    <dimen name="activity_bakelicious_tablayout_margin">2dp</dimen>
+    <dimen name="activity_bakelicious_tablayout_margin_top">
+        @dimen/activity_bakelicious_tablayout_margin
+    </dimen>
+    <dimen name="activity_bakelicious_tablayout_margin_left">
+        @dimen/activity_bakelicious_tablayout_margin
+    </dimen>
+    <dimen name="activity_bakelicious_tablayout_margin_right">
+        @dimen/activity_bakelicious_tablayout_margin
+    </dimen>
+
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin">2dp</dimen>
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin_bottom">
+        @dimen/activity_bakelicious_wrap_content_view_pager_margin
+    </dimen>
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin_left">
+        @dimen/activity_bakelicious_wrap_content_view_pager_margin
+    </dimen>
+    <dimen name="activity_bakelicious_wrap_content_view_pager_margin_right">
+        @dimen/activity_bakelicious_wrap_content_view_pager_margin
+    </dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
+</resources>

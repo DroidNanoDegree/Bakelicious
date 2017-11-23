@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- Primary colors -->
+    <color name="primary">#80deea</color>
+    <color name="primaryLight">#b4ffff</color>
+    <color name="primaryDark">#4bacb8</color>
+
+    <!-- Secondary colors -->
+    <color name="secondaryColor">#f8bbd0</color>
+    <color name="secondaryLightColor">#ffeeff</color>
+    <color name="secondaryDarkColor">#c48b9f</color>
+
+    <!-- Text colors -->
+    <color name="primaryTextColor">#795548</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="bakelicious_section_divider_color">#fefefe</color>
+
+    <!-- -->
+    <color name="primaryBackgroundColor">#edf9fa</color>
+
+    <!-- Material DEFAULT colors -->
+    <color name="material_drawer_primary">@color/primary</color>
+    <color name="material_drawer_primary_dark">@color/primaryDark</color>
+    <color name="material_drawer_primary_light">@color/primaryLight</color>
+    <color name="material_drawer_accent">@color/secondaryLightColor</color>
+
+    <!-- OVERWRITE THESE COLORS FOR A LIGHT THEME -->
+    <!-- MaterialDrawer DEFAULT colors -->
+    <color name="material_drawer_background">@color/primaryBackgroundColor</color>
+
+    <!-- Material DEFAULT text / items colors -->
+    <color name="material_drawer_primary_text">@color/primaryTextColor</color>
+    <color name="material_drawer_primary_icon">@color/secondaryColor</color>
+    <color name="material_drawer_secondary_text">@color/primaryTextColor</color>
+    <color name="material_drawer_hint_text">@color/secondaryTextColor</color>
+    <color name="material_drawer_divider">@color/bakelicious_section_divider_color</color>
+
+    <!-- Material DEFAULT drawer colors -->
+    <color name="material_drawer_selected">@color/secondaryLightColor</color>
+    <color name="material_drawer_selected_text">@color/primaryTextColor</color>
+    <color name="material_drawer_header_selection_text">@color/primaryTextColor</color>
 </resources>
