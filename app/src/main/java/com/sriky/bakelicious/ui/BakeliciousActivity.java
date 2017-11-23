@@ -66,7 +66,7 @@ public class BakeliciousActivity extends AppCompatActivity
     private MasterListFragment mMasterListFragment;
     private LibsSupportFragment mAboutFragment;
     private int mRestoredSelectedItemPosition;
-    /* the idling resource used for UI testing. */
+    // the idling resource used for UI testing.
     @Nullable
     private BakeliciousIdlingResource mIdlingResource;
 
