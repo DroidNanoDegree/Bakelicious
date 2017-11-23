@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,7 +42,7 @@ public class RecipeInstructionsPagerAdaptor extends FragmentStatePagerAdapter {
 
     public RecipeInstructionsPagerAdaptor(FragmentManager fm, String instructions) {
         super(fm);
-        if (instructions == null || instructions.isEmpty()) {
+        if (TextUtils.isEmpty(instructions)) {
             Timber.e("Instructions string is empty!!!");
             return;
         }
