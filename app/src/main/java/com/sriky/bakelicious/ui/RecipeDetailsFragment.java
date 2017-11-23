@@ -157,7 +157,7 @@ public class RecipeDetailsFragment extends Fragment
     public void onTabSelected(TabLayout.Tab tab) {
         int position = tab.getPosition();
         //Timber.d("onTabSelected: tab.position: %d", position);
-        
+
         //broadcast an event.
         EventBus.getDefault().post(new Message.EventRecipeDetailsTabChanged());
         mFragmentRecipeDetailsBinding.vpRecipeDetails.setCurrentItem(position);
