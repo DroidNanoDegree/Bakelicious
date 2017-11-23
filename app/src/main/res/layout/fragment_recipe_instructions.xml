@@ -24,16 +24,14 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/pager_recipe_instructions"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v4.view.PagerTitleStrip
-                android:id="@+id/pager_title_strip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp" />
-        </android.support.v4.view.ViewPager>
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingStart="20dp" />
 
     </LinearLayout>
 

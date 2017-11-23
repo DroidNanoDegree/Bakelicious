@@ -113,6 +113,9 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
             mFragmentRecipeInstructionBinding.ivInstruction.setVisibility(View.GONE);
         }
 
+        //set the instruction header
+        mFragmentRecipeInstructionBinding.tvInstructionTitle.setText(mShortDesc);
+
         //set the desc.
         String regexMatchingNonWordChars = "^\\d+\\W+";
         desc = desc.replaceAll(regexMatchingNonWordChars, "");
