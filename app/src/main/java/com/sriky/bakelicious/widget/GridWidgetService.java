@@ -35,8 +35,6 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-import static android.view.View.VISIBLE;
-
 /**
  * Service responsible for displaying recipes in the widget's grid view.
  */
@@ -107,12 +105,12 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        if(mIngredientsList == null) return 0;
+        if (mIngredientsList == null) return 0;
 
         //get the total count of all ingredients as they will be displayed as a list in the
         //gridview.
         int ret = 0;
-        for(List<Ingredient> ingredients : mIngredientsList) {
+        for (List<Ingredient> ingredients : mIngredientsList) {
             ret += ingredients.size();
             ret += 1; //plus one for the header for the header.
         }
@@ -130,10 +128,10 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         if (mIngredientsList == null || mIngredientsList.size() == 0) return null;
 
         int count = 0, idx = 0, header = 1;
-        for(List<Ingredient> ingredients : mIngredientsList) {
+        for (List<Ingredient> ingredients : mIngredientsList) {
             int ingredientsSize = ingredients.size();
 
-            if((header + count + ingredientsSize) > position) {
+            if ((header + count + ingredientsSize) > position) {
                 break;
             }
             count += (ingredientsSize + header);
@@ -145,7 +143,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 position, count, normalizedPosition);
 
         //if it is the first item then display the recipename.
-        if(normalizedPosition == 0) {
+        if (normalizedPosition == 0) {
 
             RemoteViews views = new RemoteViews(mContext.getPackageName(),
                     R.layout.widget_recipe_ingredient_list_item_header);

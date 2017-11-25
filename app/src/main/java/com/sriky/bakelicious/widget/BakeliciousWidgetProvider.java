@@ -15,7 +15,6 @@
 
 package com.sriky.bakelicious.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -23,7 +22,6 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.sriky.bakelicious.R;
-import com.sriky.bakelicious.ui.RecipeDetailActivity;
 
 /**
  * Implementation of App Widget functionality.
