@@ -154,7 +154,7 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
     @Override
     public void onPause() {
         super.onPause();
-        if (mIsPlayerSetup) {
+        if (mExoPlayer != null && mIsPlayerSetup) {
             mExoPlayer.setPlayWhenReady(false);
         }
         releasePlayer();
@@ -219,6 +219,7 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
     private void releasePlayer() {
         if (mExoPlayer != null) {
             mExoPlayerPosition = mExoPlayer.getCurrentPosition();
+            mIsPlayerSetup = false;
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
