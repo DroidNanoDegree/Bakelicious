@@ -21,6 +21,14 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="Caption.Base.Style" parent="Base.TextAppearance.AppCompat.Caption">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/caption_font_size_large</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
     <style name="Bakelicious.ProgressBar" parent="@style/Base.Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -97,20 +105,20 @@
         <item name="android:layout_centerInParent">true</item>
     </style>
 
-    <style name="Bakelicious.WidgetImageView" parent="WidgetImageViewDefault">
-        <item name="android:layout_width">@dimen/bakelicious_widget_image_width</item>
-        <item name="android:layout_height">@dimen/bakelicious_widget_image_height</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:contentDescription">@string/open_recipe_details</item>
-    </style>
-
     <style name="Bakelicious.WidgetTextView" parent="Bakelicious.WidgetTextView.Default">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginLeft">@dimen/bakelicious_default_textview_margin</item>
         <item name="android:layout_marginRight">@dimen/bakelicious_default_textview_margin</item>
         <item name="android:textSize">@dimen/display1_font_size_small</item>
+    </style>
+
+    <style name="Bakelicious.WidgetTextView.Header" parent="Caption.Base.Style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@color/primary</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/caption_font_size_small</item>
     </style>
 
 </resources>

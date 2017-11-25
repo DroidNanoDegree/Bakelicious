@@ -18,15 +18,22 @@ package com.sriky.bakelicious.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sriky.bakelicious.R;
+import com.sriky.bakelicious.model.Ingredient;
 import com.sriky.bakelicious.provider.BakeliciousContentProvider;
 import com.sriky.bakelicious.provider.RecipeContract;
-import com.sriky.bakelicious.ui.RecipeDetailActivity;
-import com.sriky.bakelicious.utils.BakeliciousUtils;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import timber.log.Timber;
 
 /**
  * Service responsible for displaying recipes in the widget's grid view.
@@ -42,16 +49,11 @@ public class GridWidgetService extends RemoteViewsService {
 class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String[] recipesProjection = {RecipeContract.COLUMN_RECIPE_NAME,
-            RecipeContract.COLUMN_RECIPE_ID,
-            RecipeContract.COLUMN_RECIPE_FAVORITE,
-            RecipeContract.COLUMN_RECIPE_INSTRUCTIONS,
             RecipeContract.COLUMN_RECIPE_INGREDIENTS};
     private static final int INDEX_RECIPE_NAME = 0;
-    private static final int INDEX_RECIPE_ID = 1;
-    private static final int INDEX_RECIPE_FAVORITE = 2;
-    private static final int INDEX_RECIPE_INSTRUCTIONS = 3;
-    private static final int INDEX_RECIPE_INGREDIENTS = 4;
+    private static final int INDEX_RECIPE_INGREDIENTS = 1;
     Context mContext;
+    List<List<Ingredient>> mIngredientsList;
     Cursor mCursor;
 
     public GridRemoteViewsFactory(Context applicationContext) {
@@ -77,6 +79,22 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 RecipeContract.COLUMN_RECIPE_FAVORITE + " =? ",
                 new String[]{"1"},
                 null);
+
+        if (mIngredientsList == null) {
+            mIngredientsList = new ArrayList<>();
+        }
+        mIngredientsList.clear();
+
+        while (mCursor.moveToNext()) {
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Ingredient>>() {
+            }.getType();
+            List<Ingredient> ingredientList =
+                    gson.fromJson(mCursor.getString(INDEX_RECIPE_INGREDIENTS), listType);
+
+            mIngredientsList.add(ingredientList);
+        }
     }
 
     @Override
@@ -87,8 +105,16 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        if (mCursor == null) return 0;
-        return mCursor.getCount();
+        if (mIngredientsList == null) return 0;
+
+        //get the total count of all ingredients as they will be displayed as a list in the
+        //gridview.
+        int ret = 0;
+        for (List<Ingredient> ingredients : mIngredientsList) {
+            ret += ingredients.size();
+            ret += 1; //plus one for the header for the header.
+        }
+        return ret;
     }
 
     /**
@@ -99,30 +125,50 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
      */
     @Override
     public RemoteViews getViewAt(int position) {
-        if (mCursor == null || mCursor.getCount() == 0) return null;
-        mCursor.moveToPosition(position);
+        if (mIngredientsList == null || mIngredientsList.size() == 0) return null;
 
-        String recipeName = mCursor.getString(INDEX_RECIPE_NAME);
-        int recipeId = mCursor.getInt(INDEX_RECIPE_ID);
+        int count = 0, idx = 0, header = 1;
+        for (List<Ingredient> ingredients : mIngredientsList) {
+            int ingredientsSize = ingredients.size();
 
-        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipes_widget);
+            if ((header + count + ingredientsSize) > position) {
+                break;
+            }
+            count += (ingredientsSize + header);
+            idx++;
+        }
 
-        // Update the text
-        views.setTextViewText(R.id.tv_widget_recipe_name, recipeName);
+        int normalizedPosition = position - count;
+        Timber.d("getViewAt(), position: %d, count: %d, normalizedPosition: %d",
+                position, count, normalizedPosition);
 
-        // Fill in the onClick PendingIntent Template using the specific recipeId for each item individually
-        Bundle extras = new Bundle();
-        extras.putInt(BakeliciousUtils.RECIPE_ID_BUNDLE_KEY, recipeId);
-        extras.putInt(BakeliciousUtils.RECIPE_FAVORITE_BUNDLE_KEY, mCursor.getInt(INDEX_RECIPE_FAVORITE));
-        extras.putString(BakeliciousUtils.RECIPE_NAME_BUNDLE_KEY, recipeName);
-        extras.putString(BakeliciousUtils.RECIPE_INSTRUCTIONS_BUNDLE_KEY, mCursor.getString(INDEX_RECIPE_INSTRUCTIONS));
-        extras.putString(BakeliciousUtils.RECIPE_INGREDIENTS_BUNDLE_KEY, mCursor.getString(INDEX_RECIPE_INGREDIENTS));
-        Intent fillInIntent = new Intent();
-        fillInIntent.putExtra(RecipeDetailActivity.RECIPE_INFO_BUNDLE_KEY, extras);
-        views.setOnClickFillInIntent(R.id.iv_widget_recipe, fillInIntent);
+        //if it is the first item then display the recipename.
+        if (normalizedPosition == 0) {
 
-        return views;
+            RemoteViews views = new RemoteViews(mContext.getPackageName(),
+                    R.layout.widget_recipe_ingredient_list_item_header);
 
+            mCursor.moveToPosition(idx);
+            views.setTextViewText(R.id.tv_widget_recipe_name, mCursor.getString(INDEX_RECIPE_NAME));
+
+            return views;
+        } else {
+
+            normalizedPosition--; //accounting for the header.
+            RemoteViews views = new RemoteViews(mContext.getPackageName(),
+                    R.layout.widget_recipe_ingredient_list_item);
+
+            Ingredient ingredient = mIngredientsList.get(idx).get(normalizedPosition);
+
+            // set the value for the TextViews
+            views.setTextViewText(R.id.tv_widget_ingredient,
+                    ingredient.getIngredient().toUpperCase());
+            views.setTextViewText(R.id.tv_widget_units, String.format(Locale.getDefault(),
+                    "%s", ingredient.getQuantity()));
+            views.setTextViewText(R.id.tv_widget_measure, ingredient.getMeasure().toLowerCase());
+
+            return views;
+        }
     }
 
     @Override
@@ -132,7 +178,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getViewTypeCount() {
-        return 1; // Treat all items in the GridView the same
+        return 2;
     }
 
     @Override

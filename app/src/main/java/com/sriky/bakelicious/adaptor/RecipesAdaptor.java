@@ -15,14 +15,19 @@
 
 package com.sriky.bakelicious.adaptor;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.event.Message;
 import com.sriky.bakelicious.provider.RecipeContract;
@@ -39,11 +44,12 @@ import java.util.Locale;
 
 public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesViewHolder> {
 
+    private Context mContext;
     private Cursor mRecipesCursor;
     private boolean mEventAlreadySent;
-    private int mPreviousItemsCount;
 
-    public RecipesAdaptor(Cursor cursor) {
+    public RecipesAdaptor(Context context, Cursor cursor) {
+        mContext = context;
         mRecipesCursor = cursor;
     }
 
@@ -73,12 +79,24 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
     @Override
     public void onBindViewHolder(RecipesViewHolder holder, int position) {
         if (mRecipesCursor != null && mRecipesCursor.moveToPosition(position)) {
-            /* set the recipe name */
+            // set the recipe name
             String recipeName = getRecipeName();
             holder.recipeName.setText(recipeName);
 
-            /* set the recipe servings number */
+            // set the recipe servings number
             holder.serves.setText(String.format(Locale.getDefault(), Integer.toString(getServings())));
+
+            //check if there an image url, if one exists then set the image for the recipe.
+            String imageUrl = getRecipeImageUrlString();
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Picasso.with(mContext)
+                        .load(Uri.parse(imageUrl))
+                        .placeholder(R.drawable.ic_cake_loading)
+                        .error(R.drawable.ic_error_pink)
+                        .into(holder.imageView);
+            } else {
+                holder.imageView.setVisibility(View.GONE);
+            }
 
             /* set the RecipeID as a tag so it can be passed to the onRecipeItemClicked Listener */
             int recipeId = getRecipeId();
@@ -151,6 +169,11 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
                 getColumnIndex(RecipeContract.COLUMN_RECIPE_INSTRUCTIONS));
     }
 
+    private String getRecipeImageUrlString() {
+        return mRecipesCursor.getString(
+                getColumnIndex(RecipeContract.COLUMN_RECIPE_IMAGE_URL));
+    }
+
     /**
      * Helper to return column index for the specified column name from the mRecipesCursor.
      *
@@ -168,11 +191,13 @@ public class RecipesAdaptor extends RecyclerView.Adapter<RecipesAdaptor.RecipesV
 
         public TextView recipeName;
         public TextView serves;
+        public ImageView imageView;
 
         public RecipesViewHolder(View itemView) {
             super(itemView);
             recipeName = itemView.findViewById(R.id.tv_recipe_name);
             serves = itemView.findViewById(R.id.tv_serves);
+            imageView = itemView.findViewById(R.id.iv_recipe);
             itemView.setOnClickListener(this);
         }
 

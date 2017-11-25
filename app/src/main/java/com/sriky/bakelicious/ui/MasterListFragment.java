@@ -73,7 +73,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
         showProgressBarAndHideErrorMessage();
 
         /* setup the recipes RecyclerView */
-        mRecipesAdaptor = new RecipesAdaptor(null);
+        mRecipesAdaptor = new RecipesAdaptor(getContext(), null);
         mMasterListBinding.rvRecipes.setAdapter(mRecipesAdaptor);
 
         mMasterListBinding.rvRecipes.setHasFixedSize(true);

@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.sriky.bakelicious.intent;
+package com.sriky.bakelicious.ui;
 
+import android.app.Activity;
+import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 
 import com.sriky.bakelicious.R;
 import com.sriky.bakelicious.ui.BakeliciousActivity;
 import com.sriky.bakelicious.ui.RecipeDetailActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +42,7 @@ import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtraWithKey;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * Class to test intents used in Bakelicious.
@@ -43,9 +50,28 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 public class BakeliciousIntentTests {
+
+    private Activity mActivity;
+
     @Rule
     public IntentsTestRule<BakeliciousActivity> mActivityRule = new IntentsTestRule<>(
             BakeliciousActivity.class);
+    private IdlingResource mIdlingResource;
+
+
+    @Before
+    public void registerIdlingResource() {
+        mIdlingResource = mActivityRule.getActivity().getIdlingResource();
+        mActivity = mActivityRule.getActivity();
+        IdlingRegistry.getInstance().register(mIdlingResource);
+        //Assumption this test should only run on phones and should be ignored on tables.
+        assumeTrue(!isScreenSw600dp());
+    }
+
+    @After
+    public void unregisterIdlingResources() {
+        IdlingRegistry.getInstance().unregister(mIdlingResource);
+    }
 
     @Test
     public void test_LaunchRecipeDetailsWithCorrectIntent() {
@@ -55,8 +81,17 @@ public class BakeliciousIntentTests {
         DrawerActions.openDrawer(R.id.material_drawer_layout);
         onView(withId(R.id.drawer_action_discover)).perform(click());
 
-        onView(withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
         intended(hasExtraWithKey(RecipeDetailActivity.RECIPE_INFO_BUNDLE_KEY));
+    }
+
+    private boolean isScreenSw600dp() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        float widthDp = displayMetrics.widthPixels / displayMetrics.density;
+        float heightDp = displayMetrics.heightPixels / displayMetrics.density;
+        float screenSw = Math.min(widthDp, heightDp);
+        return screenSw >= 600;
     }
 }

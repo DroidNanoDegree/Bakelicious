@@ -40,12 +40,11 @@ import timber.log.Timber;
 
 public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.IngredientsViewHolder> {
 
+    private static final int VIEW_TYPE_HEADER = 0;
+    private static final int VIEW_TYPE_LIST_ITEM = 1;
     private List<Ingredient> mIngredients;
     private IngredientListItemBinding mIngredientListItemBinding;
     private IngredientHeaderItemBinding mIngredientHeaderItemBinding;
-
-    private static final int VIEW_TYPE_HEADER = 0;
-    private static final int VIEW_TYPE_LIST_ITEM = 1;
 
     public IngredientsAdaptor(String ingredients) {
         if (ingredients == null || ingredients.isEmpty()) {
@@ -82,7 +81,7 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
                 return new IngredientsViewHolder(mIngredientListItemBinding.getRoot());
             }
 
-            default:{
+            default: {
                 throw new RuntimeException("Unsupported viewType for id:" + viewType);
             }
         }
@@ -100,15 +99,16 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
                 Ingredient ingredient = mIngredients.get(position);
 
                 //TODO ally support
-                mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient());
+                mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient().toUpperCase());
                 mIngredientListItemBinding.tvIngredient.refreshDrawableState();
 
                 //TODO ally support
-                mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure());
+                mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure().toLowerCase());
 
                 //TODO ally support
                 mIngredientListItemBinding.tvQuantity.setText(
-                        String.format(Locale.getDefault(), Float.toString(ingredient.getQuantity())));
+                        String.format(Locale.getDefault(),
+                                "%s", Float.toString(ingredient.getQuantity())));
                 break;
             }
 
@@ -125,7 +125,7 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0){
+        if (position == 0) {
             return VIEW_TYPE_HEADER;
         }
         return VIEW_TYPE_LIST_ITEM;

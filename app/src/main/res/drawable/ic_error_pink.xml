@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~ Copyright (C) 2017 Srikanth Basappa
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,12 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/bakelicious_widget_provider"
-    android:initialLayout="@layout/bakelicious_widget_provider"
-    android:minHeight="60dp"
-    android:minWidth="160dp"
-    android:previewImage="@mipmap/ic_launcher"
-    android:resizeMode="vertical|horizontal"
-    android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen"></appwidget-provider>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0">
+    <path
+        android:fillColor="@color/secondaryColor"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM13,17h-2v-2h2v2zM13,13h-2L11,7h2v6z" />
+</vector>

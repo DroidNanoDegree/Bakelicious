@@ -13,24 +13,26 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primaryBackgroundColor">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_ingredient"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/display1_font_size_medium"
-            android:textColor="@color/primaryTextColor"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- A small divider -->
         <View
@@ -45,13 +47,13 @@
             android:id="@+id/tv_quantity"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/divider1"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/display1_font_size_medium"
-            android:textColor="@color/primaryTextColor" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_ingredient"
+            app:layout_constraintStart_toEndOf="@+id/divider1"
+            app:layout_constraintTop_toTopOf="@+id/tv_ingredient" />
 
         <!-- A small divider -->
         <View
@@ -66,14 +68,14 @@
             android:id="@+id/tv_measure"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/divider2"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="@dimen/display1_font_size_medium"
+            android:layout_marginStart="4dp"
             android:text="@string/measure"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/primaryTextColor"
-            />
+            android:textSize="@dimen/display1_font_size_medium"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_quantity"
+            app:layout_constraintStart_toEndOf="@+id/divider2"
+            app:layout_constraintTop_toTopOf="@+id/tv_quantity"
+            app:layout_constraintVertical_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
 </layout>
