@@ -99,15 +99,16 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
                 Ingredient ingredient = mIngredients.get(position);
 
                 //TODO ally support
-                mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient());
+                mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient().toUpperCase());
                 mIngredientListItemBinding.tvIngredient.refreshDrawableState();
 
                 //TODO ally support
-                mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure());
+                mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure().toLowerCase());
 
                 //TODO ally support
                 mIngredientListItemBinding.tvQuantity.setText(
-                        String.format(Locale.getDefault(), Float.toString(ingredient.getQuantity())));
+                        String.format(Locale.getDefault(),
+                                "%s", Float.toString(ingredient.getQuantity())));
                 break;
             }
 
