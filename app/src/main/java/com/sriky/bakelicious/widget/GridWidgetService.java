@@ -139,8 +139,6 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         }
 
         int normalizedPosition = position - count;
-        Timber.d("getViewAt(), position: %d, count: %d, normalizedPosition: %d",
-                position, count, normalizedPosition);
 
         //if it is the first item then display the recipename.
         if (normalizedPosition == 0) {
