@@ -16,6 +16,7 @@
 package com.sriky.bakelicious.adaptor;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
     private IngredientHeaderItemBinding mIngredientHeaderItemBinding;
 
     public IngredientsAdaptor(String ingredients) {
-        if (ingredients == null || ingredients.isEmpty()) {
+        if (TextUtils.isEmpty(ingredients)) {
             throw new RuntimeException("Ingredients string empty!");
         }
 
@@ -96,16 +97,14 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
             }
 
             case VIEW_TYPE_LIST_ITEM: {
-                Ingredient ingredient = mIngredients.get(position);
+                int positionMinusHeader = --position;
+                Ingredient ingredient = mIngredients.get(positionMinusHeader);
 
-                //TODO ally support
                 mIngredientListItemBinding.tvIngredient.setText(ingredient.getIngredient().toUpperCase());
                 mIngredientListItemBinding.tvIngredient.refreshDrawableState();
 
-                //TODO ally support
                 mIngredientListItemBinding.tvMeasure.setText(ingredient.getMeasure().toLowerCase());
 
-                //TODO ally support
                 mIngredientListItemBinding.tvQuantity.setText(
                         String.format(Locale.getDefault(),
                                 "%s", Float.toString(ingredient.getQuantity())));
@@ -118,9 +117,14 @@ public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.
         }
     }
 
+    /**
+     * Gets the total number of items to display.
+     *
+     * @return Size of the ingredients plus one for the header.
+     */
     @Override
     public int getItemCount() {
-        return mIngredients == null ? 0 : mIngredients.size();
+        return mIngredients == null ? 0 : mIngredients.size() + 1;
     }
 
     @Override
