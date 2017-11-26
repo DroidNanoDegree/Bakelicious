@@ -97,7 +97,7 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
         Timber.d("shortDesc: %s", mShortDesc);
 
         //set the video, if url exists.
-        if (videoUrl != null && !videoUrl.isEmpty()) {
+        if (TextUtils.isEmpty(videoUrl)) {
 
             mExoPlayerPosition = 0;
             if (savedInstanceState != null &&
@@ -107,13 +107,12 @@ public class RecipeInstructionFragment extends Fragment implements ExoPlayer.Eve
             Timber.d("VideoUrl: %s, mExoPlayerPosition: %d", videoUrl, mExoPlayerPosition);
             initializePlayer(Uri.parse(videoUrl));
 
-        } else if (thumbUrl != null && !thumbUrl.isEmpty()) {
+        } else if (TextUtils.isEmpty(thumbUrl)) {
 
             Picasso.with(getContext())
                     .load(Uri.parse(thumbUrl))
-                    //TODO: add place holder art!
-                    //.placeholder(R.drawable.loading)
-                    //.error(R.drawable.error)
+                    .placeholder(R.drawable.ic_cake_loading)
+                    .error(R.drawable.ic_error_pink)
                     .into(mFragmentRecipeInstructionBinding.ivInstruction);
             mFragmentRecipeInstructionBinding.ivInstruction.setVisibility(View.VISIBLE);
 

@@ -1,6 +1,7 @@
 package com.sriky.bakelicious.model;
 
 import android.content.ContentValues;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -92,7 +93,7 @@ public class Recipe {
             return null;
         }
 
-        if (name == null || name.isEmpty()) {
+        if (TextUtils.isEmpty(name)) {
             Timber.e("Invalid recipe name for RecipeId: %d %s ",
                     id, Log.getStackTraceString(new Exception()));
             return null;
