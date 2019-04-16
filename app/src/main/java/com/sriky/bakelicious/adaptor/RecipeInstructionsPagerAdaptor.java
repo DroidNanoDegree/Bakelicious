@@ -16,9 +16,9 @@
 package com.sriky.bakelicious.adaptor;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -31,10 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
 /**
- * The {@link android.support.v4.view.ViewPager} Adaptor for recipe instructions.
+ * The {@link ViewPager} Adaptor for recipe instructions.
  */
 
 public class RecipeInstructionsPagerAdaptor extends FragmentStatePagerAdapter {

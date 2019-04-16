@@ -18,7 +18,7 @@ package com.sriky.bakelicious.data;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 
 import com.sriky.bakelicious.provider.BakeliciousContentProvider.RecipeEntry;
 

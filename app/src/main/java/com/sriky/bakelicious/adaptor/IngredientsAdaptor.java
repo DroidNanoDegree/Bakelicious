@@ -15,7 +15,7 @@
 
 package com.sriky.bakelicious.adaptor;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +35,7 @@ import timber.log.Timber;
 
 /**
  * The Adaptor for the {@link com.sriky.bakelicious.ui.RecipeIngredientsFragment}'s
- * {@link android.support.v7.widget.RecyclerView}
+ * {@link RecyclerView}
  */
 
 public class IngredientsAdaptor extends RecyclerView.Adapter<IngredientsAdaptor.IngredientsViewHolder> {

@@ -18,13 +18,13 @@ package com.sriky.bakelicious.ui;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +79,7 @@ public class MasterListFragment extends Fragment implements LoaderManager.Loader
         mMasterListBinding.rvRecipes.setHasFixedSize(true);
 
         mMasterListBinding.rvRecipes.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         //after a config. change, check to see if the fragment was a favorite type.
         if (savedInstanceState != null && savedInstanceState.containsKey(FAVORITE_FRAGMENT_BUNDLE_KEY)) {
