@@ -15,7 +15,7 @@
 
 package com.sriky.bakelicious.sync;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.sriky.bakelicious.model.Recipe;
 

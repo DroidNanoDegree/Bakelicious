@@ -16,17 +16,18 @@
 package com.sriky.bakelicious.adaptor;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.sriky.bakelicious.ui.RecipeIngredientsFragment;
 import com.sriky.bakelicious.ui.RecipeInstructionsFragment;
 
+import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
 /**
- * The {@link android.support.v4.view.ViewPager} Adaptor for recipe details layout.
+ * The {@link ViewPager} Adaptor for recipe details layout.
  */
 
 public class RecipeDetailPagerAdaptor extends FragmentPagerAdapter {

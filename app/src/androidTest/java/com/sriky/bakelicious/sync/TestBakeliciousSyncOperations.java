@@ -20,7 +20,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 
 import com.facebook.stetho.Stetho;
 import com.sriky.bakelicious.data.TestUtilities;

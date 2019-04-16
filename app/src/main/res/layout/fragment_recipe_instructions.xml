@@ -21,7 +21,7 @@
         android:background="@color/primaryBackgroundColor"
         android:orientation="vertical">
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager_recipe_instructions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
